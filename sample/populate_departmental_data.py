@@ -1,7 +1,8 @@
-"""Populate the database with departmental data."""
-
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+"""Populate the database with departmental data."""
+
 
 import urllib.parse
 import logging
@@ -9,13 +10,15 @@ import logging
 import pymongo
 import pymongo.errors as mongo_err
 import yaml
-
+# TODO use dotenv instead of a yaml file for deployment.
 
 def connect_to_db():
     """Connect to the MongoDB database.
 
-    Returns:
-        db (pymongo.database.Database): The database object.
+    Returns
+    -------
+    client : pymongo.MongoClient
+        The MongoDB client.
     """
     db_credentials = get_db_credentials()
     username = urllib.parse.quote_plus(db_credentials["username"])
@@ -44,8 +47,10 @@ def connect_to_db():
 def get_db_credentials():
     """Get the database credentials.
 
-    Returns:
-        db_credentials (dict): The database credentials.
+    Returns
+    -------
+    db_credentials : dict
+        The database credentials.
     """
     with open("config/application.yaml", "r", encoding="UTF-8") as stream:
         try:
