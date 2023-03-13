@@ -278,13 +278,20 @@ def main():
     )
 
     setup_logging()
-    database = connect_to_db()
+    client = connection_helper.connect_to_db()
+    database = client["recalpp"]
     departmental_data_collection = database["departmental_data"]
-    departmental_data = get_departmental_data(
-        degree_programs_dir, major_programs_dir, minor_programs_dir
-    )
-    write_departmental_data_to_db(departmental_data_collection, departmental_data)
 
+    # start transaction
+    with client.start_session() as session:
+        with session.start_transaction():
+            departmental_data_collection.delete_many({})
+            departmental_data = get_departmental_data(
+                degree_programs_dir, major_programs_dir, minor_programs_dir
+            )
+            write_departmental_data_to_db(
+                departmental_data_collection, departmental_data
+            )
 
 if __name__ == "__main__":
     main()
