@@ -4,7 +4,6 @@
 """Helper for connecting to the database."""
 
 import logging
-import os
 import urllib.parse
 
 import pymongo
