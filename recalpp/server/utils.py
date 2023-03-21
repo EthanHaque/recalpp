@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""Helper for connecting to the database."""
+"""Utility functions accessable to all modules."""
 
 import logging
 import urllib.parse
+import os
 
 import pymongo
 import pymongo.errors as mongo_err
-import yaml
+import dotenv
 
+dotenv.load_dotenv("config/.env")
 
-def connect_to_db() -> pymongo.MongoClient:
+def get_db_handle() -> pymongo.MongoClient:
     """Connect to the database via client.
 
     Returns
@@ -56,16 +58,9 @@ def get_db_credentials():
     db_credentials : dict
         The database credentials.
     """
-    with open("config/application.yaml", "r", encoding="UTF-8") as stream:
-        try:
-            config = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            logging.error(exc)
-            raise exc
-
     db_credentials = {
-        "username": config["mongodb"]["username"],
-        "password": config["mongodb"]["password"],
-        "database": config["mongodb"]["database"],
-    }
+            "username": os.getenv("MONGODB_USERNAME"),
+            "password": os.getenv("MONGODB_PASSWORD"),
+            "database": os.getenv("MONGODB_DATABASE"),
+        }
     return db_credentials
