@@ -11,8 +11,7 @@ import os
 import pymongo
 import pymongo.errors as mongo_err
 import yaml
-
-# TODO use dotenv instead of a yaml file for deployment.
+import recalpp.utils as utils
 
 
 def setup_logging():
@@ -218,7 +217,7 @@ def main():
     )
 
     setup_logging()
-    client = connection_helper.connect_to_db()
+    client = utils.connect_to_db()
     database = client["recalpp"]
     departmental_data_collection = database["departmental_data"]
 
