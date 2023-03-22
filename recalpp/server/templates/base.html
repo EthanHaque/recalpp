@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Add any additional CSS or JS files here -->
+    <!-- TODO: rebuild with only desired tailwind classes. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% block extrahead %}{% endblock %}
+</head>
+
+<body>
+    <header>
+        <!-- Add your header content here -->
+        {% block header %}{% endblock %}
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <!-- Add your footer content here -->
+        {% block footer %}{% endblock %}
+    </footer>
+
+    <!-- Add any additional JS files here -->
+    {% block extrascripts %}{% endblock %}
+</body>
+
+</html>
