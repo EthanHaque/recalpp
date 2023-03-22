@@ -22,9 +22,10 @@ def get_db_handle() -> pymongo.MongoClient:
         The database client.
     """
     db_credentials = get_db_credentials()
-    username = urllib.parse.quote_plus(db_credentials["username"])
-    password = urllib.parse.quote_plus(db_credentials["password"])
-    db_name = urllib.parse.quote_plus(db_credentials["database"])
+    
+    username = db_credentials["username"]
+    password = db_credentials["password"]
+    db_name = db_credentials["database"]
 
     if not username or not password or not db_name:
         raise ValueError("Invalid database credentials.")
@@ -58,9 +59,15 @@ def get_db_credentials():
     db_credentials : dict
         The database credentials.
     """
+    # use urllib to parse the username and password
+
+    username = urllib.parse.quote_plus(os.getenv("MONGODB_USERNAME"))
+    password = urllib.parse.quote_plus(os.getenv("MONGODB_PASSWORD"))
+    db_name = urllib.parse.quote_plus(os.getenv("MONGODB_DATABASE"))
+
     db_credentials = {
-            "username": os.getenv("MONGODB_USERNAME"),
-            "password": os.getenv("MONGODB_PASSWORD"),
-            "database": os.getenv("MONGODB_DATABASE"),
+            "username": username,
+            "password": password,
+            "database": db_name,
         }
     return db_credentials
