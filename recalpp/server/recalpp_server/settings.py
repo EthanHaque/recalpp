@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "schedule_builder"
+    "schedule_builder",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
