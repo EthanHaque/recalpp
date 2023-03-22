@@ -11,7 +11,7 @@ import pymongo
 import pymongo.errors as mongo_err
 
 import scrape_course_data
-import connection_helper
+import recalpp.utils as utils
 
 
 def setup_logging():
@@ -56,7 +56,7 @@ def write_course_data_to_db(
 def main():
     """Main function."""
     setup_logging()
-    client = connection_helper.connect_to_db()
+    client = utils.get_db_handle()
     database = client["recalpp"]
     courses_collection = database["courses"]
 
