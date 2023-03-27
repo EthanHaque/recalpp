@@ -59,7 +59,6 @@ def get_db_credentials():
     db_credentials : dict
         The database credentials.
     """
-    # use urllib to parse the username and password
 
     username = urllib.parse.quote_plus(os.getenv("MONGODB_USERNAME"))
     password = urllib.parse.quote_plus(os.getenv("MONGODB_PASSWORD"))
