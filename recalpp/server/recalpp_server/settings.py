@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "schedule_builder",
+    "api_v1",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
