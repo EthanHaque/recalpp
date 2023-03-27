@@ -19,5 +19,6 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('schedule_builder/', include('schedule_builder.urls')),
+    path('api/v1/', include('api_v1.urls')),
     path('', RedirectView.as_view(url='schedule_builder/', permanent=True)),
 ]
