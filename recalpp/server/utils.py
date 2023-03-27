@@ -59,6 +59,7 @@ def get_db_credentials():
     db_credentials : dict
         The database credentials.
     """
+    # TODO: check .env file exists and was read correctly.
 
     username = urllib.parse.quote_plus(os.getenv("MONGODB_USERNAME"))
     password = urllib.parse.quote_plus(os.getenv("MONGODB_PASSWORD"))
