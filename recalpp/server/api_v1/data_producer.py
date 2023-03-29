@@ -4,6 +4,7 @@
 """Interface to the database to retrieve data for the API."""
 
 import logging
+from bson import json_util
 
 import utils
 
@@ -24,11 +25,11 @@ def get_major_information(major_code: str) -> dict:
     logging.info("Getting major information for %s.", major_code)
     db_collection = utils.get_departmental_data_collection()
 
-    major_info = db_collection.find_one({"type": "major", "code": major_code})
+    major_info = db_collection.find_one({"type": "Major", "code": major_code})
 
     if major_info:
         logging.info("Successfully retrieved major information.")
     else:
         logging.error("Failed to retrieve major information.")
 
-    return major_info
+    return json_util.dumps(major_info)
