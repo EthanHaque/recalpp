@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Recal++ - Home{% endblock %}
 
 {% block content %}
+
 
 <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200
     dark:bg-[#0d1117] dark:border-gray-700">
@@ -11,7 +13,10 @@
             <div class="flex items-center justify-start">
                 <ul class="flex p-4 md:flex sm:hidden md:space-x-8 md:mt-0
                     md:text-sm md:font-medium">
-                    <li></li>
+                    <li class="flex items-center justify-start">
+                        <p
+                            class="text-gray-900 dark:text-white
+                            dark:hover:text-blue-500">Hello {{ name }}</li></p>
                 </ul>
             </div>
         </div>
@@ -71,8 +76,13 @@
  pt-20 transition-transform-translate-x-full bg-white border-r border-gray-200
   md:translate-x-0 dark:bg-black dark:border-black"
 aria-label="Degreebar">
-    <div>
-
+    <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-[#0d1117]">
+        <div class="flex items-center gap-3 p-2">
+            <h3 class="text-black text-sm
+                dark:text-white">{{ degree_progress.req_list }}
+            </h3>
+        </div>
+    </div>
 
 
 </aside>
