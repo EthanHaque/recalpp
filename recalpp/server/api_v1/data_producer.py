@@ -31,5 +31,7 @@ def get_major_information(major_code: str) -> dict:
         logging.info("Successfully retrieved major information.")
     else:
         logging.error("Failed to retrieve major information.")
+    
+    major_info.pop("_id")
 
-    return json_util.dumps(major_info)
+    return major_info
