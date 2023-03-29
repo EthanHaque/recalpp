@@ -3,7 +3,8 @@ from django.http import JsonResponse
 
 from . import data_producer
 
-def get_routes(request):
+
+def get_routes(request): #TODO get rid of this function
 
    routes=[
       {
@@ -21,7 +22,7 @@ def get_routes(request):
       {
          'Endpoint': '/majors',
          'method': 'GET',
-         'body': get_major_information,
+         'body': None,
          'description': 'Returns dependency information about a major'
       }
       ]
