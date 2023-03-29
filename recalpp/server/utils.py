@@ -50,6 +50,44 @@ def get_db_handle() -> pymongo.MongoClient:
 
     return client
 
+def get_departmental_data_collection() -> pymongo.collection.Collection:
+    """Get the departmental data collection.
+
+    Returns
+    -------
+    collection : pymongo.collection.Collection
+        The departmental data collection.
+    """
+    db_handle = get_db_handle()
+    # db_name = os.getenv("DB_NAME") # TODO add this as a env variable
+    db_collection = db_handle["recalpp"]["departmental_data"]
+
+    if db_collection:
+        logging.info("Successfully retrieved departmental data collection.")
+    else:
+        logging.error("Failed to retrieve departmental data collection.")
+
+    return db_collection
+
+def get_courses_data_collection() -> pymongo.collection.Collection:
+    """Get the courses data collection.
+
+    Returns
+    -------
+    collection : pymongo.collection.Collection
+        The courses data collection.
+    """
+    db_handle = get_db_handle()
+    # db_name = os.getenv("DB_NAME") # TODO add this as a env variable
+    db_collection = db_handle["recalpp"]["courses"]
+
+    if db_collection:
+        logging.info("Successfully retrieved courses data collection.")
+    else:
+        logging.error("Failed to retrieve courses data collection.")
+
+    return db_collection
+
 
 def get_db_credentials():
     """Get the database credentials.
@@ -59,7 +97,7 @@ def get_db_credentials():
     db_credentials : dict
         The database credentials.
     """
-    # use urllib to parse the username and password
+    # TODO: check .env file exists and was read correctly.
 
     username = urllib.parse.quote_plus(os.getenv("MONGODB_USERNAME"))
     password = urllib.parse.quote_plus(os.getenv("MONGODB_PASSWORD"))

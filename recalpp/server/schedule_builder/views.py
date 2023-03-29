@@ -6,9 +6,7 @@ import utils
 
 def index(request):
     # connect to db
-    client = utils.get_db_handle()
-    db = client["recalpp"]
-    collection = db["courses"]
+    collection = utils.get_courses_data_collection()
     # get all courses from the collection
     courses = collection.find({})
     context = {'name': 'Ethan Haque', 'courses': courses}
