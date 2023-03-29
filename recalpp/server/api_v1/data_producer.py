@@ -4,7 +4,6 @@
 """Interface to the database to retrieve data for the API."""
 
 import logging
-import os
 
 import utils
 
