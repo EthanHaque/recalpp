@@ -17,6 +17,7 @@ from django.urls import path
 from django.urls import include
 from django.views.generic import RedirectView
 
+
 urlpatterns = [
     path('schedule_builder/', include('schedule_builder.urls')),
     path('api/v1/', include('api_v1.urls')),
