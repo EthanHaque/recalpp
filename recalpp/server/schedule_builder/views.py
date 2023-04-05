@@ -29,5 +29,5 @@ def index(request):
 
     # get all courses from the collection
     courses = courses_collection.find({})
-    context = {'name': 'Rafay Khan', 'courses': courses, 'degree_progress': major_info}
+    context = {'name': 'Nguyen Nguyen', 'courses': courses, 'degree_progress': major_info}
     return render(request, 'schedule_builder/temphomepage.html', context)
