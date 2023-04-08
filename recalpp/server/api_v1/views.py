@@ -47,4 +47,24 @@ def get_major_information(request):
    """
    major_code = request.GET.get('major_code')
    major_info = data_producer.get_major_information(major_code)
+   # TODO: make safe
    return JsonResponse(major_info, safe=False)
+
+def get_courses_information(request):
+   """Get the courses information from the database.
+   
+   Parameters
+   ----------
+   request : HttpRequest
+       The request object.
+       
+   Returns
+   -------
+   courses_info : dict
+       The courses information including the major code, name, 
+       dependencies, etc.
+   """
+   search = request.GET.get('search')
+   courses_info = data_producer.get_courses_information(search)
+   # TODO: make safe
+   return JsonResponse(courses_info, safe=False)
