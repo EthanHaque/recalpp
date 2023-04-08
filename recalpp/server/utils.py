@@ -6,6 +6,8 @@
 import logging
 import urllib.parse
 import os
+import requests
+import base64
 
 import pymongo
 import pymongo.errors as mongo_err
@@ -109,3 +111,33 @@ def get_db_credentials():
             "database": db_name,
         }
     return db_credentials
+
+def generate_studnet_app_access_token() -> str:
+    """Generate a student app access token.
+
+    Returns
+    -------
+    access_token : str
+        The student app access token.
+    """
+    consumer_secret = os.getenv("STUDENT_APP_CONSUMER_SECRET")
+    consumer_key = os.getenv("STUDENT_APP_CONSUMER_KEY")
+    token_url = "https://api.princeton.edu:443/token"
+    req = requests.post(
+        token_url,
+        data={"grant_type": "client_credentials"},
+        headers={
+            "Authorization": "Basic " 
+            + base64.b64encode(
+                bytes(consumer_key + ":" + consumer_secret, "utf-8")
+            ).decode("utf-8")
+        },
+        timeout=10
+    )
+    if req.status_code == 200:
+        access_token = req.json()["access_token"]
+        logging.info("Successfully generated student app access token.")
+        return access_token
+    else:
+        logging.error("Failed to generate student app access token.")
+        return None
