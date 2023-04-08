@@ -1,235 +1,134 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} 
 
-{% block title %}Recal++ - Home{% endblock %}
+{% load static %} 
+{% load custom_filters %}
+
+{% block title %}Recal++ - Home{%endblock %} 
 
 {% block content %}
 
-
-<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200
-    dark:bg-[#0d1117] dark:border-gray-700">
-    <div class="px-3 py-3 lg:px-5 lg:pl-3">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center justify-start">
-                <ul class="flex p-4 md:flex sm:hidden md:space-x-8 md:mt-0
-                    md:text-sm md:font-medium">
-                    <li class="flex items-center justify-start">
-                        <p
-                            class="text-gray-900 dark:text-white
-                            dark:hover:text-blue-500">Hello {{ name }}</li></p>
-                </ul>
-            </div>
-        </div>
+<!-- top nav bar -->
+<nav
+  class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-[#0d1117] dark:border-gray-700"
+>
+  <div class="px-3 py-3 lg:px-5 lg:pl-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center justify-start">
+        <ul
+          class="flex p-4 md:flex sm:hidden md:space-x-8 md:mt-0 md:text-sm md:font-medium"
+        >
+          <li class="flex items-center justify-start">
+            <p class="text-gray-900 dark:text-white dark:hover:text-blue-500">
+              Hello {{ name }}
+            </p>
+          </li>
+        </ul>
+      </div>
     </div>
+  </div>
 </nav>
 
-<div id="middle" style="position: absolute; width: 800px; height: 650px; 
-left: 50%; top: 50%; margin-left: -350px; margin-top: -285px;">
-      <table style="border-collapse: collapse; width: 100%;">
-        <tr>
-          <th style="border: 1px solid gray; padding: 8px; background-color: #f2f2f2; width: 20%;">Monday</th>
-          <th style="border: 1px solid gray; padding: 8px; background-color: #f2f2f2; width: 20%;">Tuesday</th>
-          <th style="border: 1px solid gray; padding: 8px; background-color: #f2f2f2; width: 20%;">Wednesday</th>
-          <th style="border: 1px solid gray; padding: 8px; background-color: #f2f2f2; width: 20%;">Thursday</th>
-          <th style="border: 1px solid #808080; padding: 8px; background-color: #f2f2f2; width: 20%;">Friday</th>
-        </tr>
-        <tr style="height: 44px;">
-            <td style="border: 1px solid gray; padding: 8px;">
-                <div style="position:relative;">
-                    <span style="font-size: xx-small; position: absolute; top: -23px; left: -5px;">8 AM</span>
-                </div>
-            </td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-        </tr>
-        <tr style="height: 44px;">
-            <td style="border: 1px solid gray; padding: 8px;">
-                <div style="position:relative;">
-                    <span style="font-size: xx-small; position: absolute; top: -23px; left: -5px;">9 AM</span>
-                </div>
-            </td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-        </tr>
-          <tr style="height: 44px;">
-            <td style="border: 1px solid gray; padding: 8px;">
-                <div style="position:relative;">
-                    <span style="font-size: xx-small; position: absolute; top: -23px; left: -5px;">10 AM</span>
-                </div>
-            </td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-          </tr>
-          <tr style="height: 44px;">
-            <td style="border: 1px solid gray; padding: 8px;">
-                <div style="position:relative;">
-                    <span style="font-size: xx-small; position: absolute; top: -23px; left: -5px;">11 AM</span>
-                </div>
-            </td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-          </tr>
-          <tr style="height: 44px;">
-            <td style="border: 1px solid gray; padding: 8px;">
-                <div style="position:relative;">
-                    <span style="font-size: xx-small; position: absolute; top: -23px; left: -5px;">12 PM</span>
-                </div>
-            </td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-          </tr>
-          <tr style="height: 44px;">
-            <td style="border: 1px solid gray; padding: 8px;">
-                <div style="position:relative;">
-                    <span style="font-size: xx-small; position: absolute; top: -23px; left: -5px;">1 PM</span>
-                </div>
-            </td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-          </tr>
-          <tr style="height: 44px;">
-            <td style="border: 1px solid gray; padding: 8px;">
-                <div style="position:relative;">
-                    <span style="font-size: xx-small; position: absolute; top: -23px; left: -5px;">2 PM</span>
-                </div>
-            </td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-          </tr>
-          <tr style="height: 44px;">
-            <td style="border: 1px solid gray; padding: 8px;">
-                <div style="position:relative;">
-                    <span style="font-size: xx-small; position: absolute; top: -23px; left: -5px;">3 PM</span>
-                </div>
-            </td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-          </tr>
-          <tr style="height: 44px;">
-            <td style="border: 1px solid gray; padding: 8px;">
-                <div style="position:relative;">
-                    <span style="font-size: xx-small; position: absolute; top: -23px; left: -5px;">4 PM</span>
-                </div>
-            </td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-          </tr>
-          <tr style="height: 44px;">
-            <td style="border: 1px solid gray; padding: 8px;">
-                <div style="position:relative;">
-                    <span style="font-size: xx-small; position: absolute; top: -23px; left: -5px;">5 PM</span>
-                </div>
-            </td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-          </tr>
-          <tr style="height: 44px;">
-            <td style="border: 1px solid gray; padding: 8px;">
-                <div style="position:relative;">
-                    <span style="font-size: xx-small; position: absolute; top: -23px; left: -5px;">6 PM</span>
-                </div>
-            </td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-          </tr>
-          <tr style="height: 44px;">
-            <td style="border: 1px solid gray; padding: 8px;">
-                <div style="position:relative;">
-                    <span style="font-size: xx-small; position: absolute; top: -23px; left: -5px;">7 PM</span>
-                </div>
-            </td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-            <td style="border: 1px solid gray; padding: 8px;"></td>
-          </tr>
-      </table>
-  </div>
-
-<aside id="logo-sidebar"
-    class="fixed top-0 left-0 z-40 w-[350px] h-screen pt-20 transition-transform
-    -translate-x-full bg-white border-r border-gray-200 md:translate-x-0
-    dark:bg-black dark:border-black"
-    aria-label="Sidebar">
-    <form>
-        <label for="default-search"
-            class="text-sm font-medium text-gray-900 sr-only dark:text-white
-            content-center">Search</label>
-        
-        <div class="lg:w-64 relative">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3
-                pointer-events-none">
-                <svg aria-hidden="true" class="w-5 h-5 text-gray-500
-                    dark:text-gray-400" fill="none"
-                    stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-            </div>
-
-                <input type="search" id="default-search"
-                    class="block w-full p-1 pl-10 text-sm text-gray-900 border
-                    border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500
-                    focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600
-                    dark:placeholder-gray-400 dark:text-white
-                    dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                    placeholder="Search...">
-
-            <button type="submit"
-                class="text-white lg:block sm:hidden absolute right-1 bottom-1
-                border border-gray-500 focus:ring-4 focus:outline-none
-                focus:ring-blue-300 font-medium rounded text-sm px-2
-                dark:focus:ring-blue-800">></button>
+<!-- main calendar content -->
+<div
+  class="bg-gradient-to-br bg-gradient-to-b from-gray-900 to-gray-600 min-h-screen pt-16"
+>
+  <div class="container mx-auto px-4 py-8">
+    <div
+      class="mx-auto bg-white bg-opacity-40 rounded-lg shadow-xl p-6 backdrop-blur-md w-[90%] md:w-[60%]"
+    >
+      <div class="flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-semibold text-white">Fall 2023</h1> <!-- change to dynamic -->
+        <div>
+          <div>
+            <br /> <!-- for formatting -->
+          </div>
         </div>
-    </form>
-    <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-[#0d1117]">
-        {% for course in courses %}
-        <div class="flex items-center gap-3 p-2">
-            <h3 class="hover:underline hover:cursor-pointer text-black text-sm
-                dark:text-white">{{ course.long_title }}
-            </h3>
+      </div>
+      <div class="grid grid-cols-6 gap-4">
+        <div></div>
+        <div class="font-semibold text-center text-white">Mon</div>
+        <div class="font-semibold text-center text-white">Tue</div>
+        <div class="font-semibold text-center text-white">Wed</div>
+        <div class="font-semibold text-center text-white">Thu</div>
+        <div class="font-semibold text-center text-white">Fri</div>
+        <!-- Display times -->
+        {% for hour in times %}
+        <div class="font-semibold text-center text-white">
+          {{ hour|time:"%I:%M %p" }}
         </div>
+          {% for day in days %}
+          <div></div>
+          {% endfor %} 
         {% endfor %}
+      </div>
     </div>
-</aside>
+  </div>
+</div>
 
-<aside id="degree-progress" class="fixed top-0 right-0 z-40 w-[250px] h-screen
- pt-20 transition-transform-translate-x-full bg-white border-r border-gray-200
-  md:translate-x-0 dark:bg-black dark:border-black"
-aria-label="Degreebar">
-    <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-[#0d1117]">
-        <div class="flex items-center gap-3 p-2">
-            <h3 class="text-black text-sm
-                dark:text-white">{{ degree_progress.req_list }}
-            </h3>
+<!-- courses sidebar -->
+<aside
+  id="logo-sidebar"
+  class="fixed top-0 left-0 z-40 w-full h-screen pt-20 transition-transform -translate-x-full border-r border-gray-200 md:w-80 md:translate-x-0 dark:border-black bg-white dark:bg-[#0d1117]"
+  aria-label="Sidebar"
+>
+  <form class="px-3 pb-4">
+    <label
+      for="default-search"
+      class="text-sm font-medium text-gray-900 sr-only dark:text-white content-center"
+      >Search</label
+    >
+    <div>
+      <div class="flex justify-center">
+        <div class="lg:w-64 relative mx-auto">
+          <div class="lg:w-64 relative">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114
+                                    0z"
+                ></path>
+              </svg>
+            </div>
+            <input
+              type="search"
+              id="course-search"
+              class="block w-full p-1 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search..."
+            />
+          </div>
         </div>
+      </div>
     </div>
+  </form>
+  <div id="courses" class="h-full px-3 pb-4 overflow-y-auto">
+  </div>
 </aside>
 
+<!-- degree progress sidebar -->
+<aside
+  id="degree-progress"
+  class="fixed top-0 right-0 z-40 w-full h-screen pt-20 transition-transform translate-x-full bg-white border-r border-gray-200 md:w-64 md:translate-x-0 dark:bg-black dark:border-black"
+  aria-label="Degreebar"
+>
+  <div id="degree-progress-content" class="h-full px-3 pb-4 overflow-y-auto dark:text-white bg-white dark:bg-[#0d1117]">
+  </div>
+</aside>
 
+{% endblock %}
 
+{% block extrascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="{% static 'schedule_builder/js/schedule_builder.js' %}"></script>
 {% endblock %}
