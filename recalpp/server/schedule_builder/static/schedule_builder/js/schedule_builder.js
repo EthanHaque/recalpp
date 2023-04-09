@@ -1,3 +1,5 @@
+"use strict";
+
 $(document).ready(() => {
   $("#course-search").on("input", (event) => {
     let search = $(event.target).val().trim();
