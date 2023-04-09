@@ -25,13 +25,13 @@ function updateCourses(courses) {
 
   courses.forEach(function (course) {
     courseList += `
-        <div class="flex items-center gap-3 p-2">
-        <h3 class="hover:underline hover:cursor-pointer text-black text-sm dark:text-white">
-            ${course.crosslistings}
-            <br />
-            ${course.long_title}
-        </h3>
-        </div>
+        <li>
+          <a class="block border-l pl-4 -ml-px border-transparent hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300" href="/docs/typography-plugin">
+              ${course.crosslistings}
+              <br />
+              ${course.long_title}
+          </a>
+        </li>
     `;
   });
 
