@@ -4,14 +4,15 @@ from django.template import loader
 
 import utils
 
+
 def index(request):
     """The homepage for the schedule builder app.
-    
+
     Parameters
     ----------
     request : HttpRequest
         The request object.
-        
+
     Returns
     -------
     HttpResponse
@@ -29,5 +30,11 @@ def index(request):
 
     # get all courses from the collection
     courses = courses_collection.find({})
-    context = {'name': 'Nguyen Nguyen', 'courses': courses, 'degree_progress': major_info, 'times': range(8, 23), 'days': ['M', 'T', 'W', 'Th', 'F']}
-    return render(request, 'schedule_builder/temphomepage.html', context)
+    context = {
+        "user": {"netid": "xx1234"},
+        "courses": courses,
+        "degree_progress": major_info,
+        "times": range(8, 23),
+        "days": ["M", "T", "W", "Th", "F"],
+    }
+    return render(request, "schedule_builder/temphomepage.html", context)
