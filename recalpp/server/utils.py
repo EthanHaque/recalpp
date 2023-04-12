@@ -6,6 +6,8 @@
 import logging
 import urllib.parse
 import os
+import requests
+import base64
 
 import pymongo
 import pymongo.errors as mongo_err
@@ -50,6 +52,44 @@ def get_db_handle() -> pymongo.MongoClient:
 
     return client
 
+def get_departmental_data_collection() -> pymongo.collection.Collection:
+    """Get the departmental data collection.
+
+    Returns
+    -------
+    collection : pymongo.collection.Collection
+        The departmental data collection.
+    """
+    db_handle = get_db_handle()
+    # db_name = os.getenv("DB_NAME") # TODO add this as a env variable
+    db_collection = db_handle["recalpp"]["departmental_data"]
+
+    if db_collection:
+        logging.info("Successfully retrieved departmental data collection.")
+    else:
+        logging.error("Failed to retrieve departmental data collection.")
+
+    return db_collection
+
+def get_courses_data_collection() -> pymongo.collection.Collection:
+    """Get the courses data collection.
+
+    Returns
+    -------
+    collection : pymongo.collection.Collection
+        The courses data collection.
+    """
+    db_handle = get_db_handle()
+    # db_name = os.getenv("DB_NAME") # TODO add this as a env variable
+    db_collection = db_handle["recalpp"]["courses"]
+
+    if db_collection:
+        logging.info("Successfully retrieved courses data collection.")
+    else:
+        logging.error("Failed to retrieve courses data collection.")
+
+    return db_collection
+
 
 def get_db_credentials():
     """Get the database credentials.
@@ -59,7 +99,7 @@ def get_db_credentials():
     db_credentials : dict
         The database credentials.
     """
-    # use urllib to parse the username and password
+    # TODO: check .env file exists and was read correctly.
 
     username = urllib.parse.quote_plus(os.getenv("MONGODB_USERNAME"))
     password = urllib.parse.quote_plus(os.getenv("MONGODB_PASSWORD"))
@@ -71,3 +111,33 @@ def get_db_credentials():
             "database": db_name,
         }
     return db_credentials
+
+def generate_studnet_app_access_token() -> str:
+    """Generate a student app access token.
+
+    Returns
+    -------
+    access_token : str
+        The student app access token.
+    """
+    consumer_secret = os.getenv("STUDENT_APP_CONSUMER_SECRET")
+    consumer_key = os.getenv("STUDENT_APP_CONSUMER_KEY")
+    token_url = "https://api.princeton.edu:443/token"
+    req = requests.post(
+        token_url,
+        data={"grant_type": "client_credentials"},
+        headers={
+            "Authorization": "Basic " 
+            + base64.b64encode(
+                bytes(consumer_key + ":" + consumer_secret, "utf-8")
+            ).decode("utf-8")
+        },
+        timeout=10
+    )
+    if req.status_code == 200:
+        access_token = req.json()["access_token"]
+        logging.info("Successfully generated student app access token.")
+        return access_token
+    else:
+        logging.error("Failed to generate student app access token.")
+        return None

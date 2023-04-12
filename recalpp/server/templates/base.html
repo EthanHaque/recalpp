@@ -1,33 +1,33 @@
 <!DOCTYPE html>
-<html>
 
-<head>
+{% load static %} 
+
+<html>
+  <head>
     <title>{% block title %}{% endblock %}</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- Add any additional CSS or JS files here -->
     <!-- TODO: rebuild with only desired tailwind classes. -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}"
     {% block extrahead %}{% endblock %}
-</head>
+  </head>
 
-<body>
+  <body class="antialiased text-slate-900 dark:text-slate-400 bg-white dark:bg-slate-800">
     <header>
-        <!-- Add your header content here -->
-        {% block header %}{% endblock %}
+      <!-- Add your header content here -->
+      {% block header %}{% endblock %}
     </header>
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+    <main>{% block content %}{% endblock %}</main>
 
     <footer>
-        <!-- Add your footer content here -->
-        {% block footer %}{% endblock %}
+      <!-- Add your footer content here -->
+      {% block footer %}{% endblock %}
     </footer>
 
     <!-- Add any additional JS files here -->
     {% block extrascripts %}{% endblock %}
-</body>
-
+  </body>
 </html>

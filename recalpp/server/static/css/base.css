@@ -1,0 +1,16 @@
+/* The scrollbar track */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* The scrollbar handle */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(160, 160, 160, 0.2);
+    border-radius: 20px;
+}
+
+/* On hover, make the scrollbar handle darker */
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(160, 160, 160, 0.4);
+}

@@ -4,12 +4,37 @@ from django.template import loader
 
 import utils
 
+
 def index(request):
+    """The homepage for the schedule builder app.
+
+    Parameters
+    ----------
+    request : HttpRequest
+        The request object.
+
+    Returns
+    -------
+    HttpResponse
+        The response object.
+    """
     # connect to db
-    client = utils.get_db_handle()
-    db = client["recalpp"]
-    collection = db["courses"]
+    courses_collection = utils.get_courses_data_collection()
+
+    departmental_collection = utils.get_departmental_data_collection()
+
+    major_info = departmental_collection.find_one({"type": "Major", "code": "COS-BSE"})
+
+    major_info.pop("_id")
+    # TODO: remove this from prototype
+
     # get all courses from the collection
-    courses = collection.find({})
-    context = {'name': 'Ethan Haque', 'courses': courses}
-    return render(request, 'schedule_builder/temphomepage.html', context)
+    courses = courses_collection.find({})
+    context = {
+        "user": {"netid": "xx1234"},
+        "courses": courses,
+        "degree_progress": major_info,
+        "times": range(8, 23),
+        "days": ["M", "T", "W", "Th", "F"],
+    }
+    return render(request, "schedule_builder/temphomepage.html", context)
