@@ -85,7 +85,6 @@ function updateCourses(courses) {
 function displayDegreeProgress(data) {
   const degreeProgressContainer = $("#degree-progress-content");
   let degreeProgressHtml = buildDegreeProgressHtml(data);
-  console.log(degreeProgressHtml);
   degreeProgressContainer.html(degreeProgressHtml);
 }
 
@@ -109,16 +108,7 @@ function buildDegreeProgressHtml(data) {
  * @return {string} - generated HTML
  */
 function buildReqHtml(req) {
-  const subReqHtml = req.req_list
-    ? req.req_list.map(buildSubReqHtml).join("")
-    : "";
-  return `
-    <div class="mb-4">
-      <h4 class="text-md font-semibold">${req.name}</h4>
-      <p>${req.explanation}</p>
-      ${subReqHtml}
-    </div>
-  `;
+  return buildReqOrSubReqHtml(req, "text-md font-semibold", "mb-4");
 }
 
 /**
@@ -127,15 +117,47 @@ function buildReqHtml(req) {
  * @return {string} - generated HTML
  */
 function buildSubReqHtml(subReq) {
-  const courseListHtml = subReq.course_list
-    ? subReq.course_list.map((course) => `<li>${course}</li>`).join("")
-    : "";
+  return buildReqOrSubReqHtml(subReq, "text-sm font-semibold", "ml-4 mb-2");
+}
+
+/**
+ * Builds requirement or sub-requirement HTML based on the given data and CSS classes
+ * @param {Object} data - requirement or sub-requirement data
+ * @param {string} titleClass - CSS class for the title element
+ * @param {string} containerClass - CSS class for the container element
+ * @return {string} - generated HTML
+ */
+function buildReqOrSubReqHtml(data, titleClass, containerClass) {
+  const contentHtml = buildContentHtml(data);
 
   return `
-    <div class="ml-4 mb-2">
-      {" "}
-      <h5 class="text-sm font-semibold">${subReq.name}</h5>{" "}
-      <ul> ${courseListHtml} </ul>{" "}
+    <div class="${containerClass}">
+      <h4 class="${titleClass}">${data.name}</h4>
+      <p>${data.explanation}</p>
+      <ul>${contentHtml}</ul>
     </div>
   `;
+}
+
+/**
+ * Builds content HTML based on the given data
+ * @param {Object} data - requirement or sub-requirement data
+ * @return {string} - generated HTML
+ */
+function buildContentHtml(data) {
+  if (data.req_list) {
+    return data.req_list.map(buildSubReqHtml).join("");
+  } else if (data.course_list) {
+    return buildCourseListHtml(data.course_list);
+  }
+  return "";
+}
+
+/**
+ * Builds course list HTML based on the given data
+ * @param {Array} courseList - array of course codes
+ * @return {string} - generated HTML
+ */
+function buildCourseListHtml(courseList) {
+  return courseList.map((course) => `<li>${course}</li>`).join("");
 }
