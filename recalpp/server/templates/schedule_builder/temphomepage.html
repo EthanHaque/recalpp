@@ -67,7 +67,7 @@
       class="lg:block fixed z-20 inset-0 top-[2.8125rem] left-0 right-auto w-[max(250px,calc(15%+10rem))] pb-10 px-8 overflow-y-auto">
       <nav id="nav" class="lg:text-sm lg:leading-6 relative">
         <div class="sticky top-0 -ml-0.5 pointer-events-none">
-          <div class="h-10 backdrop-blur"></div>
+          <div class="h-10"></div>
           <div class="relative pointer-events-auto">
             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor"
@@ -85,13 +85,16 @@
       </nav>
     </div>
   </div>
+  
+  <!-- calendar -->
+   <div id='calendar' class="w-[calc(50%)]  mx-auto mt-0"></div>
 
   <!-- degree progress sidebar -->
   <div
       class="lg:block fixed z-20 inset-0 top-[2.8125rem] right-0 left-auto w-[max(250px,calc(15%+10rem))] pb-10 px-8 overflow-y-auto">
       <nav id="nav" class="lg:text-sm lg:leading-6 relative">
         <div class="sticky top-0 -ml-0.5 pointer-events-none">
-          <div class="h-10 backdrop-blur"></div>
+          <div class="h-10"></div>
           <div class="relative pointer-events-auto">
             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor"
@@ -109,49 +112,6 @@
       </nav>
     </div>
   </div>
-  {% comment %}
-  <!-- calendar -->
-  <div class="bg-gradient-to-br bg-gradient-to-b from-gray-900 to-gray-600 min-h-screen pt-16">
-    <div class="container mx-auto px-4 py-8">
-      <div class="mx-auto bg-white bg-opacity-40 rounded-lg shadow-xl p-6 backdrop-blur-md w-[90%] md:w-[60%]">
-        <div class="flex items-center justify-between mb-4">
-          <h1 class="text-2xl font-semibold text-white">Fall 2023</h1> <!-- change to dynamic -->
-          <div>
-            <div>
-              <br /> <!-- for formatting -->
-            </div>
-          </div>
-        </div>
-        <div class="grid grid-cols-6 gap-4">
-          <div></div>
-          <div class="font-semibold text-center text-white">Mon</div>
-          <div class="font-semibold text-center text-white">Tue</div>
-          <div class="font-semibold text-center text-white">Wed</div>
-          <div class="font-semibold text-center text-white">Thu</div>
-          <div class="font-semibold text-center text-white">Fri</div>
-          <!-- Display times -->
-          {% for hour in times %}
-          <div class="font-semibold text-center text-white">
-            {{ hour|time:"%I:%M %p" }}
-          </div>
-          {% for day in days %}
-          <div class="{{ day }}-{{ hour|time:" %I:%M %p" }} bg-white bg-opacity-40 rounded-lg shadow-xl backdrop-blur-md
-            w-[90%] md:w-[60%]"></div>
-          {% endfor %}
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- degree progress sidebar -->
-  <aside id="degree-progress"
-    class="fixed top-0 right-0 z-40 w-full h-screen pt-20 transition-transform translate-x-full bg-white border-r border-gray-200 md:w-64 md:translate-x-0 dark:bg-black dark:border-black"
-    aria-label="Degreebar">
-    <div id="degree-progress-content"
-      class="h-full px-3 pb-4 overflow-y-auto dark:text-white bg-white dark:bg-[#0d1117]">
-    </div>
-  </aside> {% endcomment %}
 </div>
 
 {% endblock %}
@@ -159,4 +119,6 @@
 {% block extrascripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="{% static 'schedule_builder/js/schedule_builder.js' %}"></script>
+<script src="{% static 'schedule_builder/js/index.global.js' %}"></script>
+<script src="{% static 'schedule_builder/js/calendar.js' %}"></script>
 {% endblock %}

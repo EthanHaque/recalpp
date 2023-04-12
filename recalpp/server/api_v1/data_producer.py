@@ -24,6 +24,7 @@ def get_major_information(major_code: str) -> dict:
     major_info : dict
         The major information.
     """
+    major_code = major_code.upper()
     logging.info("Getting major information for %s.", major_code)
     db_collection = utils.get_departmental_data_collection()
 
