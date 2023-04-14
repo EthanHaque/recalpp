@@ -22,7 +22,7 @@ $(document).ready(function () {
       {
         groupId: 999,
         title: "Repeating Event",
-        start: "T16:00:00",
+        start: "2000-01-01T16:00:00",
       },
     ],
   });

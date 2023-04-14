@@ -73,7 +73,9 @@ function updateCourses(courses) {
             ${course.long_title}
           </div>
         </div>
-        <button class="w-1/12 bg-indigo-500 text-white font-semibold text-xl rounded opacity-0 group-hover:opacity-100 transition-opacity duration-75">
+        <button class="w-1/12 bg-indigo-500 text-white font-semibold text-xl rounded opacity-0 group-hover:opacity-100 transition-opacity duration-75 add-to-calendar" data-course='${JSON.stringify(
+          course
+        )}'>
           +
         </button>
       </li>
@@ -82,6 +84,35 @@ function updateCourses(courses) {
     .join("");
 
   $("#courses").html(courseList);
+
+  // Add click event listener for the add-to-calendar buttons
+  $(".add-to-calendar").on("click", function (event) {
+    const course = JSON.parse($(this).data("course"));
+    // TODO: remove this
+    // add current date at 1pm as the start date
+    course.start_date = new Date().setHours(13, 0, 0, 0);
+    course.end_date = new Date(course.start_date).setDate(14, 0, 0, 0);
+    addCourseToCalendar(course);
+  });
+}
+
+/**
+ * Adds a course to the calendar
+ * @param {Object} course - course object
+ */
+function addCourseToCalendar(course) {
+  const calendar = document.getElementById("calendar").getFullCalendar();
+
+  // Create an event object with course details
+  const event = {
+    title: `${course.crosslistings} - ${course.long_title}`,
+    start: course.start_date, // Replace with the actual start date of the course
+    end: course.end_date, // Replace with the actual end date of the course
+    allDay: true,
+  };
+
+  // Add the event to the calendar
+  calendar.addEvent(event);
 }
 
 /**
