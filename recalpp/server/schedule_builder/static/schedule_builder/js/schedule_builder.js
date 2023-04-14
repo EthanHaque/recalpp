@@ -5,7 +5,7 @@
  */
 function init() {
   $("#course-search").on("input", handleCourseSearch);
-  $("#major-search").on("input", handleMajorSearch); // TODO: change this to a dropdown or something simliar 
+  $("#major-search").on("input", handleMajorSearch); // TODO: change this to a dropdown or something simliar
 }
 
 $(document).ready(init);
@@ -64,12 +64,18 @@ function updateCourses(courses) {
   const courseList = courses
     .map(
       (course) => `
-      <li>
-        <a class="block border-l pl-4 -ml-px border-transparent hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300" href="">
-          ${course.crosslistings}
-          <br />
-          ${course.long_title}
-        </a>
+      <li class="group border-solid border-b flex items-center justify-between">
+        <div class="block w-11/12 h-max">
+          <div class="pl-4 ml-px w-full border-transparent text-slate-700 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-300 duration-75">
+            ${course.crosslistings}
+          </div>
+          <div class="pl-4 ml-px w-full border-transparent text-slate-700 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-300 duration-75">
+            ${course.long_title}
+          </div>
+        </div>
+        <button class="w-1/12 bg-indigo-500 text-white font-semibold text-xl rounded opacity-0 group-hover:opacity-100 transition-opacity duration-75">
+          +
+        </button>
       </li>
     `
     )
