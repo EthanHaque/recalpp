@@ -1,7 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
-  var calendarEl = document.getElementById("calendar");
+"use strict";
 
-  var calendar = new FullCalendar.Calendar(calendarEl, {
+$(document).ready(function () {
+  var calendarEl = $("#calendar");
+
+  var calendar = new FullCalendar.Calendar(calendarEl[0], {
     headerToolbar: false,
     initialView: "timeGridWeekdays",
     views: {
@@ -9,57 +11,18 @@ document.addEventListener("DOMContentLoaded", function () {
         type: "timeGrid",
         duration: { days: 5 },
       },
-      },
-      allDaySlot: false,
-      slotMinTime: "08:00:00",
-      slotMaxTime: "23:00:00",
-      dayHeaders: false,
+    },
+    allDaySlot: false,
+    slotMinTime: "08:00:00",
+    slotMaxTime: "23:00:00",
+    dayHeaders: false,
+    height: "auto",
 
     events: [
       {
         groupId: 999,
         title: "Repeating Event",
-        start: "2023-04-12T16:00:00",
-      },
-      {
-        groupId: 999,
-        title: "Repeating Event",
-        start: "2023-01-16T16:00:00",
-      },
-      {
-        title: "Conference",
-        start: "2023-01-11",
-        end: "2023-01-13",
-      },
-      {
-        title: "Meeting",
-        start: "2023-01-12T10:30:00",
-        end: "2023-01-12T12:30:00",
-      },
-      {
-        title: "Lunch",
-        start: "2023-01-12T12:00:00",
-      },
-      {
-        title: "Meeting",
-        start: "2023-01-12T14:30:00",
-      },
-      {
-        title: "Happy Hour",
-        start: "2023-01-12T17:30:00",
-      },
-      {
-        title: "Dinner",
-        start: "2023-01-12T20:00:00",
-      },
-      {
-        title: "Birthday Party",
-        start: "2023-01-13T07:00:00",
-      },
-      {
-        title: "Click for Google",
-        url: "http://google.com/",
-        start: "2023-01-28",
+        start: "T16:00:00",
       },
     ],
   });
