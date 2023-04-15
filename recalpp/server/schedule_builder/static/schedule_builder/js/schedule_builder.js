@@ -87,11 +87,7 @@ function updateCourses(courses) {
 
   // Add click event listener for the add-to-calendar buttons
   $(".add-to-calendar").on("click", function (event) {
-    const course = JSON.parse($(this).data("course"));
-    // TODO: remove this
-    // add current date at 1pm as the start date
-    course.start_date = new Date().setHours(13, 0, 0, 0);
-    course.end_date = new Date(course.start_date).setDate(14, 0, 0, 0);
+    const course = $(this).data().course;
     addCourseToCalendar(course);
   });
 }
@@ -101,14 +97,11 @@ function updateCourses(courses) {
  * @param {Object} course - course object
  */
 function addCourseToCalendar(course) {
-  const calendar = document.getElementById("calendar").getFullCalendar();
-
   // Create an event object with course details
   const event = {
     title: `${course.crosslistings} - ${course.long_title}`,
-    start: course.start_date, // Replace with the actual start date of the course
-    end: course.end_date, // Replace with the actual end date of the course
     allDay: true,
+    daysOfWeek: [1,2,3,4,5]
   };
 
   // Add the event to the calendar
@@ -118,7 +111,7 @@ function addCourseToCalendar(course) {
 /**
  * Displays degree progress data
  * @param {Object} data - degree progress data
- */
+ */ 
 function displayDegreeProgress(data) {
   const degreeProgressContainer = $("#degree-progress-content");
   let degreeProgressHtml = buildDegreeProgressHtml(data);
