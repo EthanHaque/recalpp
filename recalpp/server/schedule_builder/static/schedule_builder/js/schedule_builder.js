@@ -100,8 +100,8 @@ function addCourseToCalendar(course) {
   // Create an event object with course details
   const event = {
     title: `${course.crosslistings} - ${course.long_title}`,
-    allDay: true,
-    daysOfWeek: [1,2,3,4,5]
+    start: "2000-01-01T10:30:00",
+    end: "2000-01-01T12:30:00",
   };
 
   // Add the event to the calendar
