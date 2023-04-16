@@ -183,13 +183,20 @@ function buildSubReqHtml(subReq) {
 function buildReqOrSubReqHtml(data, titleClass, containerClass) {
   const contentHtml = buildContentHtml(data);
 
-  return `
+  if (data.name) {
+    return `
     <div class="${containerClass}">
       <h4 class="${titleClass}">${data.name}</h4>
-      <p>${data.explanation}</p>
       <ul>${contentHtml}</ul>
     </div>
   `;
+  }
+
+  return `
+  <div class="${containerClass}">
+    <ul>${contentHtml}</ul>
+  </div>
+`;
 }
 
 /**
@@ -212,5 +219,10 @@ function buildContentHtml(data) {
  * @return {string} - generated HTML
  */
 function buildCourseListHtml(courseList) {
-  return courseList.map((course) => `<li>${course}</li>`).join("");
+  if (typeof courseList[0] === 'string') {
+    return courseList.map((course) => `<li>${course}</li>`).join("");
+  }
+
+  return courseList.map((course) => `<li>${Object.keys(course)}</li>`).join("");
+
 }
