@@ -215,5 +215,10 @@ function buildContentHtml(data) {
  * @return {string} - generated HTML
  */
 function buildCourseListHtml(courseList) {
-  return courseList.map((course) => `<li>${course}</li>`).join("");
+  if (typeof courseList[0] === 'string') {
+    return courseList.map((course) => `<li>${course}</li>`).join("");
+  }
+
+  return courseList.map((course) => `<li>${Object.keys(course)}</li>`).join("");
+
 }
