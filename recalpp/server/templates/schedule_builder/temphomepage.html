@@ -5,6 +5,10 @@
 
 {% block title %}Recal++ - Home{%endblock %}
 
+{% block extrahead %}
+  <link rel="stylesheet" href="{% static 'schedule_builder/css/calendar.css' %}">
+{% endblock %}
+
 {% block content %}
 
 <!-- background image -->
@@ -64,7 +68,7 @@
   <div class="max-w-8xl mx-auto px-4 sm:px-6 md:px-8">
     <!-- courses side bar  -->
     <div
-      class="lg:block fixed z-20 inset-0 top-[2.8125rem] left-0 right-auto w-[max(250px,calc(15%+10rem))] pb-10 px-8 overflow-y-auto">
+      class="lg:block fixed z-20 inset-0 top-[2.8125rem] left-0 right-auto w-[max(220px,calc(25%))] pb-10 px-8 overflow-y-auto">
       <nav id="nav" class="lg:text-sm lg:leading-6 relative">
         <div class="sticky top-0 -ml-0.5 pointer-events-none">
           <div class="h-10"></div>
@@ -84,14 +88,13 @@
         <ul id="courses" class="h-full px-1 pt-3 pb-2 overflow-y-auto"></ul>
       </nav>
     </div>
-  </div>
-  
-  <!-- calendar -->
-   <div id='calendar' class="w-[calc(50%)]  mx-auto mt-0"></div>
 
-  <!-- degree progress sidebar -->
-  <div
-      class="lg:block fixed z-20 inset-0 top-[2.8125rem] right-0 left-auto w-[max(250px,calc(15%+10rem))] pb-10 px-8 overflow-y-auto">
+    <!-- calendar -->
+    <div id='calendar' class="w-[calc(50%)] mx-auto mt-0"></div>
+
+    <!-- degree progress sidebar -->
+    <div
+      class="lg:block fixed z-20 inset-0 top-[2.8125rem] right-0 left-auto w-[max(220px,calc(25%))] pb-10 px-8 overflow-y-auto">
       <nav id="nav" class="lg:text-sm lg:leading-6 relative">
         <div class="sticky top-0 -ml-0.5 pointer-events-none">
           <div class="h-10"></div>
@@ -118,7 +121,7 @@
 
 {% block extrascripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script src="{% static 'schedule_builder/js/schedule_builder.js' %}"></script>
-<script src="{% static 'schedule_builder/js/index.global.js' %}"></script>
 <script src="{% static 'schedule_builder/js/calendar.js' %}"></script>
+<script src="{% static 'schedule_builder/js/index.global.js' %}"></script>
+<script src="{% static 'schedule_builder/js/schedule_builder.js' %}"></script>
 {% endblock %}
