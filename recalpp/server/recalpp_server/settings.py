@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-s1k!ex=#14j4toh#gpf*wzto5$*&38!@dscl90s%aieyo+00s6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["recalpp-deployment.onrender.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["recalpp.onrender.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -51,14 +51,16 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
 ]
+
 
 ROOT_URLCONF = "recalpp_server.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'templates')],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -85,7 +87,9 @@ DATABASES = {}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+        ),
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
