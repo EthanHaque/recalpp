@@ -147,12 +147,16 @@ function displayDegreeProgress(data) {
  * @return {string} - generated HTML
  */
 function buildDegreeProgressHtml(data) {
-  const reqListHtml = data.req_list.map(buildReqHtml).join("");
-  return `
-    <h2 class="text-xl font-semibold mb-4">${data.type}: ${data.name} (${data.code})</h2>
-    <h3 class="text-lg font-semibold mb-2">Requirements:</h3>
-    ${reqListHtml}
-  `;
+  if (data && data.req_list) {
+    const reqListHtml = data.req_list.map(buildReqHtml).join("");
+    return `
+      <h2 class="text-xl font-semibold mb-4">${data.type}: ${data.name} (${data.code})</h2>
+      <h3 class="text-lg font-semibold mb-2">Requirements:</h3>
+      ${reqListHtml}
+    `;
+  }
+  
+  return ``;
 }
 
 /**
