@@ -56,7 +56,8 @@ MIDDLEWARE = [
 
 CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
 CSP_DEFAULT_SRC  = ("'self'",)
-CSP_SCRIPT_SRC   = ("'self'", "https://ajax.googleapis.com")
+CSP_SCRIPT_SRC   = ("'self'", "https://ajax.googleapis.com",)
+CSP_SCRIPT_SRC_ELEM = ("'self'", "https://ajax.googleapis.com", "https://recalpp-deployment.onrender.com",)
 CSP_STYLE_SRC    = ("'self'",)
 CSP_FONT_SRC     = ("'self'",)
 
