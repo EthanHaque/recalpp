@@ -38,7 +38,7 @@ def get_major_information(major_code: str) -> dict:
     else:
         logging.error("Failed to retrieve major information.")
         return None
-    
+
 
 def get_courses_information(search) -> dict:
     """Get the course information from the database.
@@ -47,7 +47,7 @@ def get_courses_information(search) -> dict:
     ----------
     search : str
         The search string.
-    
+
     Returns
     -------
     course_info : dict
@@ -55,7 +55,7 @@ def get_courses_information(search) -> dict:
     """
     if search == "":
         return []
-    
+
     logging.info("Getting course info for %s", search)
     search = search.upper()
     # search = search.replace(" ", "")
@@ -72,4 +72,3 @@ def get_courses_information(search) -> dict:
     else:
         logging.error("Failed to retrieve course information.")
         return None
-    
