@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # "django.middleware.security.SecurityMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -51,8 +51,14 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # "csp.middleware.CSPMiddleware",
+    "csp.middleware.CSPMiddleware",
 ]
+
+CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
+CSP_DEFAULT_SRC  = ("'self'",)
+CSP_SCRIPT_SRC   = ("'self'",)
+CSP_STYLE_SRC    = ("'self'",)
+CSP_FONT_SRC     = ("'self'",)
 
 
 ROOT_URLCONF = "recalpp_server.urls"
@@ -60,7 +66,7 @@ ROOT_URLCONF = "recalpp_server.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -87,9 +93,7 @@ DATABASES = {}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": (
-            "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
-        ),
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
