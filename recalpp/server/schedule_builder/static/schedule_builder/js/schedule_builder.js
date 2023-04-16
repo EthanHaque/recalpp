@@ -92,6 +92,24 @@ function updateCourses(courses) {
   });
 }
 
+// TODO flesh this out.
+function getCourseTimes(course) {
+  const days = ["M", "T", "W", "R", "F"];
+  const times = [];
+
+  for (let i = 0; i < 5; i++) {
+    const day = days[i];
+    const time = course[day];
+
+    if (time) {
+      times.push(`${day} ${time}`);
+    }
+  }
+
+  return times;
+
+}
+
 /**
  * Adds a course to the calendar
  * @param {Object} course - course object
