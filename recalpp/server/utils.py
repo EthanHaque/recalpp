@@ -65,7 +65,7 @@ def get_departmental_data_collection() -> pymongo.collection.Collection:
     # db_name = os.getenv("DB_NAME") # TODO add this as a env variable
     db_collection = db_handle["recalpp"]["departmental_data"]
 
-    if db_collection:
+    if db_collection is not None:
         logging.info("Successfully retrieved departmental data collection.")
     else:
         logging.error("Failed to retrieve departmental data collection.")
@@ -84,7 +84,7 @@ def get_courses_data_collection() -> pymongo.collection.Collection:
     # db_name = os.getenv("DB_NAME") # TODO add this as a env variable
     db_collection = db_handle["recalpp"]["courses"]
 
-    if db_collection:
+    if db_collection is not None:
         logging.info("Successfully retrieved courses data collection.")
     else:
         logging.error("Failed to retrieve courses data collection.")
