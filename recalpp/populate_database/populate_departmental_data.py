@@ -4,14 +4,12 @@
 """Populate the database with departmental data."""
 
 
-import urllib.parse
 import logging
 import os
 
 import pymongo
-import pymongo.errors as mongo_err
 import yaml
-import recalpp.utils as utils
+import recalpp.server.utils as utils
 
 
 def setup_logging():
