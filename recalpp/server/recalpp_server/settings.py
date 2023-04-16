@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-s1k!ex=#14j4toh#gpf*wzto5$*&38!@dscl90s%aieyo+00s6"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["recalpp.onrender.com", "localhost", "127.0.0.1"]
 
