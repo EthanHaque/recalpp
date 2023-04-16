@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 
 {% load static %} 
-
 <html>
   <head>
     <title>{% block title %}{% endblock %}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csp-nonce" content="{{ request.csp_nonce }}">
+    <!-- Add csp -->
+    <meta http-equiv="Content-Security-Policy" content="script-src https://ajax.googleapis.com https://recalpp-deployment.onrender.com 'self' 'nonce-{{ request.csp_nonce }}'; style-src 'self' 'unsafe-inline' 'nonce-{{ request.csp_nonce }}'; img-src 'self'" />
     <!-- Add any additional CSS or JS files here -->
     <!-- TODO: rebuild with only desired tailwind classes. -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/compiled.css' %}" nonce="{{ request.csp_nonce }}">
     {% block extrahead %}{% endblock %}
   </head>
 

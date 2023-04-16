@@ -5,7 +5,9 @@
 
 import logging
 import requests
-import yaml
+import base64
+
+import recalpp.utils as utils
 
 
 def get_course_data() -> list[dict]:
@@ -16,36 +18,9 @@ def get_course_data() -> list[dict]:
     course_data : list[dict]
         The course data.
     """
-    url = "https://api.princeton.edu/registrar/course-offerings/classes/1234"
-    payload = {}
-
-    with open("config/application.yaml", "r", encoding="UTF-8") as stream:
-        try:
-            config = yaml.safe_load(stream)
-            headers = config["registrar_api"]["headers"]
-        except yaml.YAMLError as exc:
-            logging.error(exc)
-            raise exc
-        # TODO go back through and add final except blocks.
-
-    try:
-        logging.info("Getting course data from the registrar API...")
-        response = requests.request(
-            "GET", url, headers=headers, data=payload, timeout=10
-        )
-        response.raise_for_status()
-        logging.info("Successfully got course data from the registrar API.")
-    except requests.exceptions.HTTPError as exc:
-        logging.error(exc)
-        raise exc
-    except requests.exceptions.Timeout as exc:
-        logging.error(exc)
-        raise exc
-    except Exception as exc:
-        logging.error(exc)
-        raise exc
-    
-    return response.json()["classes"]["class"]
+    url = "https://api.princeton.edu:443/student-app/1.0.2/courses/courses"
+    token = utils.generate_studnet_app_access_token()
+    print(token)
 
 
 def setup_logging():
