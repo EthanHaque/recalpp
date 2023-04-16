@@ -92,7 +92,11 @@ function updateCourses(courses) {
   });
 }
 
-// TODO flesh this out.
+/**
+ * Initializes the calendar
+ * @param {Array} course - course object
+ * @return {Object} - Times the course is offered
+ */
 function getCourseTimes(course) {
   const days = ["M", "T", "W", "R", "F"];
   const times = [];
