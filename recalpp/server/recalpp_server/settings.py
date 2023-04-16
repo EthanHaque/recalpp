@@ -54,15 +54,6 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
 ]
 
-# CSP_IMG_SRC = ("'self'",)
-# CSP_STYLE_SRC = ("'self'", "'unsafe-inline'",)
-# CSP_SCRIPT_SRC = (
-#     "'self'",
-#     "https://ajax.googleapis.com",
-#     "https://recalpp-deployment.onrender.com",
-# )
-
-
 
 ROOT_URLCONF = "recalpp_server.urls"
 
