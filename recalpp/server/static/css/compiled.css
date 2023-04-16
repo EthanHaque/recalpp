@@ -688,8 +688,8 @@ video {
   width: calc(50%);
 }
 
-.w-\[max\(250px\2c calc\(15\%\+10rem\)\)\] {
-  width: max(250px,calc(15% + 10rem));
+.w-\[max\(220px\2c calc\(25\%\)\)\] {
+  width: max(220px,calc(25%));
 }
 
 .w-full {
