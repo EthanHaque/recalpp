@@ -230,5 +230,6 @@ def main():
                 departmental_data_collection, departmental_data
             )
 
+
 if __name__ == "__main__":
     main()
