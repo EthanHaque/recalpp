@@ -98,6 +98,7 @@ function updateCourses(courses) {
  */
 function addCourseToCalendar(course) {
   // Create an event object with course details
+  
   const event = {
     title: `${course.crosslistings} - ${course.long_title}`,
     start: "2000-01-01T10:30:00",
