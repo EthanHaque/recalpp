@@ -54,12 +54,14 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
 ]
 
-CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
-CSP_DEFAULT_SRC  = ("'self'",)
-CSP_SCRIPT_SRC   = ("'self'", "https://ajax.googleapis.com",)
-CSP_SCRIPT_SRC_ELEM = ("'self'", "https://ajax.googleapis.com", "https://recalpp-deployment.onrender.com",)
-CSP_STYLE_SRC    = ("'self'",)
-CSP_FONT_SRC     = ("'self'",)
+CSP_IMG_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'",)
+CSP_SCRIPT_SRC = (
+    "'self'",
+    "https://ajax.googleapis.com",
+    "https://recalpp-deployment.onrender.com",
+)
+
 
 
 ROOT_URLCONF = "recalpp_server.urls"
@@ -67,7 +69,7 @@ ROOT_URLCONF = "recalpp_server.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'templates')],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -94,7 +96,9 @@ DATABASES = {}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+        ),
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",

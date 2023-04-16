@@ -6,6 +6,7 @@
     <title>{% block title %}{% endblock %}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csp-nonce" content="{{ request.csp_nonce }}">
     <!-- Add any additional CSS or JS files here -->
     <!-- TODO: rebuild with only desired tailwind classes. -->
     <link rel="stylesheet" href="{% static 'css/compiled.css' %}" nonce="{{ request.csp_nonce }}">
