@@ -3,9 +3,8 @@
 
 """Populate the database with course data."""
 
-import requests
 import logging
-import yaml
+import requests
 
 import pymongo
 import pymongo.errors as mongo_err

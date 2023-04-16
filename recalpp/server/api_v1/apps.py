@@ -1,5 +1,4 @@
 from django.apps import AppConfig
-import utils
 
 
 class ApiV1Config(AppConfig):
