@@ -57,6 +57,7 @@ MIDDLEWARE = [
 CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
 CSP_DEFAULT_SRC  = ("'self'",)
 CSP_SCRIPT_SRC   = ("'self'",)
+CSP_SCRIPT_SRC_ELEM = ("'self'",)
 CSP_STYLE_SRC    = ("'self'",)
 CSP_FONT_SRC     = ("'self'",)
 
