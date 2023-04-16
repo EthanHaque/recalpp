@@ -51,14 +51,24 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
 ]
+
+CSP_DEFAULT_SRC = (
+    "'self'",
+    "https://cdn.tailwindcss.com",
+    "https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js",
+    "https://recalpp-deployment.onrender.com/static/schedule_builder/js/schedule_builder.js",
+    "https://recalpp-deployment.onrender.com/static/schedule_builder/js/index.global.js",
+    "https://recalpp-deployment.onrender.com/static/schedule_builder/js/calendar.js",
+)
 
 ROOT_URLCONF = "recalpp_server.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'templates')],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -85,7 +95,9 @@ DATABASES = {}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+        ),
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
