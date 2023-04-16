@@ -56,8 +56,7 @@ MIDDLEWARE = [
 
 CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
 CSP_DEFAULT_SRC  = ("'self'",)
-CSP_SCRIPT_SRC   = ("'self'",)
-CSP_SCRIPT_SRC_ELEM = ("'self'",)
+CSP_SCRIPT_SRC   = ("'self'", "'https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js'")
 CSP_STYLE_SRC    = ("'self'",)
 CSP_FONT_SRC     = ("'self'",)
 
