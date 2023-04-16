@@ -54,14 +54,11 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
 ]
 
-CSP_DEFAULT_SRC = (
-    "'self'",
-    "https://cdn.tailwindcss.com",
-    "https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js",
-    "https://recalpp-deployment.onrender.com/static/schedule_builder/js/schedule_builder.js",
-    "https://recalpp-deployment.onrender.com/static/schedule_builder/js/index.global.js",
-    "https://recalpp-deployment.onrender.com/static/schedule_builder/js/calendar.js",
-)
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'",)
+CSP_IMG_SRC = ("'self'",)
+CSP_FONT_SRC = ("'self'",)
 
 ROOT_URLCONF = "recalpp_server.urls"
 
