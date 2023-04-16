@@ -13,8 +13,8 @@ import pymongo
 import pymongo.errors as mongo_err
 import dotenv
 
-# dotenv.load_dotenv("./config/.env")
-dotenv.load_dotenv("/etc/secrets/.env") # For production
+dotenv.load_dotenv("./config/.env")
+# dotenv.load_dotenv("/etc/secrets/.env") # For production
 
 def get_db_handle() -> pymongo.MongoClient:
     """Connect to the database via client.
