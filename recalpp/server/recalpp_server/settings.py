@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-s1k!ex=#14j4toh#gpf*wzto5$*&38!@dscl90s%aieyo+00s6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["recalpp-deployment.onrender.com"]
+ALLOWED_HOSTS = ["recalpp-deployment.onrender.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
