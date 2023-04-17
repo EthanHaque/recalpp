@@ -36,7 +36,7 @@ def get_course_data():
 
     logger.info("Getting course data for each term and course code.")
     for term in terms:
-        course_data.extend(get_course_data_for_term(term, department_codes, token))
+        get_course_data_for_term(term, department_codes, token)
 
     return course_data
 
