@@ -127,8 +127,7 @@ def setup_logging():
 def main():
     """Main function."""
     setup_logging()
-    courses = get_course_data()
-    print(courses)
+    get_course_data()
 
 
 if __name__ == "__main__":
