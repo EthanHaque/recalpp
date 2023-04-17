@@ -61,7 +61,6 @@ def get_course_data_for_term(term: str, department_codes: list[str], token: str)
         The course data.
     """
     logger = logging.getLogger(__name__)
-    course_data = []
     logger.info("Getting course data for term %s.", term)
     term_and_course_data = []
     for department_code in department_codes:
@@ -70,7 +69,6 @@ def get_course_data_for_term(term: str, department_codes: list[str], token: str)
     
     return term_and_course_data
 
-    return course_data
 
 def get_course_data_for_term_and_course_code(term: str, course_code: str, token: str) -> list[dict]:
     """Get the course data for a term and course code from the registrar API.
