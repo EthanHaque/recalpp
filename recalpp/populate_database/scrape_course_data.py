@@ -127,7 +127,8 @@ def setup_logging():
 def main():
     """Main function."""
     setup_logging()
-    get_course_data()
+    courses = get_course_data_multithreaded()
+    print(courses)
 
 
 if __name__ == "__main__":
