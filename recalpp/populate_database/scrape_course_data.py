@@ -110,8 +110,9 @@ def get_course_data_for_term_and_course_code(term: str, course_code: str, token:
     logger.info("Getting course data for term %s and course code %s.", term, course_code)
     response = requests.get(url, headers=headers, timeout=10)
     response.raise_for_status()
-    json = response.json()
-    return json
+    semester_subject_data = response.json()
+    # TODO parse this data for the desired fields
+    # TODO write to dateabase
 
 
 def setup_logging():
