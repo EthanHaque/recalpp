@@ -5,7 +5,6 @@
 
 import logging
 import json
-
 import pymongo.collation as collation
 
 import utils
@@ -40,7 +39,7 @@ def get_major_information(major_code: str) -> dict:
         return None
 
 
-def get_courses_information(search) -> dict:
+def get_courses_information(search: str) -> dict:
     """Get the course information from the database.
 
     Parameters
@@ -61,7 +60,7 @@ def get_courses_information(search) -> dict:
     # search = search.replace(" ", "")
 
     db_collection = utils.get_courses_data_collection()
-    # TODO improve this. Consider using collations and removing the regex
+    # TODO improve this. Consider using collations + removing the regex
     query = {"crosslistings": {"$regex": search}}
     projection = {"_id": 0}
     course_info = db_collection.find(query, projection)
