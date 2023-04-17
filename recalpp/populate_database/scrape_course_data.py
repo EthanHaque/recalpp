@@ -38,7 +38,7 @@ def get_course_data() -> list[dict]:
     
     course_data = []
 
-    logging.info("Getting course data for each term and course code.")
+    logger.info("Getting course data for each term and course code.")
     for term in terms:
         course_data.extend(get_course_data_for_term(term, department_codes, token))
 
@@ -95,6 +95,20 @@ def get_course_data_for_term_and_course_code(term: str, course_code: str, token:
         The course data.
     """
     logger = logging.getLogger(__name__)
+    try:
+        int(term)
+    except ValueError:
+        logger.error("Term %s is not a valid term.", term)
+        return []
+    if len(term) != 4:
+        logger.error("Term %s is not a valid term.", term)
+        return []
+    
+    if len(course_code) != 3:
+        logger.error("Course code %s is not a valid course code.", course_code)
+        return []
+    course_code = course_code.upper()
+    
     url = f"https://api.princeton.edu:443/student-app/1.0.2/courses/courses?term={term}&subject={course_code}&fmt=json"
     headers = {
         "accept": "application/json",
@@ -103,7 +117,8 @@ def get_course_data_for_term_and_course_code(term: str, course_code: str, token:
     logger.info("Getting course data for term %s and course code %s.", term, course_code)
     response = requests.get(url, headers=headers, timeout=10)
     response.raise_for_status()
-    return response.json()
+    json = response.json()
+    return json
 
 
 def setup_logging():
