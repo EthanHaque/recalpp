@@ -68,7 +68,7 @@ def get_course_data_for_term(term: str, department_codes: list[str], token: str)
 
     return course_data
 
-def get_course_data_for_term_and_course_code(term: str, course_code: str, token: str):
+def get_course_data_for_term_and_course_code(term: str, course_code: str, token: str) -> list[dict]:
     """Get the course data for a term and course code from the registrar API.
 
     Parameters
