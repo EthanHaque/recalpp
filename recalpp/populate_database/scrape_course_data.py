@@ -108,7 +108,7 @@ def get_course_data_for_term_and_course_code(term: str, course_code: str, token:
         "Authorization": f"Bearer {token}",
     }
     logger.info("Getting course data for term %s and course code %s.", term, course_code)
-    response = requests.get(url, headers=headers, timeout=10)
+    response = requests.get(url, headers=headers, timeout=60)
     response.raise_for_status()
     json = response.json()
     # TODO parse the json 
