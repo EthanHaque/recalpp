@@ -4,9 +4,6 @@
 """Populate the database with course data."""
 
 import logging
-import requests
-import base64
-
 import os
 import sys
 
@@ -17,26 +14,51 @@ server_directory = os.path.join(parent_directory, 'server')
 sys.path.append(server_directory)
 import requests
 
+import concurrent.futures as cfutures
+
 import utils
 
+def get_course_data_multithreaded() -> list[dict]:
+    """Get the course data from the registrar API using multithreading.
+    
+    This function reads the terms and department codes from the respective files, and then
+    fetches course data for each term and department code concurrentl.
+    
+    Returns
+    -------
+    course_data : list[dict]
+        The course data fetched from the API.
 
-# TODO rename this method to reflet writing to databsae.
-def get_course_data():
-    """Get the course data from the registrar API."""
+    Notes
+    -----
+    - Any errors that occur during the execution of tasks are logged, and the function continues to process the remaining tasks.
+    """
     logger = logging.getLogger(__name__)
     token = utils.generate_studnet_app_access_token()
-    
+
     with open(os.path.join(current_directory, "terms"), "r", encoding="UTF-8") as stream:
         terms = stream.read().splitlines()
 
     with open(os.path.join(current_directory, "department_codes"), "r", encoding="UTF-8") as stream:
         department_codes = stream.read().splitlines()
-    
+
     course_data = []
 
-    logger.info("Getting course data for each term and course code.")
-    for term in terms:
-        get_course_data_for_term(term, department_codes, token)
+    logger.info("Getting course data for each term and course code concurrently.")
+    # Max workers is 2 because the registrar API is extermely unstable and will return 500 errors if too many requests are made at once.
+    with cfutures.ThreadPoolExecutor(max_workers=2) as executor: 
+        futures = []
+        for term in terms:
+            for department_code in department_codes:
+                future = executor.submit(get_course_data_for_term_and_course_code, term, department_code, token)
+                futures.append(future)
+
+        for future in cfutures.as_completed(futures):
+            try:
+                result = future.result()
+                course_data.append(result)
+            except Exception as exc:
+                logger.error("Error occurred while fetching course data: %s", exc)
 
     return course_data
 
