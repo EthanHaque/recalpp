@@ -64,9 +64,8 @@ def get_course_data_for_term(term: str, department_codes: list[str], token: str)
     course_data = []
     logger.info("Getting course data for term %s.", term)
     for department_code in department_codes:
-        term_and_course_data = get_course_data_for_term_and_course_code(term, department_code, token)
-        course_data.extend(term_and_course_data)
-    
+        get_course_data_for_term_and_course_code(term, department_code, token)
+
     return course_data
 
 
