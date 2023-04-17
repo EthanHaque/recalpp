@@ -10,7 +10,18 @@ import pymongo
 import pymongo.errors as mongo_err
 
 import scrape_course_data
-import recalpp.utils as utils
+
+import os
+import sys
+
+current_directory = os.path.dirname(os.path.abspath(__file__))
+parent_directory = os.path.dirname(current_directory)
+server_directory = os.path.join(parent_directory, 'server')
+
+sys.path.append(server_directory)
+
+import utils
+
 
 
 def setup_logging():
