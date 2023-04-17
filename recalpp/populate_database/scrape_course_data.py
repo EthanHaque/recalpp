@@ -20,14 +20,9 @@ import requests
 import utils
 
 
-def get_course_data() -> list[dict]:
-    """Get the course data from the registrar API.
-
-    Returns
-    -------
-    course_data : list[dict]
-        The course data.
-    """
+# TODO rename this method to reflet writing to databsae.
+def get_course_data():
+    """Get the course data from the registrar API."""
     logger = logging.getLogger(__name__)
     token = utils.generate_studnet_app_access_token()
     
