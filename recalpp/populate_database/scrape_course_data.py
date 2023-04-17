@@ -15,6 +15,7 @@ parent_directory = os.path.dirname(current_directory)
 server_directory = os.path.join(parent_directory, 'server')
 
 sys.path.append(server_directory)
+import requests
 
 import utils
 
