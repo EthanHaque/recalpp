@@ -101,7 +101,7 @@ def get_course_details(term: dict, course_id:str, token: str) -> dict:
         "Authorization": f"Bearer {token}",
     }
 
-    response = requests.get(url, headers=headers, timeout=5)
+    response = requests.get(url, headers=headers, timeout=10)
     response.raise_for_status()
     course_details = response.json()
 
