@@ -5,8 +5,8 @@
 
 import logging
 import bson
-import utils
 import re
+import utils
 
 def get_major_information(major_code: str) -> dict:
     """Get the major information from the database.
@@ -79,3 +79,38 @@ def get_courses_information(search: str) -> list:
     else:
         logging.error("Failed to retrieve course information.")
         return None
+
+
+def handle_query(query: str, parsed_search: dict):
+    distributions = set(("CD", "EC", "EM",
+                         "HA", "LA", "SA", 
+                         "QCR", "SEL","SEN"))
+
+    query = query.upper()
+    if query in distributions:
+        parsed_search["distributions"].append(query)
+        return
+
+    if query.isalpha():
+        parsed_search["course_code"] = query
+        return
+
+    if query.isnumeric():
+        parsed_search["course_number"] = query
+        return
+
+    parsed_search["course_code"] = re.sub(r"[A-Z]{3}", "", query)
+    parsed_search["course_number"] = re.sub(r"\d{1,3}", "", query)
+    return
+
+
+def parse_search(search: str):
+    queries = search.split()
+
+    parsed_search = {"distributions": [],
+                     "course_number": "", "course_code": ""}
+
+    for query in queries:
+        handle_query(query, parsed_search)
+
+    return parsed_search
