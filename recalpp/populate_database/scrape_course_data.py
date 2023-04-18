@@ -7,6 +7,7 @@ import logging
 import os
 import sys
 import json
+import time
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
@@ -21,10 +22,7 @@ import utils
 
 
 def get_course_data() -> list[dict]:
-    """Get the course data from the registrar API using multithreading.
-
-    This function reads the terms and department codes from the respective files, and then
-    fetches course data for each term and department code concurrentl.
+    """Get the course data from the registrar API.
 
     Returns
     -------
@@ -74,6 +72,89 @@ def get_course_data() -> list[dict]:
 
     course_data = remove_course_duplicates(course_data)
     return course_data
+
+
+def get_course_details(term: dict, course_id:str, token: str) -> dict:
+    """Get the course details from the registrar API.
+
+    Parameters
+    ----------
+    term : dict
+        The term.
+
+    course_id : str
+        The course id.
+
+    token : str
+        The access token for the student app.
+
+    Returns
+    -------
+    course_details : dict
+        The course details.
+    """
+    logger = logging.getLogger(__name__)
+    logger.info("Getting course details for course %s.", course_id)
+
+    url = f"https://api.princeton.edu:443/student-app/1.0.2/courses/details?term={term}&course_id={course_id}&fmt=json"
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {token}",
+    }
+
+    response = requests.get(url, headers=headers, timeout=60)
+    response.raise_for_status()
+    course_details = response.json()
+
+    return course_details
+
+def get_all_course_details(courses: list[dict]) -> list[dict]:
+    """Get details for all courses using multithreading and update course dictionaries.
+
+    Parameters
+    ----------
+    courses : List[dict]
+        A list of course dictionaries containing general information about each course.
+
+    Returns
+    -------
+    updated_courses : List[dict]
+        A list of updated course dictionaries containing course details for all courses.
+    """
+    logger = logging.getLogger(__name__)
+    token = utils.generate_studnet_app_access_token()
+
+    logger.info("Getting course details for all courses concurrently.")
+    
+    futures_to_courses = {}
+
+    with cfutures.ThreadPoolExecutor(max_workers=2) as executor:
+        for course in courses:
+            term = course["term_code"]
+            course_id = course["course_id"]
+            future = executor.submit(get_course_details, term, course_id, token)
+            futures_to_courses[future] = course
+
+        for future in cfutures.as_completed(futures_to_courses):
+            course = futures_to_courses[future]
+            try:
+                course_details = future.result()
+                course_details = course_details["course_details"]["course_detail"]
+
+                crosslistings_string = course_details.get("crosslistings", "")
+                if crosslistings_string is None:
+                    crosslistings_string = ""
+                distribution_area = course_details.get("distribution_area_short", "")
+                if distribution_area is None:
+                    distribution_area = ""
+
+                course["crosslistings_string"] = crosslistings_string
+                course["distribution_areas"] = distribution_area
+            except Exception as exe:
+                logger.error("Error occurred while fetching course details for course %s: %s", course["course_id"], exe)
+
+    return courses
+
 
 
 def remove_course_duplicates(course_data: list[dict]) -> list[dict]:
@@ -230,6 +311,7 @@ def main():
     """Main function."""
     setup_logging()
     courses = get_course_data()
+    courses = get_all_course_details(courses)
     print(courses)
 
 
