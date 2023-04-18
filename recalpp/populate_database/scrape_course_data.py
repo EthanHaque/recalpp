@@ -72,6 +72,8 @@ def get_course_data() -> list[dict]:
             except Exception as exc:
                 logger.error("Error occurred while fetching course data: %s", exc)
 
+    # lazily remove duplicates
+    course_data = list(set(course_data))
     return course_data
 
 
