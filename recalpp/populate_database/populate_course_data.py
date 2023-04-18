@@ -69,6 +69,8 @@ def main():
     courses_collection = database["courses"]
 
     courses = scrape_course_data.get_course_data()
+    courses = scrape_course_data.get_all_course_details(courses)
+
     # start transaction
     with client.start_session() as session:
         with session.start_transaction():
