@@ -10,7 +10,7 @@ import json
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
-server_directory = os.path.join(parent_directory, 'server')
+server_directory = os.path.join(parent_directory, "server")
 
 sys.path.append(server_directory)
 import requests
@@ -19,12 +19,13 @@ import concurrent.futures as cfutures
 
 import utils
 
+
 def get_course_data_multithreaded() -> list[dict]:
     """Get the course data from the registrar API using multithreading.
-    
+
     This function reads the terms and department codes from the respective files, and then
     fetches course data for each term and department code concurrentl.
-    
+
     Returns
     -------
     course_data : list[dict]
@@ -37,22 +38,31 @@ def get_course_data_multithreaded() -> list[dict]:
     logger = logging.getLogger(__name__)
     token = utils.generate_studnet_app_access_token()
 
-    with open(os.path.join(current_directory, "terms"), "r", encoding="UTF-8") as stream:
+    with open(
+        os.path.join(current_directory, "terms"), "r", encoding="UTF-8"
+    ) as stream:
         terms = stream.read().splitlines()
 
-    with open(os.path.join(current_directory, "department_codes"), "r", encoding="UTF-8") as stream:
+    with open(
+        os.path.join(current_directory, "department_codes"), "r", encoding="UTF-8"
+    ) as stream:
         department_codes = stream.read().splitlines()
 
     course_data = []
 
     logger.info("Getting course data for each term and course code concurrently.")
     # Max workers is 2 because the registrar API is extermely unstable and will return 500 errors if too many requests are made at once.
-    # TODO: does not gracefully exit on keyboard interrupt. 
-    with cfutures.ThreadPoolExecutor(max_workers=2) as executor: 
+    # TODO: does not gracefully exit on keyboard interrupt.
+    with cfutures.ThreadPoolExecutor(max_workers=2) as executor:
         futures = []
         for term in terms:
             for department_code in department_codes:
-                future = executor.submit(get_course_data_for_term_and_course_code, term, department_code, token)
+                future = executor.submit(
+                    get_course_data_for_term_and_course_code,
+                    term,
+                    department_code,
+                    token,
+                )
                 futures.append(future)
 
         for future in cfutures.as_completed(futures):
@@ -65,7 +75,9 @@ def get_course_data_multithreaded() -> list[dict]:
     return course_data
 
 
-def get_course_data_for_term(term: str, department_codes: list[str], token: str) -> list[dict]:
+def get_course_data_for_term(
+    term: str, department_codes: list[str], token: str
+) -> list[dict]:
     """Get the course data for a term from the registrar API.
 
     Parameters
@@ -78,7 +90,7 @@ def get_course_data_for_term(term: str, department_codes: list[str], token: str)
 
     token : str
         The access token for the student app.
-    
+
     Returns
     -------
     course_data : list[dict]
@@ -88,13 +100,17 @@ def get_course_data_for_term(term: str, department_codes: list[str], token: str)
     logger.info("Getting course data for term %s.", term)
     term_and_course_data = []
     for department_code in department_codes:
-        course_data = get_course_data_for_term_and_course_code(term, department_code, token)
+        course_data = get_course_data_for_term_and_course_code(
+            term, department_code, token
+        )
         term_and_course_data.extend(course_data)
-    
+
     return term_and_course_data
 
 
-def get_course_data_for_term_and_course_code(term: str, course_code: str, token: str) -> list[dict]:
+def get_course_data_for_term_and_course_code(
+    term: str, course_code: str, token: str
+) -> list[dict]:
     """Get the course data for a term and course code from the registrar API.
 
     Parameters
@@ -107,7 +123,7 @@ def get_course_data_for_term_and_course_code(term: str, course_code: str, token:
 
     token : str
         The access token for the student app.
-    
+
     Returns
     -------
     course_data : list[dict]
@@ -122,18 +138,20 @@ def get_course_data_for_term_and_course_code(term: str, course_code: str, token:
     if len(term) != 4:
         logger.error("Term %s is not a valid term.", term)
         return []
-    
+
     if len(course_code) != 3:
         logger.error("Course code %s is not a valid course code.", course_code)
         return []
     course_code = course_code.upper()
-    
+
     url = f"https://api.princeton.edu:443/student-app/1.0.2/courses/courses?term={term}&subject={course_code}&fmt=json"
     headers = {
         "accept": "application/json",
         "Authorization": f"Bearer {token}",
     }
-    logger.info("Getting course data for term %s and course code %s.", term, course_code)
+    logger.info(
+        "Getting course data for term %s and course code %s.", term, course_code
+    )
     response = requests.get(url, headers=headers, timeout=60)
     response.raise_for_status()
 
@@ -141,7 +159,6 @@ def get_course_data_for_term_and_course_code(term: str, course_code: str, token:
     flattened_courses = flatten_courses(courses_data)
 
     return flattened_courses
-
 
 
 def flatten_courses(data: dict) -> list[dict]:
@@ -178,6 +195,7 @@ def flatten_courses(data: dict) -> list[dict]:
                     flattened_courses.append(flattened_course)
 
     return flattened_courses
+
 
 def setup_logging():
     """Setup logging."""
