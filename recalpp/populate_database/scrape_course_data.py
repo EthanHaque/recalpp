@@ -46,6 +46,7 @@ def get_course_data_multithreaded() -> list[dict]:
 
     logger.info("Getting course data for each term and course code concurrently.")
     # Max workers is 2 because the registrar API is extermely unstable and will return 500 errors if too many requests are made at once.
+    # TODO: does not gracefully exit on keyboard interrupt. 
     with cfutures.ThreadPoolExecutor(max_workers=2) as executor: 
         futures = []
         for term in terms:
