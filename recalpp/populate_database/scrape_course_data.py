@@ -20,7 +20,7 @@ import concurrent.futures as cfutures
 import utils
 
 
-def get_course_data_multithreaded() -> list[dict]:
+def get_course_data() -> list[dict]:
     """Get the course data from the registrar API using multithreading.
 
     This function reads the terms and department codes from the respective files, and then
@@ -209,7 +209,7 @@ def setup_logging():
 def main():
     """Main function."""
     setup_logging()
-    courses = get_course_data_multithreaded()
+    courses = get_course_data()
     print(courses)
 
 
