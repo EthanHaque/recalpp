@@ -4,8 +4,31 @@
 """Interface to the database to retrieve data for the API."""
 
 import logging
+import re
 from pymongo.collation import Collation
 import utils
+
+DISTRIBUTIONS = set(("CD", "EC", "EM",  "HA", 
+                     "LA", "SA", "QCR", "SEL", 
+                     "SEN"))
+
+def handle_query(query: str, parsed_search: dict):
+    query = query.upper()
+    if query in DISTRIBUTIONS:
+        parsed_search["distributions"].append(query)
+        return
+
+    if query.isalpha():
+        parsed_search["course_code"] = query
+        return
+
+    if query.isnumeric():
+        parsed_search["course_number"] = query
+        return
+
+    parsed_search["course_code"] = re.sub(r"[A-Z]{3}", "", query)
+    parsed_search["course_number"] = re.sub(r"\d{1,3}", "", query)
+    return
 
 def get_major_information(major_code: str) -> dict:
     """Get the major information from the database.
