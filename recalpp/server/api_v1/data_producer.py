@@ -4,11 +4,8 @@
 """Interface to the database to retrieve data for the API."""
 
 import logging
-import json
-import pymongo.collation as collation
-
+from pymongo.collation import Collation
 import utils
-
 
 def get_major_information(major_code: str) -> dict:
     """Get the major information from the database.
@@ -39,7 +36,7 @@ def get_major_information(major_code: str) -> dict:
         return None
 
 
-def get_courses_information(search: str) -> dict:
+def get_courses_information(search: str) -> list:
     """Get the course information from the database.
 
     Parameters
@@ -49,17 +46,20 @@ def get_courses_information(search: str) -> dict:
 
     Returns
     -------
-    course_info : dict
+    course_info : list
         The course information.
     """
-    if search == "":
+    if search is None:
         return []
+
+    db_collection = utils.get_courses_data_collection()
 
     logging.info("Getting course info for %s", search)
     search = search.upper()
-    # search = search.replace(" ", "")
 
-    db_collection = utils.get_courses_data_collection()
+    if search == "*":
+        return list(db_collection.find({}, {"_id": 0}))
+
     # TODO improve this. Consider using collations + removing the regex
     query = {"crosslistings": {"$regex": search}}
     projection = {"_id": 0}
