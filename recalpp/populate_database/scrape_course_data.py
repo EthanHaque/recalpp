@@ -110,6 +110,44 @@ def get_course_details(term: dict, course_id:str, token: str) -> dict:
 
     return course_details
 
+def get_all_course_details(courses: list[dict]) -> list[dict]:
+    """Get details for all courses using multithreading and update course dictionaries.
+
+    Parameters
+    ----------
+    courses : List[dict]
+        A list of course dictionaries containing general information about each course.
+
+    Returns
+    -------
+    updated_courses : List[dict]
+        A list of updated course dictionaries containing course details for all courses.
+    """
+    logger = logging.getLogger(__name__)
+    token = utils.generate_studnet_app_access_token()
+
+    logger.info("Getting course details for all courses using multithreading and updating course dictionaries.")
+    
+    futures_to_courses = {}
+
+    with cfutures.ThreadPoolExecutor(max_workers=4) as executor:
+        for course in courses:
+            term = course["term_code"]
+            course_id = course["course_id"]
+            future = executor.submit(get_course_details, term, course_id, token)
+            futures_to_courses[future] = course
+
+        for future in cfutures.as_completed(futures_to_courses):
+            course = futures_to_courses[future]
+            try:
+                course_details = future.result()
+                course.update(course_details)
+            except Exception as exe:
+                logger.error("Error occurred while fetching course details for course %s: %s", course["course_id"], exe)
+
+    return courses
+
+
 
 def remove_course_duplicates(course_data: list[dict]) -> list[dict]:
     """Remove duplicate courses from the course data.
