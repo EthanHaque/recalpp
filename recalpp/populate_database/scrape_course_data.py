@@ -76,6 +76,41 @@ def get_course_data() -> list[dict]:
     return course_data
 
 
+def get_course_details(term: dict, course_id:str, token: str) -> dict:
+    """Get the course details from the registrar API.
+
+    Parameters
+    ----------
+    term : dict
+        The term.
+
+    course_id : str
+        The course id.
+
+    token : str
+        The access token for the student app.
+
+    Returns
+    -------
+    course_details : dict
+        The course details.
+    """
+    logger = logging.getLogger(__name__)
+    logger.info("Getting course details for course %s.", course_id)
+
+    url = f"https://api.princeton.edu:443/student-app/1.0.2/courses/details?term={term}&course_id={course_id}&fmt=json"
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {token}",
+    }
+
+    response = requests.get(url, headers=headers, timeout=5)
+    response.raise_for_status()
+    course_details = response.json()
+
+    return course_details
+
+
 def remove_course_duplicates(course_data: list[dict]) -> list[dict]:
     """Remove duplicate courses from the course data.
 
