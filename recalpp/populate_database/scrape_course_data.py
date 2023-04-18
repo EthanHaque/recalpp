@@ -7,6 +7,7 @@ import logging
 import os
 import sys
 import json
+import time
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
@@ -101,7 +102,7 @@ def get_course_details(term: dict, course_id:str, token: str) -> dict:
         "Authorization": f"Bearer {token}",
     }
 
-    response = requests.get(url, headers=headers, timeout=10)
+    response = requests.get(url, headers=headers, timeout=60)
     response.raise_for_status()
     course_details = response.json()
 
@@ -127,7 +128,7 @@ def get_all_course_details(courses: list[dict]) -> list[dict]:
     
     futures_to_courses = {}
 
-    with cfutures.ThreadPoolExecutor(max_workers=4) as executor:
+    with cfutures.ThreadPoolExecutor(max_workers=2) as executor:
         for course in courses:
             term = course["term_code"]
             course_id = course["course_id"]
