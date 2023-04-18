@@ -72,8 +72,26 @@ def get_course_data() -> list[dict]:
             except Exception as exc:
                 logger.error("Error occurred while fetching course data: %s", exc)
 
-    # lazily remove duplicates
-    course_data = list(set(course_data))
+    course_data = remove_course_duplicates(course_data)
+    return course_data
+
+
+def remove_course_duplicates(course_data: list[dict]) -> list[dict]:
+    """Remove duplicate courses from the course data.
+
+    Parameters
+    ----------
+    course_data : list[dict]
+        The course data.
+
+    Returns
+    -------
+    course_data : list[dict]
+        The course data with duplicates removed.
+    """
+    logger = logging.getLogger(__name__)
+    logger.info("Removing duplicates from course data.")
+    course_data = list({course["guid"]: course for course in course_data}.values())
     return course_data
 
 
