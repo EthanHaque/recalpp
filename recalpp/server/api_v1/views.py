@@ -1,36 +1,9 @@
-from django.shortcuts import render
+from django.http import HttpRequest
 from django.http import JsonResponse
-
 from . import data_producer
 
 
-def get_routes(request):  # TODO get rid of this function
-
-    routes = [
-        {
-            "Endpoint": "/course/",
-            "method": "GET",
-            "body": None,
-            "description": "Returns an array of courses",
-        },
-        {
-            "Endpoint": "/course/id",
-            "method": "GET",
-            "body": None,
-            "description": "Returns a single course object",
-        },
-        {
-            "Endpoint": "/majors",
-            "method": "GET",
-            "body": None,
-            "description": "Returns dependency information about a major",
-        },
-    ]
-
-    return JsonResponse(routes, safe=False)
-
-
-def get_major_information(request):
+def get_major_information(request: HttpRequest):
     """Get the major information from the database.
 
     Parameters
@@ -50,7 +23,7 @@ def get_major_information(request):
     return JsonResponse(major_info, safe=False)
 
 
-def get_courses_information(request):
+def get_courses_information(request: HttpRequest):
     """Get the courses information from the database.
 
     Parameters
