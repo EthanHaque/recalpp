@@ -123,7 +123,7 @@ def get_all_course_details(courses: list[dict]) -> list[dict]:
     logger = logging.getLogger(__name__)
     token = utils.generate_studnet_app_access_token()
 
-    logger.info("Getting course details for all courses using multithreading and updating course dictionaries.")
+    logger.info("Getting course details for all courses concurrently.")
     
     futures_to_courses = {}
 
@@ -139,7 +139,7 @@ def get_all_course_details(courses: list[dict]) -> list[dict]:
             try:
                 course_details = future.result()
                 course_details = course_details["course_details"]["course_detail"]
-                
+
                 crosslistings_string = course_details.get("crosslistings", "")
                 if crosslistings_string is None:
                     crosslistings_string = ""
