@@ -21,10 +21,7 @@ import utils
 
 
 def get_course_data() -> list[dict]:
-    """Get the course data from the registrar API using multithreading.
-
-    This function reads the terms and department codes from the respective files, and then
-    fetches course data for each term and department code concurrentl.
+    """Get the course data from the registrar API.
 
     Returns
     -------
