@@ -138,7 +138,11 @@ def get_all_course_details(courses: list[dict]) -> list[dict]:
             course = futures_to_courses[future]
             try:
                 course_details = future.result()
-                course.update(course_details)
+                course_details = course_details["course_details"]["course_detail"]
+                crosslistings_string = course_details.get("crosslistings", "")
+                distribution_area = course_details.get("distribution_area_short", "")
+                course["crosslistings_string"] = crosslistings_string
+                course["distribution_areas"] = distribution_area
             except Exception as exe:
                 logger.error("Error occurred while fetching course details for course %s: %s", course["course_id"], exe)
 
