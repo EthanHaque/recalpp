@@ -6,6 +6,7 @@
 import logging
 import os
 import sys
+import json
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
@@ -57,10 +58,10 @@ def get_course_data_multithreaded() -> list[dict]:
         for future in cfutures.as_completed(futures):
             try:
                 result = future.result()
-                course_data.append(result)
+                course_data.extend(result)
             except Exception as exc:
                 logger.error("Error occurred while fetching course data: %s", exc)
-                
+
     return course_data
 
 
@@ -88,7 +89,7 @@ def get_course_data_for_term(term: str, department_codes: list[str], token: str)
     term_and_course_data = []
     for department_code in department_codes:
         course_data = get_course_data_for_term_and_course_code(term, department_code, token)
-        term_and_course_data.append(course_data)
+        term_and_course_data.extend(course_data)
     
     return term_and_course_data
 
@@ -135,10 +136,48 @@ def get_course_data_for_term_and_course_code(term: str, course_code: str, token:
     logger.info("Getting course data for term %s and course code %s.", term, course_code)
     response = requests.get(url, headers=headers, timeout=60)
     response.raise_for_status()
-    json = response.json()
-    # TODO parse the json 
-    return json
 
+    courses_data = response.json()
+    flattened_courses = flatten_courses(courses_data)
+
+    return flattened_courses
+
+
+
+def flatten_courses(data: dict) -> list[dict]:
+    """
+    Flatten the course data and add term and code to each course.
+
+    This function iterates through the terms and subjects in the provided data,
+    and then creates a flattened list of courses with the term and code added
+    to each course as new fields.
+
+    Parameters
+    ----------
+    data : dict
+        The course data as provided by the API.
+
+    Returns
+    -------
+    flattened_courses : list[dict]
+        A list of flattened course data with term and code added to each course.
+    """
+    flattened_courses = []
+
+    for term in data["term"]:
+        if term["code"]:
+            term_code = term["code"]
+            term_name = term["name"]
+            for subject in term["subjects"]:
+                subject_code = subject["code"]
+                for course in subject["courses"]:
+                    flattened_course = course.copy()
+                    flattened_course["term_code"] = term_code
+                    flattened_course["term_name"] = term_name
+                    flattened_course["subject_code"] = subject_code
+                    flattened_courses.append(flattened_course)
+
+    return flattened_courses
 
 def setup_logging():
     """Setup logging."""
