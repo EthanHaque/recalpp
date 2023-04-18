@@ -30,6 +30,18 @@ def handle_query(query: str, parsed_search: dict):
     parsed_search["course_number"] = re.sub(r"\d{1,3}", "", query)
     return
 
+
+def parse_search(search: str):
+    queries = search.split()
+
+    parsed_search = {"distributions": [],
+                     "course_number": "", "course_code": ""}
+
+    for query in queries:
+        handle_query(query, parsed_search)
+
+    return parsed_search
+
 def get_major_information(major_code: str) -> dict:
     """Get the major information from the database.
 
