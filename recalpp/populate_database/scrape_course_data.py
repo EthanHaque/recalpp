@@ -60,7 +60,7 @@ def get_course_data_multithreaded() -> list[dict]:
                 course_data.append(result)
             except Exception as exc:
                 logger.error("Error occurred while fetching course data: %s", exc)
-
+                
     return course_data
 
 
