@@ -139,8 +139,14 @@ def get_all_course_details(courses: list[dict]) -> list[dict]:
             try:
                 course_details = future.result()
                 course_details = course_details["course_details"]["course_detail"]
+                
                 crosslistings_string = course_details.get("crosslistings", "")
+                if crosslistings_string is None:
+                    crosslistings_string = ""
                 distribution_area = course_details.get("distribution_area_short", "")
+                if distribution_area is None:
+                    distribution_area = ""
+
                 course["crosslistings_string"] = crosslistings_string
                 course["distribution_areas"] = distribution_area
             except Exception as exe:
@@ -304,6 +310,7 @@ def main():
     """Main function."""
     setup_logging()
     courses = get_course_data()
+    courses = get_all_course_details(courses)
     print(courses)
 
 
