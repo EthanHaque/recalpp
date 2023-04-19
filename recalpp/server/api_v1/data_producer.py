@@ -59,7 +59,6 @@ def get_courses_information(search: str) -> list:
     # TODO: This is terrible, make this update automatically and make it
     # TODO: a constant somewhere outside of this function
     current_term = "1242"
-    search = re.escape(search)
 
     logging.info("Getting course info for %s", search)
 
@@ -111,8 +110,8 @@ def handle_query(query: str, parsed_search: dict):
         parsed_search["course_number"] = query
         return
 
-    parsed_search["subject_code"] = re.sub(r"[A-Z]{3}", "", query)
-    parsed_search["course_number"] = re.sub(r"\d{1,3}", "", query)
+    parsed_search["course_number"] = re.sub(r"[A-Z]{3}", "", query)
+    parsed_search["subject_code"] = re.sub(r"\d{1,3}", "", query)
     return
 
 
@@ -142,6 +141,14 @@ def parse_search(search: str) -> dict:
     return parsed_search
 
 def build_db_query(parsed_search: dict) -> dict:
+    query = {"term_code": "1242"}
     
-    query = {{"term_code": current_term}}
+    print(parsed_search)
+
+    if parsed_search["subject_code"]:
+        query["subject_code"] = parsed_search["subject_code"]
+
+    if parsed_search["course_number"] != "":
+        query["catalog_number"] = { "$regex" : parsed_search["course_number"]}
+
     return query
