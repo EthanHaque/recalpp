@@ -142,9 +142,7 @@ def parse_search(search: str) -> dict:
 
 def build_db_query(parsed_search: dict) -> dict:
     query = {"term_code": "1242"}
-
-    print(parsed_search)
-
+    
     if parsed_search["subject_code"]:
         query["subject_code"] = parsed_search["subject_code"]
 
