@@ -142,13 +142,18 @@ def parse_search(search: str) -> dict:
 
 def build_db_query(parsed_search: dict) -> dict:
     query = {"term_code": "1242"}
-    
+
     print(parsed_search)
 
     if parsed_search["subject_code"]:
         query["subject_code"] = parsed_search["subject_code"]
 
-    if parsed_search["course_number"] != "":
+    if parsed_search["course_number"]:
         query["catalog_number"] = { "$regex" : parsed_search["course_number"]}
+
+    # TODO Support Multiple Distribution Searches
+    if parsed_search["distributions"]:
+        for dist in parsed_search["distributions"]:
+            query["distribution_areas"] = { "$regex" : dist}
 
     return query
