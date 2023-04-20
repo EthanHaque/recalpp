@@ -4,7 +4,6 @@
 """Interface to the database to retrieve data for the API."""
 
 import logging
-import bson
 import re
 import utils
 
@@ -21,6 +20,7 @@ def get_major_information(major_code: str) -> dict:
     major_info : dict
         The major information.
     """
+
     major_code = major_code.upper()
     logging.info("Getting major information for %s.", major_code)
     db_collection = utils.get_departmental_data_collection()
@@ -50,6 +50,7 @@ def get_courses_information(search: str) -> list:
     course_info : list
         The course information.
     """
+
     if search is None:
         return []
 
@@ -58,17 +59,16 @@ def get_courses_information(search: str) -> list:
     # TODO: This is terrible, make this update automatically and make it
     # TODO: a constant somewhere outside of this function
     current_term = "1242"
-    search = re.escape(search)
 
     logging.info("Getting course info for %s", search)
 
     if search == "*":
         return list(db_collection.find({"term_code": current_term}))
-    
-    query = {
-        "term_code": current_term, 
-        "crosslistings_string": {"$regex": search, "$options": "i"}
-        }
+
+    search = parse_search(search)
+
+    query = build_db_query(search)
+
     projection = {"_id": 0} # Don't return the _id field
     # TODO improve this. Consider using collations + removing the regex
     course_info = db_collection.find(query, projection)
@@ -82,6 +82,17 @@ def get_courses_information(search: str) -> list:
 
 
 def handle_query(query: str, parsed_search: dict):
+    """
+    parses the search string for desired query tokens
+
+    Parameters
+    ----------
+    query : str
+        a query that must be mapped to token
+    parsed_search : str
+        dictionary containing 
+    """
+
     distributions = set(("CD", "EC", "EM",
                          "HA", "LA", "SA", 
                          "QCR", "SEL","SEN"))
@@ -92,25 +103,55 @@ def handle_query(query: str, parsed_search: dict):
         return
 
     if query.isalpha():
-        parsed_search["course_code"] = query
+        parsed_search["subject_code"] = query
         return
 
     if query.isnumeric():
         parsed_search["course_number"] = query
         return
 
-    parsed_search["course_code"] = re.sub(r"[A-Z]{3}", "", query)
-    parsed_search["course_number"] = re.sub(r"\d{1,3}", "", query)
+    parsed_search["course_number"] = re.sub(r"[A-Z]{3}", "", query)
+    parsed_search["subject_code"] = re.sub(r"\d{1,3}", "", query)
     return
 
 
-def parse_search(search: str):
+def parse_search(search: str) -> dict:
+    """
+    parses the search string for desired query tokens
+
+    Parameters
+    ----------
+    search : str
+        search string for a course
+
+    Returns
+    -------
+    dict
+        a dictionary with desired tokens
+    """
+
     queries = search.split()
 
     parsed_search = {"distributions": [],
-                     "course_number": "", "course_code": ""}
+                     "course_number": "", "subject_code": ""}
 
     for query in queries:
         handle_query(query, parsed_search)
 
     return parsed_search
+
+def build_db_query(parsed_search: dict) -> dict:
+    query = {"term_code": "1242"}
+    
+    if parsed_search["subject_code"]:
+        query["subject_code"] = parsed_search["subject_code"]
+
+    if parsed_search["course_number"]:
+        query["catalog_number"] = { "$regex" : parsed_search["course_number"]}
+
+    # TODO Support Multiple Distribution Searches
+    if parsed_search["distributions"]:
+        for dist in parsed_search["distributions"]:
+            query["distribution_areas"] = { "$regex" : dist}
+
+    return query
