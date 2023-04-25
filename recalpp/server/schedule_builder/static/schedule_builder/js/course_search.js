@@ -16,9 +16,7 @@ $(document).ready(init);
  * @param {Event} event - input event object
  */
 function handleCourseSearch(event) {
-   const search = $(event.target).val().trim();
-
-  //  search = getSearch(event)
+   const search = parseSearch($(event.target).val().trim());
 
    if (search.length) {
      getCourses(search, updateCourses);
@@ -30,15 +28,35 @@ function handleCourseSearch(event) {
 
 /**
  * Retrieves and Parses Course Search String
- * @param {Event} event - input event object
  * @param {string} search - search string to be parsed
  */
-// function getSearch(event) {
-//    // retrieve and process (trim) input string
-//    const search = $(event.target).val().trim();
-//    search.split(" ")
+function parseSearch(search) {
+  // Tokenizing the search string
+  let tokens = search.split(" ")
 
-// }
+  tokens.forEach(identifyQuery)
+
+}
+
+/**
+ * Classifies Query 
+ * @param {string} query - query to be classified
+ */
+function classifyQuery(query) {
+  distributions = new Set(["CD", "EC", "EM",
+                           "HA", "LA", "SA", 
+                           "QCR", "SEL","SEN"])
+
+  subjectCodes = new Set([])
+  
+  if (distributions.has(query)) {
+
+  }
+  
+  if (subjectCodes.has(query)) {
+
+  }
+}
 
  /**
  * Retrieves courses from the API based on the search query
