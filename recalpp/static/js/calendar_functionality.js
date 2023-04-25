@@ -51,6 +51,22 @@ function processMeeting(meeting, meetings) {
 }
 
 /**
+ * Generates a random light color in the form of a string, e.g. "#A0C0F0"
+ * @returns {string} - randomly generated light color
+ */
+function getRandomLightColor() {
+  const hue = Math.floor(Math.random() * 360); // 0-359 degrees
+  const saturation = Math.floor(Math.random() * 25) + 75; // 75-100%
+  const lightness = Math.floor(Math.random() * 25) + 75; // 75-100%
+  const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  return color;
+}
+
+
+// Dictionary object to store the color for each course
+const courseColors = {};
+
+/**
  * Adds a course to the calendar
  * @param {Object} course - course object
  */
@@ -70,15 +86,22 @@ async function addCourseToCalendar(course) {
     return baseDate.toISOString().slice(0, 10);
   }
 
+
+  // Dictionary object to store the color for each course
+  const courseColors = {};
+
   meetings.forEach((meet) => {
     const date = getIsoDateForDay(meet.day);
     const start = `${date}T${meet.startTime}`;
     const end = `${date}T${meet.endTime}`;
+    const color = getRandomLightColor();
 
     const event = {
       title: `${meet.class_subject_code}${meet.class_catalog_number} ${meet.class_section}`,
       start: start,
       end: end,
+      color: color,
+      textColor: '#333'
     };
 
     // Add the event to the calendar
