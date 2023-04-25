@@ -241,7 +241,7 @@ class Command(BaseCommand):
             "accept": "application/json",
             "Authorization": f"Bearer {token}",
         }
-        response = session.get(course_url, headers=headers, timeout=120)
+        response = session.get(course_url, headers=headers, timeout=300)
         
         if response.status_code == 200:
             data = json.loads(response.text)
@@ -276,7 +276,7 @@ class Command(BaseCommand):
             "accept": "application/json",
             "Authorization": f"Bearer {token}",
         }
-        response = session.get(course_details_url, headers=headers, timeout=120)
+        response = session.get(course_details_url, headers=headers, timeout=300)
 
         if response.status_code == 200:
             course_details = json.loads(response.text)
