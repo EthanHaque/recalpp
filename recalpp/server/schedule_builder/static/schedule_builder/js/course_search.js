@@ -1,6 +1,6 @@
-"use strict";
+import {addCourseToCalendar} from './calendar_functionality.js';
 
-import { addCourseToCalendar } from './calendar_functionality.js';
+"use strict";
 
 /**
  * Initializes Course Search Event Listener
@@ -16,8 +16,9 @@ $(document).ready(init);
  * @param {Event} event - input event object
  */
 function handleCourseSearch(event) {
-   // retrieve and process (trim) input string
    const search = $(event.target).val().trim();
+
+  //  search = getSearch(event)
 
    if (search.length) {
      getCourses(search, updateCourses);
@@ -26,6 +27,18 @@ function handleCourseSearch(event) {
    }
 
  }
+
+/**
+ * Retrieves and Parses Course Search String
+ * @param {Event} event - input event object
+ * @param {string} search - search string to be parsed
+ */
+// function getSearch(event) {
+//    // retrieve and process (trim) input string
+//    const search = $(event.target).val().trim();
+//    search.split(" ")
+
+// }
 
  /**
  * Retrieves courses from the API based on the search query
