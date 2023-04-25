@@ -16,8 +16,9 @@ $(document).ready(init);
  * @param {Event} event - input event object
  */
 function handleCourseSearch(event) {
-   const search = parseSearch($(event.target).val().trim());
+   //  const search = parseSearch($(event.target).val().trim());
 
+   const search = $(event.target).val().trim();
    if (search.length) {
      getCourses(search, updateCourses);
    } else {
@@ -26,37 +27,46 @@ function handleCourseSearch(event) {
 
  }
 
-/**
- * Retrieves and Parses Course Search String
- * @param {string} search - search string to be parsed
- */
-function parseSearch(search) {
-  // Tokenizing the search string
-  let tokens = search.split(" ")
+// /**
+//  * Retrieves and Parses Course Search String
+//  * @param {string} search - search string to be parsed
+//  */
+// function parseSearch(search) {
+//   // Tokenizing the search string
+//   let tokens = search.split(" ")
 
-  tokens.forEach(identifyQuery)
+//   queries = {"distributions": [],
+//   "courseNumber": "", "subjectCode": ""}
+//   for (const query of tokens) {
+//     classifyQuery(query, queries)
+//   }
 
-}
+// }
 
-/**
- * Classifies Query 
- * @param {string} query - query to be classified
- */
-function classifyQuery(query) {
-  distributions = new Set(["CD", "EC", "EM",
-                           "HA", "LA", "SA", 
-                           "QCR", "SEL","SEN"])
+// /**
+//  * Classifies Query 
+//  * @param {string} query - query to be classified
+//  */
+// function classifyQuery(query, queries) {
+//   distributions = new Set(["CD", "EC", "EM",
+//                            "HA", "LA", "SA", 
+//                            "QCR", "SEL","SEN"])
 
-  subjectCodes = new Set([])
+//   subjectCodes = new Set([])
   
-  if (distributions.has(query)) {
-
-  }
+//   query = query.toUpperCase()
+//   if (distributions.has(query)) {
+//     queries['distributions'].push(query)
+//     return
+//   }
   
-  if (subjectCodes.has(query)) {
+//   if (subjectCodes.has(query)) {
+//     queries['subjectCode'] = query
+//     return
+//   }
 
-  }
-}
+//   if (query)
+// }
 
  /**
  * Retrieves courses from the API based on the search query
