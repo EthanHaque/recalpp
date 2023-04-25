@@ -1,9 +1,0 @@
-<<<<<<< HEAD
-application.yaml
-=======
-# Ignore everything in this directory
-*
-# Except this file
-!.gitignore
-!.env_example
->>>>>>> 7421514d3675f60343f455e0f8a86b3ac787f021
