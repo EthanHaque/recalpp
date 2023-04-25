@@ -121,7 +121,8 @@
 
 {% block extrascripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js" nonce="{{ request.csp_nonce }}"></script>
-<script src="{% static 'schedule_builder/js/course_search.js' %} " nonce="{{ request.csp_nonce }}"></script>
+<script src="{% static 'schedule_builder/js/course_search.js' %} " type="module" nonce="{{ request.csp_nonce }}"></script>
+<script src="{% static 'schedule_builder/js/calendar_functionality.js' %}" type="module" nonce="{{ request.csp_nonce }}"></script>
 <script src="{% static 'schedule_builder/js/degree_progress.js' %} " nonce="{{ request.csp_nonce }}"></script>
 <script src="{% static 'schedule_builder/js/index.global.js' %}" nonce="{{ request.csp_nonce }}"></script>
 <script src="{% static 'schedule_builder/js/calendar.js' %}" nonce="{{ request.csp_nonce }}"></script>
