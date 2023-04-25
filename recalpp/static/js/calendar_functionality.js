@@ -94,7 +94,11 @@ async function addCourseToCalendar(course) {
     const date = getIsoDateForDay(meet.day);
     const start = `${date}T${meet.startTime}`;
     const end = `${date}T${meet.endTime}`;
-    const color = getRandomLightColor();
+
+    // Generate a new color or use an existing one for this course
+    const courseKey = `${course.subject}${course.catalog_number}`;
+    const color = courseColors[courseKey] || getRandomLightColor();
+    courseColors[courseKey] = color;
 
     const event = {
       title: `${meet.class_subject_code}${meet.class_catalog_number} ${meet.class_section}`,
