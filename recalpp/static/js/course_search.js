@@ -25,9 +25,8 @@ $(document).ready(init);
  * @param {Event} event - input event object
  */
 function handleCourseSearch(event) {
-  //  const search = parseSearch($(event.target).val().trim());
-
   const search = $(event.target).val().trim();
+  
   if (search.length) {
     getCourses(search, updateCourses);
   } else {
@@ -35,7 +34,7 @@ function handleCourseSearch(event) {
   }
 }
 
-function parse_search_string(search) {
+function parseSearchString(search) {
   search = search.toLowerCase();
 
   const distributionsRegex = new RegExp(
@@ -101,7 +100,7 @@ function parse_search_string(search) {
  * @param {function} callback - function to process the data
  */
 function getCourses(search, callback) {
-  const parsedSearch = parse_search_string(search);
+  const parsedSearch = parseSearchString(search);
   const query = {
     term_code: currentTerm,
   };
