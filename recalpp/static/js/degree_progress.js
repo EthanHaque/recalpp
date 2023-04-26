@@ -47,17 +47,26 @@ function displayDegreeProgress(data) {
  * @param {Object} data - degree progress data
  * @return {string} - generated HTML
  */
-function buildDegreeProgressHtml(data) {
+function buildDegreeProgressHtml(data, metrics) {
+  let html = ``;
+
   if (data && data.req_list) {
     const reqListHtml = data.req_list.map(buildReqHtml).join("");
-    return `
+    html +=  `
        <h2 class="text-xl font-semibold mb-4">${data.type}: ${data.name} (${data.code})</h2>
        <h3 class="text-lg font-semibold mb-2">Requirements:</h3>
        ${reqListHtml}
      `;
   }
 
-  return ``;
+  html += `<p>Number of Courses Taken: ${metrics.courseCount}</p>
+       <p>Number of LAs: ${metrics.LAs}</p><br>
+       <p>Number of SAs: ${metrics.SAs}</p><br>
+       <p>Number of HAs: ${metrics.HAs}</p><br>
+       <p>Number of ECs: ${metrics.ECs}</p><br>
+       <p>Number of EMs: ${metrics.EMs}</p>`
+
+  return html;
 }
 
 /**

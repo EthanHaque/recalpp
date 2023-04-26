@@ -10,11 +10,11 @@ function init() {
   });
 
   $.getJSON("/api/v1/subject_codes", function (data) {
-    window.subjectCodes = data.subject_codes;
+    window.subjectCodes = new Set(data.subject_codes);
   });
 
   $.getJSON("/api/v1/distributions", function (data) {
-    window.distributions = data.distributions;
+    window.distributions = new Set(data.distributions);
   });
 }
 
@@ -25,9 +25,8 @@ $(document).ready(init);
  * @param {Event} event - input event object
  */
 function handleCourseSearch(event) {
-  //  const search = parseSearch($(event.target).val().trim());
-
   const search = $(event.target).val().trim();
+  
   if (search.length) {
     getCourses(search, updateCourses);
   } else {
@@ -35,73 +34,75 @@ function handleCourseSearch(event) {
   }
 }
 
-function parse_search_string(search) {
-  search = search.toLowerCase();
+/**
+ * Retrieves and Parses Course Search String
+ * @param {string} search - search string to be parsed
+ */
+function parseSearchString(search) {
+  // Tokenizing the search string
+  let tokens = search.split(" ");
 
-  const distributionsRegex = new RegExp(
-    `\\b(${distributions.join("|")})\\b`,
-    "gi"
-  );
-  const subjectCodesRegex = new RegExp(
-    `\\b(${subjectCodes.join("|")})\\b`,
-    "gi"
-  );
-  const courseNumberRegex = new RegExp(`\\b([0-9]{1,3})\\b`, "gi");
-  const courseWithSubjectCodeRegex = new RegExp(
-    `\\b(${subjectCodes.join("|")})\\s*([0-9]{1,3})\\b`,
-    "gi"
-  );
-  const courseTitleRegex = new RegExp(`\\b([a-z]+)\\b`, "gi");
-
-  const dists = new Set(search.match(distributionsRegex));
-  const codes = new Set(search.match(subjectCodesRegex));
-  const courseNumber = new Set(search.match(courseNumberRegex));
-  const courseWithSubjectCode = new Set(
-    search.match(courseWithSubjectCodeRegex)
-  );
-  const courseTitles = new Set(search.match(courseTitleRegex));
-
-  // Iterate over the courseWithSubjectCode Set and extract code and course number
-  courseWithSubjectCode.forEach((entry) => {
-    const codeMatch = entry.match(/[a-z]+/);
-    const courseNumberMatch = entry.match(/\d{1,3}/);
-
-    if (codeMatch) {
-      codes.add(codeMatch[0]);
-    }
-
-    if (courseNumberMatch) {
-      courseNumber.add(courseNumberMatch[0]);
-    }
-  });
-
-  // remove the codes entries from the courseTitles Set
-  codes.forEach((code) => {
-    courseTitles.delete(code);
-  });
-
-  // remove the distributionsRegex entries from the courseTitles Set
-  dists.forEach((dist) => {
-    courseTitles.delete(dist);
-  });
-
+  // Initializing search queries object
   let parsedSearch = {
-    distributions: dists ? Array.from(dists) : [],
-    subjectCodes: codes ? Array.from(codes) : [],
-    courseNumbers: courseNumber ? Array.from(courseNumber) : [],
-    courseTitles: courseTitles ? Array.from(courseTitles) : [],
+    distributions: [],
+    courseNumbers: [],
+    subjectCodes: [],
+    titleTerms: [],
   };
+
+  // Classifying each token as a search query
+  for (const token of tokens) {
+    classifyQuery(token, parsedSearch);
+  }
 
   return parsedSearch;
 }
 
 /**
+ * Classifies Token and Updates parsedSearch Object
+ * @param {string} token - token to be classified
+ * @param {object} parsedSearch - object containing search
+ */
+function classifyQuery(token, parsedSearch) {
+  token = token.toUpperCase();
+
+  // Tests if Query is a Subject Code
+  if (subjectCodes.has(token)) {
+    parsedSearch["subjectCodes"].push(token);
+    return;
+  }
+
+  // Tests if Query is a Course Number
+  if (/^\d{1,3}/.test(token)) {
+    parsedSearch["courseNumbers"].push(token);
+    return;
+  }
+
+  // Tests if Query is a Distribution
+  if (distributions.has(token)) {
+    parsedSearch["distributions"].push(token);
+    return;
+  }
+
+  // Tests if Query is of form "COS333"
+  if (/^[A-Z]{3}/.test(token) && /\d{1,3}$/.test(token)) {
+    parsedSearch["subjectCodes"].push(token.match(/^[A-Z]{3}/)[0]);
+    parsedSearch["courseNumbers"].push(token.match(/\d{1,3}$/)[0]);
+    return;
+  }
+
+  // Query is likely a Title Term
+  parsedSearch["titleTerms"].push(token);
+}
+
+/**
  * Retrieves courses from the API based on the search query
- * @param {string} search - search query
+ * @param {string} search - input search query string
  * @param {function} callback - function to process the data
  */
 function getCourses(search, callback) {
-  const parsedSearch = parse_search_string(search);
+  const parsedSearch = parseSearchString(search);
+  
   const query = {
     term_code: currentTerm,
   };
@@ -114,8 +115,8 @@ function getCourses(search, callback) {
     query.subject_code = parsedSearch.subjectCodes.join(",");
   }
 
-  if (parsedSearch.courseTitles.length) {
-    query.title = parsedSearch.courseTitles.join(",");
+  if (parsedSearch.titleTerms.length) {
+    query.title = parsedSearch.titleTerms.join(",");
   }
 
   if (parsedSearch.distributions.length) {

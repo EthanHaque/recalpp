@@ -59,7 +59,7 @@ class Command(BaseCommand):
                     bytes(consumer_key + ":" + consumer_secret, "utf-8")
                 ).decode("utf-8")
             },
-            timeout=120
+            timeout=300
         )
         if req.status_code == 200:
             access_token = req.json()["access_token"]
