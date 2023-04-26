@@ -1,0 +1,7 @@
+services:
+  # A Docker web service
+  - type: web
+    name: recalpp
+    env: docker
+    buildCommand: docker compose -f production.yml build
+    startCommand: docker compose -f production.yml up 
