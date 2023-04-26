@@ -1,7 +1,0 @@
-# PostgreSQL
-# ------------------------------------------------------------------------------
-POSTGRES_HOST=dpg-ch4ds31n852hpi2dsi3g-a
-POSTGRES_PORT=5432
-POSTGRES_DB=recalpp_dk2o
-POSTGRES_USER=recalpp_db_user
-POSTGRES_PASSWORD=s7z3jjwp0DzrcpJvzFqSz0nbiHO8Klzm
