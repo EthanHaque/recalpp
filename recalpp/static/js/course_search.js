@@ -10,11 +10,11 @@ function init() {
   });
 
   $.getJSON("/api/v1/subject_codes", function (data) {
-    window.subjectCodes = data.subject_codes;
+    window.subjectCodes = new Set(data.subject_codes);
   });
 
   $.getJSON("/api/v1/distributions", function (data) {
-    window.distributions = data.distributions;
+    window.distributions = new Set(data.distributions);
   });
 }
 
@@ -43,10 +43,10 @@ function parseSearchString(search) {
   let tokens = search.split(" ");
 
   // Initializing search queries object
-  parsedSearch = {
+  let parsedSearch = {
     distributions: [],
-    courseNumber: [],
-    subjectCode: [],
+    courseNumbers: [],
+    subjectCodes: [],
     titleTerms: [],
   };
 
@@ -68,13 +68,13 @@ function classifyQuery(token, parsedSearch) {
 
   // Tests if Query is a Subject Code
   if (subjectCodes.has(token)) {
-    parsedSearch["subjectCode"].push(token);
+    parsedSearch["subjectCodes"].push(token);
     return;
   }
 
   // Tests if Query is a Course Number
   if (/^\d{1,3}/.test(token)) {
-    parsedSearch["courseNumber"].push(token);
+    parsedSearch["courseNumbers"].push(token);
     return;
   }
 
@@ -86,8 +86,8 @@ function classifyQuery(token, parsedSearch) {
 
   // Tests if Query is of form "COS333"
   if (/^[A-Z]{3}/.test(token) && /\d{1,3}$/.test(token)) {
-    parsedSearch["subjectCode"].push(token.match(/^[A-Z]{3}/)[0]);
-    parsedSearch["courseNumber"].push(token.match(/^\d{1,3}/)[0]);
+    parsedSearch["subjectCodes"].push(token.match(/^[A-Z]{3}/)[0]);
+    parsedSearch["courseNumbers"].push(token.match(/\d{1,3}$/)[0]);
     return;
   }
 
@@ -108,14 +108,14 @@ function getCourses(search, callback) {
   };
 
   if (parsedSearch.courseNumbers.length) {
-    query.catalog_number = parsedSearch.courseNumber.join(",");
+    query.catalog_number = parsedSearch.courseNumbers.join(",");
   }
 
   if (parsedSearch.subjectCodes.length) {
-    query.subject_code = parsedSearch.subjectCode.join(",");
+    query.subject_code = parsedSearch.subjectCodes.join(",");
   }
 
-  if (parsedSearch.courseTitles.length) {
+  if (parsedSearch.titleTerms.length) {
     query.title = parsedSearch.titleTerms.join(",");
   }
 
