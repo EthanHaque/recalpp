@@ -116,6 +116,8 @@ class Command(BaseCommand):
         max_workers = options["max_workers"]
 
         api_access_token = self.generate_student_app_access_token()
+        if api_access_token is None:
+            return
 
         terms = self.read_file(terms_file)
         department_codes = self.read_file(department_codes_file)

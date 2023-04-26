@@ -15,11 +15,27 @@ def merge(
     output_file: Path,
     files_to_merge: Sequence[Path],
 ) -> None:
+    # Read the contents of the output file and split it into lines
+    existing_content = output_file.read_text().splitlines()
+
+    # Extract the keys from the existing content
+    existing_keys = {line.split("=", 1)[0] for line in existing_content if "=" in line}
+
     merged_content = ""
+
     for merge_file in files_to_merge:
-        merged_content += merge_file.read_text()
-        merged_content += os.linesep
-    output_file.write_text(merged_content)
+        lines = merge_file.read_text().splitlines()
+        for line in lines:
+            if "=" in line:
+                key, _ = line.split("=", 1)
+                if key not in existing_keys:
+                    merged_content += line
+                    merged_content += os.linesep
+                    existing_keys.add(key)
+
+    # Append the merged content to the output file
+    with output_file.open("a") as f:
+        f.write(merged_content)
 
 
 if __name__ == "__main__":
