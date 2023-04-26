@@ -62,10 +62,6 @@ function getRandomLightColor() {
   return color;
 }
 
-
-// Dictionary object to store the color for each course
-const courseColors = {};
-
 /**
  * Adds a course to the calendar
  * @param {Object} course - course object
