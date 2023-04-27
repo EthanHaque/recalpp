@@ -92,28 +92,30 @@ async function addCourseToCalendar(course) {
   const courseKey = `${course.subject}${course.catalog_number}`;
   const color = courseColors[courseKey] || getRandomLightColor();
   courseColors[courseKey] = color;
+  for (let i = 0, len = meetings.length; i < len; i++) {
+    const { day, startTime, endTime, class_subject_code, class_catalog_number, class_section } = meetings[i];
 
-  meetings.forEach((meet) => {
-    const date = getIsoDateForDay(meet.day);
-    const start = `${date}T${meet.startTime}`;
-    const end = `${date}T${meet.endTime}`;
+    const date = getIsoDateForDay(day);
+    const start = `${date}T${startTime}`;
+    const end = `${date}T${endTime}`;
 
     const event = {
-      id: `${course.guid}-${meet.class_section}`,
-      title: `${meet.class_subject_code}${meet.class_catalog_number} ${meet.class_section}`,
+      id: `${course.guid}-${class_section}`,
+      title: `${class_subject_code}${class_catalog_number} ${class_section}`,
       start: start,
       end: end,
       color: color,
       textColor: "#333",
     };
 
-    // Add the event to the calendar
     calendar.addEvent(event);
     User.addCourseMeeting(course.guid, event);
 
-    // Remove the course from the list of available courses
-    $(`li[data-course='${JSON.stringify({ guid: course.guid })}']`).remove();
-  });
+    const listItem = document.querySelector(`li[data-course='${JSON.stringify({ guid: course.guid })}']`);
+    if (listItem) {
+      listItem.remove();
+    }
+  }
 }
 
 /**
