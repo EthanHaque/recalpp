@@ -3,19 +3,49 @@
 /**
  * Initializes Course Search Event Listener
  */
-function init() {
+async function init() {
   $("#course-search").on("input", handleCourseSearch);
-  $.getJSON("/api/v1/current_term", function (data) {
-    window.currentTerm = data.current_term;
+
+  // Wrap the $.getJSON() calls in a Promise
+  const currentTermPromise = new Promise((resolve, reject) => {
+    $.getJSON("/api/v1/current_term", function (data) {
+      resolve(data.current_term);
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      reject(new Error(`Error fetching current term: ${textStatus}`));
+    });
   });
 
-  $.getJSON("/api/v1/subject_codes", function (data) {
-    window.subjectCodes = new Set(data.subject_codes);
+  const subjectCodesPromise = new Promise((resolve, reject) => {
+    $.getJSON("/api/v1/subject_codes", function (data) {
+      resolve(new Set(data.subject_codes));
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      reject(new Error(`Error fetching subject codes: ${textStatus}`));
+    });
   });
 
-  $.getJSON("/api/v1/distributions", function (data) {
-    window.distributions = new Set(data.distributions);
+  const distributionsPromise = new Promise((resolve, reject) => {
+    $.getJSON("/api/v1/distributions", function (data) {
+      resolve(new Set(data.distributions));
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      reject(new Error(`Error fetching distributions: ${textStatus}`));
+    });
   });
+
+  // Use Promise.all to wait for all requests to complete
+  try {
+    const [currentTerm, subjectCodes, distributions] = await Promise.all([
+      currentTermPromise,
+      subjectCodesPromise,
+      distributionsPromise,
+    ]);
+
+    // Assign the fetched data to the global variables
+    window.currentTerm = currentTerm;
+    window.subjectCodes = subjectCodes;
+    window.distributions = distributions;
+  } catch (error) {
+    console.error(`Error initializing data: ${error}`);
+  }
 }
 
 $(document).ready(init);
