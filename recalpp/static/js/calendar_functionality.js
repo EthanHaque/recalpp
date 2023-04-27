@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Gets the meeting times for a course and returns an array of meeting objects
  * @param {Array} course - course object
