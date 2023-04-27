@@ -153,7 +153,7 @@ function updateCourses(courses) {
          <button class="w-1/12 bg-indigo-500 text-white font-semibold text-xl rounded opacity-0 group-hover:opacity-100 transition-opacity duration-75 add-to-calendar" data-course='${JSON.stringify(
            {
              catalog_number: course.catalog_number,
-             distribution: course.distribution_areas,
+             distribution_areas: course.distribution_areas,
              guid: course.guid,
              title: course.title,
              crosslistings_string: course.crosslistings_string,
