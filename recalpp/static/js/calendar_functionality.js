@@ -7,7 +7,7 @@
  */
 async function getMeetingTimes(course) {
   const meetings = [];
-
+  // TODO this takes a long time to render. Can we speed it up?
   await $.getJSON(`/api/v1/course_meetings/${course.guid}/`).then((data) => {
     data.forEach((meeting) => {
       processMeeting(meeting, meetings);
