@@ -227,14 +227,6 @@ function updateCourses(courses) {
 
   $("#courses").html(courseList);
 
-  // // Add click event listener for the add-to-calendar buttons
-  // $(".add-to-calendar").on("click", function (event) {
-  //   const course = $(this).data().course;
-  //   User.addToEnrolledCourses(course);
-  //   updateEnrolledCourses();
-  //   displayMetrics();
-  //   addCourseToCalendar(course);
-  // });
   // Bind the click event listener for the add-to-calendar buttons
   bindAddToCalendarEvent(".add-to-calendar");
 }
