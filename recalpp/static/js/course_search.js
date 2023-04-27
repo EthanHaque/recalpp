@@ -176,6 +176,7 @@ function updateCourses(courses) {
     const course = $(this).data().course;
     User.addToEnrolledCourses(course);
     updateEnrolledCourses();
+    displayMetrics();
     addCourseToCalendar(course);
   });
 }
