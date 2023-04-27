@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Gets the meeting times for a course and returns an array of meeting objects
  * @param {Array} course - course object
@@ -51,6 +53,18 @@ function processMeeting(meeting, meetings) {
 }
 
 /**
+ * Generates a random light color in the form of a string, e.g. "#A0C0F0"
+ * @returns {string} - randomly generated light color
+ */
+function getRandomLightColor() {
+  const hue = Math.floor(Math.random() * 360); // 0-359 degrees
+  const saturation = Math.floor(Math.random() * 25) + 75; // 75-100%
+  const lightness = Math.floor(Math.random() * 25) + 75; // 75-100%
+  const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  return color;
+}
+
+/**
  * Adds a course to the calendar
  * @param {Object} course - course object
  */
@@ -70,18 +84,32 @@ async function addCourseToCalendar(course) {
     return baseDate.toISOString().slice(0, 10);
   }
 
+
+  // Dictionary object to store the color for each course
+  const courseColors = {};
+
   meetings.forEach((meet) => {
     const date = getIsoDateForDay(meet.day);
     const start = `${date}T${meet.startTime}`;
     const end = `${date}T${meet.endTime}`;
 
+    // Generate a new color or use an existing one for this course
+    const courseKey = `${course.subject}${course.catalog_number}`;
+    const color = courseColors[courseKey] || getRandomLightColor();
+    courseColors[courseKey] = color;
+
     const event = {
       title: `${meet.class_subject_code}${meet.class_catalog_number} ${meet.class_section}`,
       start: start,
       end: end,
+      color: color,
+      textColor: '#333'
     };
 
     // Add the event to the calendar
     calendar.addEvent(event);
+
+    // Remove the course from the list of available courses
+    $(`li[data-course='${JSON.stringify({ guid: course.guid })}']`).remove();
   });
 }
