@@ -2,7 +2,7 @@
 
 var User = {
   enrolledCourses: {},
-  courseHistory: [],
+  courseHistory: {},
   courseMeetings: {},
 
   /**
@@ -20,7 +20,7 @@ var User = {
   getCourseHistory: function () {
     return User.courseHistory;
   },
-  
+
   /**
    * Adds a course to the enrolled courses set
    * Adds a course to the enrolled courses dictionary
@@ -71,10 +71,8 @@ var User = {
       QCRs: 0,
     };
 
-    const courseList = User.getCourseHistory().concat(User.getEnrolledCourses())
-    User.parseForMetrics(
-      courseList, metrics
-    );
+    const courseList = Object.values(User.getEnrolledCourses());
+    User.parseForMetrics(courseList, metrics);
 
     return metrics;
   },
@@ -103,13 +101,13 @@ var User = {
       }
     }
   },
-    /**
-     * Returns the course meetings dictionary
-     * @returns {Object} - course meetings dictionary
-     */
-    getCourseMeetings: function () {
-      return User.courseMeetings;
-    },
+  /**
+   * Returns the course meetings dictionary
+   * @returns {Object} - course meetings dictionary
+   */
+  getCourseMeetings: function () {
+    return User.courseMeetings;
+  },
 
   /**
    * Returns the course meetings dictionary for a given course guid
