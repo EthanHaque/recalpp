@@ -3,6 +3,8 @@
 var User = {
   enrolledCourses: {},
   courseHistory: [],
+  courseMeetings: {},
+
   /**
    * Returns the enrolled courses dictionary
    * @returns {Object} - enrolled courses dictionary
@@ -100,5 +102,48 @@ var User = {
         metrics[distribution + "s"] = 1;
       }
     }
+  },
+    /**
+     * Returns the course meetings dictionary
+     * @returns {Object} - course meetings dictionary
+     */
+    getCourseMeetings: function () {
+      return User.courseMeetings;
+    },
+
+  /**
+   * Returns the course meetings dictionary for a given course guid
+   * @param {string} guid - course guid
+   * @returns {Object} - course meetings dictionary
+   */
+  getCourseMeetingsByGuid: function (guid) {
+    return User.courseMeetings[guid];
+  },
+
+  /**
+   * Adds a course meeting to the course meetings dictionary
+   * @param {Object} courseMeeting - course meeting object
+   * @param {string} courseGuid - course guid
+   * @returns {Object} - course meeting object
+   */
+  addCourseMeeting: function (courseGuid, courseMeeting) {
+    // adds to array if courseGuid already exists
+    if (User.courseMeetings.hasOwnProperty(courseGuid)) {
+      User.courseMeetings[courseGuid].push(courseMeeting);
+    } else {
+      User.courseMeetings[courseGuid] = [courseMeeting];
+    }
+    return courseMeeting;
+  },
+
+  /**
+   * Removes a course meeting from the course meetings dictionary
+   * @param {string} courseGuid - course guid
+   * @returns {Object} - course meeting object
+   */
+  removeCourseMeetings: function (courseGuid) {
+    const courseMeetings = User.courseMeetings[courseGuid];
+    delete User.courseMeetings[courseGuid];
+    return courseMeetings;
   },
 };
