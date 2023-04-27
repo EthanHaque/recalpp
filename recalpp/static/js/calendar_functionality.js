@@ -106,5 +106,8 @@ async function addCourseToCalendar(course) {
 
     // Add the event to the calendar
     calendar.addEvent(event);
+
+    // Remove the course from the list of available courses
+    $(`li[data-course='${JSON.stringify({ guid: course.guid })}']`).remove();
   });
 }
