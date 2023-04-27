@@ -19,10 +19,8 @@ function handleMajorSearch(event) {
 
   if (major_code.length) {
     getDegreeProgress(major_code, displayDegreeProgress);
-    displayMetrics();
   } else {
     displayDegreeProgress({});
-    displayMetrics();
   }
 
 }
