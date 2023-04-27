@@ -41,6 +41,7 @@ function removeCourseFromEnrolled(guid) {
   const course = User.removeFromEnrolledCourses(guid);
   updateEnrolledCourses();
   removeCourseFromCalendar(guid);
+  updateEnrolledCoursesText();
   showEnrolledCoursesText();
   // Call handleCourseSearch() to add the course back to the search list
   addCourseToList(course);
@@ -55,4 +56,12 @@ var showEnrolledCoursesText = function (){
   } else {
     enrolledCoursesHeader.style.display = "none";
   }
+}
+
+var updateEnrolledCoursesText = function(){
+  const enrolledCoursesContainer = document.querySelector('#enrolled-courses-container');
+  const enrolledCoursesCount = Object.keys(User.enrolledCourses).length;
+  const enrolledCoursesText = enrolledCoursesCount === 1 ? '1 Enrolled Course' : `${enrolledCoursesCount} Enrolled Courses`;
+  const enrolledCoursesHeaderText = enrolledCoursesContainer.querySelector('#enrolled-courses-text');
+  enrolledCoursesHeaderText.textContent = enrolledCoursesText;
 }
