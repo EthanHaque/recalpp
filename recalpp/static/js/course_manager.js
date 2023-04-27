@@ -1,7 +1,9 @@
 "use strict";
 
 function updateEnrolledCourses() {
-  const enrolledCoursesList = User.getEnrolledCourses().map(
+  const enrolledCourses = User.getEnrolledCourses(); 
+  const enrolledCoursesList = Object.values(enrolledCourses)
+    .map(
       (course) => `
        <li class="group border-solid border-b flex items-center justify-between">
          <div class="block w-11/12 h-max">
@@ -19,10 +21,26 @@ function updateEnrolledCourses() {
              ${course.title}
            </div>
          </div>
+         <button class="w-1/12 bg-red-500 text-white font-semibold text-xl rounded opacity-0 group-hover:opacity-100 transition-opacity duration-75 remove-from-enrolled" data-course-guid='${course.guid}'>
+           -
+         </button>
        </li>
      `
     )
     .join("");
 
-    $("#enrolled-courses").html(enrolledCoursesList);
+  $("#enrolled-courses").html(enrolledCoursesList);
+
+  $(".remove-from-enrolled").on("click", function (event) {
+    const guid = $(this).data().courseGuid;
+    removeCourseFromEnrolled(guid);
+  });
+}
+
+function removeCourseFromEnrolled(guid) {
+  const course = User.removeFromEnrolledCourses(guid);
+  updateEnrolledCourses();
+
+  // Call handleCourseSearch() to add the course back to the search list
+  addCourseToList(course);
 }
