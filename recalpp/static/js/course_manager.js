@@ -1,26 +1,7 @@
 "use strict";
 
-var enrolledCourses = new Set();
-
-/**
- * Adds a course to the enrolled courses set
- * @param {Object} course - course object
- */
-function addToEnrolledCourses(course) {
-  enrolledCourses.add(course);
-  updateEnrolledCourses();
-}
-
-/**
- * Returns the enrolled courses set
- * @returns {Set} - enrolled courses set
- */
-function getEnrolledCourses() {
-  return enrolledCourses;
-}
-
 function updateEnrolledCourses() {
-  const enrolledCoursesList = Array.from(getEnrolledCourses()).map(
+  const enrolledCoursesList = User.getEnrolledCourses().map(
       (course) => `
        <li class="group border-solid border-b flex items-center justify-between">
          <div class="block w-11/12 h-max">
