@@ -99,17 +99,33 @@ async function addCourseToCalendar(course) {
     courseColors[courseKey] = color;
 
     const event = {
+      id: `${course.guid}-${meet.class_section}`,
       title: `${meet.class_subject_code}${meet.class_catalog_number} ${meet.class_section}`,
       start: start,
       end: end,
       color: color,
-      textColor: '#333'
+      textColor: "#333",
     };
 
     // Add the event to the calendar
     calendar.addEvent(event);
+    User.addCourseMeeting(course.guid, event);
 
     // Remove the course from the list of available courses
     $(`li[data-course='${JSON.stringify({ guid: course.guid })}']`).remove();
+  });
+}
+
+/**
+ * Removes a course from the calendar
+ * @param {Object} guid - course guid
+ * @returns {Object} - event object
+ */
+function removeCourseFromCalendar(guid) {
+  const events = User.getCourseMeetingsByGuid(guid);
+  User.removeCourseMeetings(guid);
+  events.forEach((event) => {
+    const calendarEvent = calendar.getEventById(event.id)
+    calendarEvent.remove();
   });
 }
