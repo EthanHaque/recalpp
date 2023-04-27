@@ -62,11 +62,13 @@ function buildDegreeProgressHtml(data) {
 
   const metrics = User.getMetrics();
   html += `
-       <p>Number of LAs: ${metrics["LAs"]}</p><br>
+       <p>Number of LAs: ${metrics.LAs}</p><br>
        <p>Number of SAs: ${metrics.SAs}</p><br>
        <p>Number of HAs: ${metrics.HAs}</p><br>
        <p>Number of ECs: ${metrics.ECs}</p><br>
-       <p>Number of EMs: ${metrics.EMs}</p>`
+       <p>Number of EMs: ${metrics.EMs}</p><br>
+       <p>Number of CDs: ${metrics.CDs}</p><br>
+       <p>Number of QCRs: ${metrics.QCRs}</p>`
 
   return html;
 }
