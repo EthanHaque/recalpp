@@ -14,15 +14,13 @@ var User = {
   },
 
   /**
-   * Returns the course history array
-   * @returns {Array} - course history array
+   * Returns the course history dictionary
+   * @returns {Object} - course history object
    */
   getCourseHistory: function () {
     return User.courseHistory;
   },
-
   /**
-   * Adds a course to the enrolled courses set
    * Adds a course to the enrolled courses dictionary
    * @param {Object} course - course object
    */
