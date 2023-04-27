@@ -174,7 +174,8 @@ function updateCourses(courses) {
   // Add click event listener for the add-to-calendar buttons
   $(".add-to-calendar").on("click", function (event) {
     const course = $(this).data().course;
-    addToEnrolledCourses(course);
+    User.addToEnrolledCourses(course);
+    updateEnrolledCourses();
     addCourseToCalendar(course);
   });
 }
