@@ -3,7 +3,7 @@
 var User = {
   enrolledCourses: [],
   courseHistory: [],
-  metrics: {},
+  metrics: { LAs: 0, SAs: 0, HAs: 0, ECs: 0, EMs: 0 },
   /**
    * Returns the enrolled courses Array
    * @returns {Array} - enrolled courses Array
@@ -30,25 +30,36 @@ var User = {
     return User.metrics;
   },
   generateMetrics: function () {
-    User.parseForMetrics(User.getCourseHistory().concat(User.getEnrolledCourses()));
+    User.parseForMetrics(
+      User.getCourseHistory().concat(User.getEnrolledCourses())
+    );
   },
   parseForMetrics: function (courseList) {
-    allMetrics = {}
     for (const course of courseList) {
       let courseMetrics = User.parseCourseForMetrics(course);
+      console.log(courseMetrics);
       for (const metric in courseMetrics) {
-        allMetrics[metric] += courseMetrics[metric];
+        if (User.metrics.hasOwnProperty(metric)) {
+          User.metrics[metric] += courseMetrics[metric];
+        } else {
+          User.metrics[metric] = courseMetrics[metric];
+        }
       }
     }
-    User.metrics = allMetrics;
+    console.log(User.metrics);
   },
   parseCourseForMetrics: function (course) {
     const metrics = {};
 
     if (distributions.has(course.distribution_areas)) {
-      metrics[course.distribution_areas + "s"] += 1;
+      let distribution = course.distribution_areas + "s";
+      if (metrics.hasOwnProperty(distribution)) {
+        metrics[course.distribution_areas + "s"] += 1;
+      } else {
+        metrics[course.distribution_areas + "s"] = 1;
+      }
     }
 
     return metrics;
-  }
+  },
 };

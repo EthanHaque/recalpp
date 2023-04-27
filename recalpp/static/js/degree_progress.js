@@ -17,7 +17,8 @@ function handleMajorSearch(event) {
   const major_code = $(event.target).val().trim();
 
   if (major_code.length) {
-    getDegreeProgress(major_code, displayDegreeProgress);
+    displayDegreeProgress({});
+    // getDegreeProgress(major_code, displayDegreeProgress);
   } else {
     displayDegreeProgress({});
   }
@@ -47,7 +48,7 @@ function displayDegreeProgress(data) {
  * @param {Object} data - degree progress data
  * @return {string} - generated HTML
  */
-function buildDegreeProgressHtml(data, metrics) {
+function buildDegreeProgressHtml(data) {
   let html = ``;
 
   if (data && data.req_list) {
@@ -59,8 +60,9 @@ function buildDegreeProgressHtml(data, metrics) {
      `;
   }
 
-  html += `<p>Number of Courses Taken: ${metrics.courseCount}</p>
-       <p>Number of LAs: ${metrics.LAs}</p><br>
+  const metrics = User.getMetrics();
+  html += `
+       <p>Number of LAs: ${metrics["LAs"]}</p><br>
        <p>Number of SAs: ${metrics.SAs}</p><br>
        <p>Number of HAs: ${metrics.HAs}</p><br>
        <p>Number of ECs: ${metrics.ECs}</p><br>
