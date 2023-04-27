@@ -5,6 +5,7 @@
  */
 function init() {
   $("#major-search").on("input", handleMajorSearch); // TODO: change this to a dropdown or something simliar
+  displayMetrics();
 }
 
 $(document).ready(init);
@@ -21,6 +22,32 @@ function handleMajorSearch(event) {
   } else {
     displayDegreeProgress({});
   }
+
+}
+
+/**
+ * Displays metric data in right sidebar
+ */
+function displayMetrics() {
+  const metrics = User.getMetrics();
+  const metricsContainer = $("#metrics-content");
+  let metricsHtml = buildMetricsHtml(metrics);
+  metricsContainer.html(metricsHtml);
+}
+
+/**
+ * Builds metric HTML based on the given data
+ * @param {Object} metrics - metric data
+  * @return {string} - generated HTML
+  */
+function buildMetricsHtml(metrics) {
+  return `
+       <p>Number of LAs: ${metrics.LAs}</p><br>
+       <p>Number of SAs: ${metrics.SAs}</p><br>
+       <p>Number of HAs: ${metrics.HAs}</p><br>
+       <p>Number of ECs: ${metrics.ECs}</p><br>
+       <p>Number of EMs: ${metrics.EMs}</p><br>
+       <p>Number of CDs: ${metrics.CDs}</p><br>`
 }
 
 /**
@@ -47,7 +74,7 @@ function displayDegreeProgress(data) {
  * @param {Object} data - degree progress data
  * @return {string} - generated HTML
  */
-function buildDegreeProgressHtml(data, metrics) {
+function buildDegreeProgressHtml(data) {
   let html = ``;
 
   if (data && data.req_list) {
@@ -58,13 +85,6 @@ function buildDegreeProgressHtml(data, metrics) {
        ${reqListHtml}
      `;
   }
-
-  html += `<p>Number of Courses Taken: ${metrics.courseCount}</p>
-       <p>Number of LAs: ${metrics.LAs}</p><br>
-       <p>Number of SAs: ${metrics.SAs}</p><br>
-       <p>Number of HAs: ${metrics.HAs}</p><br>
-       <p>Number of ECs: ${metrics.ECs}</p><br>
-       <p>Number of EMs: ${metrics.EMs}</p>`
 
   return html;
 }

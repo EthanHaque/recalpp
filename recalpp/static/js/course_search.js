@@ -210,6 +210,7 @@ function bindAddToCalendarEvent(selector) {
       updateEnrolledCourses();
       addCourseToCalendar(course);
       removeCourseFromList(course.guid);
+      displayMetrics();
     }
   });
 }
