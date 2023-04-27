@@ -175,10 +175,12 @@ function createCourseElement(course) {
 function bindAddToCalendarEvent(selector) {
   $(selector).on("click", function (event) {
     const course = $(this).data().course;
-    User.addToEnrolledCourses(course);
-    updateEnrolledCourses();
-    addCourseToCalendar(course);
-    removeCourseFromList(course.guid);
+    if (!User.IsEnrolledInCourse(course)) {
+      User.addToEnrolledCourses(course);
+      updateEnrolledCourses();
+      addCourseToCalendar(course);
+      removeCourseFromList(course.guid);
+    }
   });
 }
 
