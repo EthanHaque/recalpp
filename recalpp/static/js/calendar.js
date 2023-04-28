@@ -35,6 +35,8 @@ $(document).ready(function () {
     
       if (events[courseIndex].enrolled) {
         events[courseIndex].enrolled = false;
+        // Determines of the event is a precept: P, class: C, etc.
+        const meetingIdentifier = events[courseIndex].section.charAt(0);
         // Changes all relevant sections enrolled false and color to default
         for (let i = 0; i < numMeetingsForCourse; i++) {
           if (events[courseIndex].section === events[i].section) {
@@ -42,6 +44,9 @@ $(document).ready(function () {
             calendar_event_object.view.calendar.getEventById(events[i].id).setProp('backgroundColor', unsaturatedLightColor);
             calendar_event_object.view.calendar.getEventById(events[i].id).setProp('borderColor', unsaturatedLightColor);
             calendar_event_object.view.calendar.getEventById(events[i].id).setProp('textColor', unsaturatedDarkColor);
+          }
+          if (meetingIdentifier === events[i].section.charAt(0) && !events[i].enrolled && events[i].section !== events[courseIndex].section) {
+            calendar_event_object.view.calendar.addEvent(events[i]);
           }
         } 
       } else {
@@ -62,7 +67,6 @@ $(document).ready(function () {
         } 
       }
       console.log(events);
-      
     }
   });
   calendar.render();
