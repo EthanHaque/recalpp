@@ -6,6 +6,17 @@ var User = {
   courseMeetings: {},
 
   /**
+   * Returns the course count of User
+   * @returns {number} - course count
+   */
+  getCourseCount: function () {
+    return (
+      Object.keys(User.enrolledCourses).length +
+      Object.keys(User.courseHistory).length
+    );
+  },
+
+  /**
    * Returns the enrolled courses dictionary
    * @returns {Object} - enrolled courses dictionary
    */
@@ -14,18 +25,12 @@ var User = {
   },
 
   /**
-   * Returns the course history dictionary
-   * @returns {Object} - course history object
+   * Checks if a course is in the enrolled courses dictionary
+   * @param {Object} course - course object
+   * @returns {boolean} - true if course is in the enrolled courses dictionary
    */
-  getCourseHistory: function () {
-    return User.courseHistory;
-  },
-
-  getCourseCount: function () {
-    return (
-      Object.keys(User.enrolledCourses).length +
-      Object.keys(User.courseHistory).length
-    );
+  isEnrolledInCourse: function (course) {
+    return User.enrolledCourses.hasOwnProperty(course.guid);
   },
 
   /**
@@ -48,22 +53,23 @@ var User = {
   },
 
   /**
-   * Checks if a course is in the enrolled courses dictionary
-   * @param {Object} course - course object
-   * @returns {boolean} - true if course is in the enrolled courses dictionary
+   * Returns the course history dictionary
+   * @returns {Object} - course history dictionary
    */
-  IsEnrolledInCourse: function (course) {
-    return User.enrolledCourses.hasOwnProperty(course.guid);
+  getCourseHistory: function () {
+    return User.courseHistory;
   },
+
   /**
    * Returns the metrics object
    * @returns {Object} - metrics object
    */
   getMetrics: function () {
-    const metrics = User.generateMetrics();
-    return metrics;
+    return User.generateMetrics();
   },
-  /** Generates the metrics object
+
+  /** 
+   * Generates the metrics object
    * @returns {Object} - metrics object
    */
   generateMetrics: function () {
@@ -80,11 +86,13 @@ var User = {
       SENs: 0,
     };
 
-    const courseList = Object.values(User.getEnrolledCourses());
+    let courseList = Object.values(User.getEnrolledCourses());
+    courseList = courseList.concat(Object.values(User.getCourseHistory));
     User.parseForMetrics(courseList, metrics);
 
     return metrics;
   },
+
   /**
    * Parses the course list and updates metrics object
    * @param {Array} courseList - course list
@@ -95,25 +103,27 @@ var User = {
       User.parseCourseForMetrics(course, metrics);
     }
   },
+
   /**
    * Parses a course and updates metrics object
    * @param {Object} course - course object
    * @param {Object} metrics - metrics object
    */
   parseCourseForMetrics: function (course, metrics) {
-    // Extracting distribution areas
-    const courseDistributions = course.distribution_areas.toUpperCase().split(" OR ");
-    
+    // Extracting distribution areas from course object
+    const courseDistributions = course.distribution_areas
+      .toUpperCase()
+      .split(" OR ");
+
     for (const distribution of courseDistributions) {
       if (distributions.has(distribution)) {
         if (metrics.hasOwnProperty(distribution + "s")) {
           metrics[distribution + "s"] += 1;
-        } else {
-          metrics[distribution + "s"] = 1;
         }
       }
     }
   },
+
   /**
    * Returns the course meetings dictionary
    * @returns {Object} - course meetings dictionary
@@ -152,7 +162,7 @@ var User = {
    * @param {string} courseGuid - course guid
    * @returns {Object} - course meeting object
    */
-  removeCourseMeetings: function (courseGuid) {
+  removeCourseMeeting: function (courseGuid) {
     const courseMeetings = User.courseMeetings[courseGuid];
     delete User.courseMeetings[courseGuid];
     return courseMeetings;

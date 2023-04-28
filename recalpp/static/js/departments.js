@@ -1,32 +1,32 @@
 "use strict";
 
-/**  Finds the intersection of courseHistory courses and department prerequisites
- * @param {Object} prereqCourses - Object of department prerequisite courses
- * @return {Object} - Object of courses in courseHistory that are also in prereqCourses
+/**
+ * Returns prereqsMet object containing department courses satisfied by user
+ * @param {Object} prereqCourses - department prerequisite courses object
+ * @return {Object} - prereqsMet object
  */
 function getPrereqsMet(prereqCourses) {
-   const courseHistory = User.getCourseHistory();
-   const enrolledCourses = User.getEnrolledCourses();
-   const prereqsMet = {};
+  const courseHistory = User.getCourseHistory();
+  const enrolledCourses = User.getEnrolledCourses();
+  const prereqsMet = {};
 
-   storeCourseIntersection(courseHistory, prereqCourses, prereqsMet);
-   storeCourseIntersection(enrolledCourses, prereqCourses, prereqsMet);
+  storeCourseIntersection(courseHistory, prereqCourses, prereqsMet);
+  storeCourseIntersection(enrolledCourses, prereqCourses, prereqsMet);
 
-   return prereqsMet;
+  return prereqsMet;
 }
 
-/** Adds courses to prereqsMet if they are in registeredCourses and prereqCourses
- * @param {Object} registeredCourses - Object of registered courses
- * @param {Object} prereqCourses - Object of department prerequisite courses
- * @param {Object} prereqsMet - Object of courses in registeredCourses that are also in prereqCourses
+/**
+ * Updates prereqsMet with courses in both registeredCourses and prereqCourses
+ * @param {Object} registeredCourses - registered courses object
+ * @param {Object} prereqCourses - department prerequisite courses object
+ * @param {Object} prereqsMet - prereqsMet object
  */
 function storeCourseIntersection(registeredCourses, prereqCourses, prereqsMet) {
-
-   // Adds courses to prereqsMet if they are in registeredCourses and prereqCourses
-   Object.keys(registeredCourses).forEach(function (courseId) {
-      if (courseId in prereqCourses) {
-         prereqsMet[courseId] = registeredCourses[courseId];
-      }
-   });
-
+  // Adds courses to prereqsMet if they are in registeredCourses and prereqCourses
+  Object.keys(registeredCourses).forEach(function (courseId) {
+    if (courseId in prereqCourses) {
+      prereqsMet[courseId] = registeredCourses[courseId];
+    }
+  });
 }

@@ -205,7 +205,7 @@ function createCourseElement(course) {
 function bindAddToCalendarEvent(selector) {
   $(selector).on("click", function (event) {
     const course = $(this).data().course;
-    if (!User.IsEnrolledInCourse(course)) {
+    if (!User.isEnrolledInCourse(course)) {
       User.addToEnrolledCourses(course);
       updateEnrolledCourses();
       addCourseToCalendar(course);
@@ -222,7 +222,7 @@ function bindAddToCalendarEvent(selector) {
  */
 function updateCourses(courses) {
   const courseList = courses
-    .filter((course) => !User.IsEnrolledInCourse(course))
+    .filter((course) => !User.isEnrolledInCourse(course))
     .map(createCourseElement)
     .join("");
 
