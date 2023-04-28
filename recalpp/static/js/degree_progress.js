@@ -29,30 +29,40 @@ function handleMajorSearch(event) {
  */
 function displayMetrics() {
   const metrics = User.getMetrics();
-  const metricsContainer = $("#metrics-content");
-  let metricsHtml = buildMetricsHtml(metrics);
-  metricsContainer.html(metricsHtml);
+  const generalMetricsContainer = $("#general-metrics-content");
+  const distributionsMetricsContainer = $("#distribution-metrics-content");
+  let generalMetricsHtml = buildGeneralMetricsHtml(metrics);
+  let distributionsMetricsHtml = buildDistributionsMetricsHtml(metrics);
+  generalMetricsContainer.html(generalMetricsHtml);
+  distributionsMetricsContainer.html(distributionsMetricsHtml);
 }
 
 /**
- * Builds metric HTML based on the given data
+ * Builds general metrics HTML based on the given data
  * @param {Object} metrics - metric data
  * @return {string} - generated HTML
  */
-function buildMetricsHtml(metrics) {
-  return `
-       <h3>Total Course Count: ${metrics.courseCount}</h3><br>
-       <p>Number of LAs: ${metrics.LAs}</p><br>
-       <p>Number of SAs: ${metrics.SAs}</p><br>
-       <p>Number of HAs: ${metrics.HAs}</p><br>
-       <p>Number of ECs: ${metrics.ECs}</p><br>
-       <p>Number of EMs: ${metrics.EMs}</p><br>
-       <p>Number of CDs: ${metrics.CDs}</p><br>
-       <p>Number of QCRs: ${metrics.QCRs}</p><br>
-       <p>Number of SELs: ${metrics.SELs}</p><br>
-       <p>Number of SENs: ${metrics.SENs}</p><br>`;
+function buildGeneralMetricsHtml(metrics) {
+  return `<p>Total Course Count: ${metrics.courseCount}</p>`;
 }
 
+/**
+ * Builds distributions metric HTML based on the given data
+ * @param {Object} metrics - metric data
+ * @return {string} - generated HTML
+ */
+function buildDistributionsMetricsHtml(metrics) {
+  return `
+  <p>LAs Satisfied: ${metrics.LAs} <br>
+  SAs Satisfied: ${metrics.SAs} <br>
+  HAs Satisfied: ${metrics.HAs} <br>
+  ECs Satisfied: ${metrics.ECs} <br>
+  EMs Satisfied: ${metrics.EMs} <br>
+  CDs Satisfied: ${metrics.CDs} <br>
+  QCRs Satisfied: ${metrics.QCRs} <br>
+  SELs Satisfied: ${metrics.SELs} <br>
+  SENs Satisfied: ${metrics.SENs}</p>`;
+}
 /**
  * Retrieves degree progress data from the API based on the major code
  * @param {string} major_code - major code
