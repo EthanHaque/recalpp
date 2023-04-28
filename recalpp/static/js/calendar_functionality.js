@@ -74,30 +74,21 @@ async function addCourseToCalendar(course) {
   }
 
 
-  // Dictionary object to store the color for each course
-  const courseColors = {};
-  const darkColors = {};
-   // Generate a new color or use an existing one for this course
-   const courseKey = `${course.subject}${course.catalog_number}`;
-   const color = courseColors[courseKey] || getRandomLightColor();
-   const darkColor = darkenColor(color);
-   courseColors[courseKey] = color;
-   darkColors[courseKey] = darkColor;
+  const color = getDesaturatedColor(getRandomLightColor(), 80);
+  const darkColor = darkenColor(color);
 
   meetings.forEach((meet) => {
     const date = getIsoDateForDay(meet.day);
     const start = `${date}T${meet.startTime}`;
     const end = `${date}T${meet.endTime}`;
-
   
-
     const event = {
       id: `${course.guid}-${meet.class_section}`,
       title: `${meet.class_subject_code}${meet.class_catalog_number} ${meet.class_section}`,
       start: start,
       end: end,
-      color: '#D3D3D3',
-      textColor: '#5A5A5A',
+      color: color,
+      textColor: darkColor,
     };
 
     // Add the event to the calendar
