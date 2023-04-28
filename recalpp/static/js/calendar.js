@@ -27,9 +27,12 @@ $(document).ready(function () {
       //info.el.style.textColor = darkColor;
       const guid = calendar_event_object.event.id.split("-")[0];
       const events = User.getCourseMeetingsByGuid(guid);
-      const saturatedColor = getDesaturatedColor(events[0].color, -70);
-      calendar_event_object.el.style.backgroundColor = saturatedColor;
-      console.log(saturatedColor);
+      const saturatedLightColor = getDesaturatedColor(events[0].color, -70);
+      const saturatedDarkColor = darkenColor(saturatedLightColor);
+      calendar_event_object.el.style.backgroundColor = saturatedLightColor;
+      calendar_event_object.el.style.borderColor = saturatedLightColor;
+      calendar_event_object.el.style.textColor = saturatedDarkColor;
+      console.log(saturatedLightColor);
     }
   });
   

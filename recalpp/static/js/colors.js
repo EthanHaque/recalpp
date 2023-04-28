@@ -35,4 +35,11 @@ function darkenColor(color) {
     const newColor = `hsl(${hue}, ${newSaturation}%, ${lightness}%)`;
     return newColor;
   }
+
+  function saturateEvent(event, lightColor, darkColor) {
+    event.el.style.backgroundColor = lightColor;
+    event.el.style.borderColor = lightColor;
+    event.el.style.textColor = darkColor;
+  }
+
   
