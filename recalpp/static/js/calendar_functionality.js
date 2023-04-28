@@ -73,7 +73,6 @@ async function addCourseToCalendar(course) {
     return baseDate.toISOString().slice(0, 10);
   }
 
-
   const color = getDesaturatedColor(getRandomLightColor(), 70);
   const darkColor = darkenColor(color);
 
@@ -110,9 +109,9 @@ async function addCourseToCalendar(course) {
  */
 function removeCourseFromCalendar(guid) {
   const events = User.getCourseMeetingsByGuid(guid);
-  User.removeCourseMeetings(guid);
+  User.removeCourseMeeting(guid);
   events.forEach((event) => {
-    const calendarEvent = calendar.getEventById(event.id)
+    const calendarEvent = calendar.getEventById(event.id);
     calendarEvent.remove();
   });
 }

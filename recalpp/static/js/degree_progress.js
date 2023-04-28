@@ -22,7 +22,6 @@ function handleMajorSearch(event) {
   } else {
     displayDegreeProgress({});
   }
-
 }
 
 /**
@@ -30,27 +29,73 @@ function handleMajorSearch(event) {
  */
 function displayMetrics() {
   const metrics = User.getMetrics();
-  const metricsContainer = $("#metrics-content");
-  let metricsHtml = buildMetricsHtml(metrics);
-  metricsContainer.html(metricsHtml);
+  const generalMetricsContainer = $("#general-metrics-content");
+  const distributionsMetricsContainer = $("#distribution-metrics-content");
+  const relevantCoursesMetricsContainer = $("#relevant-courses-metrics-content");
+
+  let generalMetricsHtml = buildGeneralMetricsHtml(metrics);
+  let distributionsMetricsHtml = buildDistributionsMetricsHtml(metrics);
+  let relevantCoursesMetricsHtml = buildRelevantCoursesMetricsHtml(metrics);
+
+  generalMetricsContainer.html(generalMetricsHtml);
+  distributionsMetricsContainer.html(distributionsMetricsHtml);
+  relevantCoursesMetricsContainer.html(relevantCoursesMetricsHtml);
 }
 
 /**
- * Builds metric HTML based on the given data
- * @param {Object} metrics - metric data
-  * @return {string} - generated HTML
-  */
-function buildMetricsHtml(metrics) {
-  return `
-       <h3>Total Course Count: ${metrics.courseCount}</h3><br>
-       <p>Number of LAs: ${metrics.LAs}</p><br>
-       <p>Number of SAs: ${metrics.SAs}</p><br>
-       <p>Number of HAs: ${metrics.HAs}</p><br>
-       <p>Number of ECs: ${metrics.ECs}</p><br>
-       <p>Number of EMs: ${metrics.EMs}</p><br>
-       <p>Number of CDs: ${metrics.CDs}</p><br>`
+ * Builds relevant courses metric HTML based on the given data
+ */
+function buildRelevantCoursesMetricsHtml() {
+  // const prereqCourses = getPrereqCourses();
+  const prereqsMet = getPrereqsMet({});
+  let relevantCoursesHtml = ``;
+
+  Object.values(prereqsMet).forEach(function (course) {
+    relevantCoursesHtml += `
+    <li class="group border-solid border-b flex items-center justify-between">
+    <div class="block w-11/12 h-max">
+      <div class="ml-px w-full border-transparent text-slate-700 dark:text-slate-400">
+        <div class="flex flex-row justify-between">
+          <div class="flex-initial">
+            ${course.crosslistings_string}
+          </div>
+          <div class="text-right">
+            ${course.distribution_areas}
+          </div>
+         </div>
+       </div>
+     </div>`;
+  });
+
+  return relevantCoursesHtml;
 }
 
+/**
+ * Builds general metrics HTML based on the given data
+ * @param {Object} metrics - metric data
+ * @return {string} - generated HTML
+ */
+function buildGeneralMetricsHtml(metrics) {
+  return `<p>Total Course Count: ${metrics.courseCount}</p>`;
+}
+
+/**
+ * Builds distributions metric HTML based on the given data
+ * @param {Object} metrics - metric data
+ * @return {string} - generated HTML
+ */
+function buildDistributionsMetricsHtml(metrics) {
+  return `
+  <p>LAs Satisfied: ${metrics.LAs} <br>
+  SAs Satisfied: ${metrics.SAs} <br>
+  HAs Satisfied: ${metrics.HAs} <br>
+  ECs Satisfied: ${metrics.ECs} <br>
+  EMs Satisfied: ${metrics.EMs} <br>
+  CDs Satisfied: ${metrics.CDs} <br>
+  QCRs Satisfied: ${metrics.QCRs} <br>
+  SELs Satisfied: ${metrics.SELs} <br>
+  SENs Satisfied: ${metrics.SENs}</p>`;
+}
 /**
  * Retrieves degree progress data from the API based on the major code
  * @param {string} major_code - major code
@@ -80,7 +125,7 @@ function buildDegreeProgressHtml(data) {
 
   if (data && data.req_list) {
     const reqListHtml = data.req_list.map(buildReqHtml).join("");
-    html +=  `
+    html += `
        <h2 class="text-xl font-semibold mb-4">${data.type}: ${data.name} (${data.code})</h2>
        <h3 class="text-lg font-semibold mb-2">Requirements:</h3>
        ${reqListHtml}
