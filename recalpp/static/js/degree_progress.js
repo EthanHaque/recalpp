@@ -42,6 +42,7 @@ function displayMetrics() {
   */
 function buildMetricsHtml(metrics) {
   return `
+       <h3>Total Course Count: ${metrics.courseCount}</h3><br>
        <p>Number of LAs: ${metrics.LAs}</p><br>
        <p>Number of SAs: ${metrics.SAs}</p><br>
        <p>Number of HAs: ${metrics.HAs}</p><br>
