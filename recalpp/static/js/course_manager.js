@@ -42,6 +42,7 @@ function removeCourseFromEnrolled(guid) {
   updateEnrolledCourses();
   removeCourseFromCalendar(guid);
   showEnrolledCoursesText();
+  displayMetrics();
   // Call handleCourseSearch() to add the course back to the search list
   addCourseToList(course);
 }
