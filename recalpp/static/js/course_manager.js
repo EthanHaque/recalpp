@@ -47,7 +47,7 @@ function removeCourseFromEnrolled(guid) {
   addCourseToList(course);
 }
 
-var updateEnrolledCoursesText = function(){
+function updateEnrolledCoursesText() {
   const enrolledCoursesContainer = document.querySelector('#enrolled-courses-container');
   const enrolledCoursesCount = Object.keys(User.enrolledCourses).length;
   const enrolledCoursesText = enrolledCoursesCount === 1 ? '1 Enrolled Course' : `${enrolledCoursesCount} Enrolled Courses`;
@@ -55,7 +55,7 @@ var updateEnrolledCoursesText = function(){
   enrolledCoursesHeaderText.textContent = enrolledCoursesText;
 }
 
-var showEnrolledCoursesText = function (){
+function showEnrolledCoursesText() {
   const enrolledCoursesHeader = document.getElementById("enrolled-courses-container");
   // Check if the user has any enrolled courses
   if (Object.keys(User.enrolledCourses).length > 0) {
