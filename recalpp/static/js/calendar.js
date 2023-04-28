@@ -26,7 +26,10 @@ $(document).ready(function () {
       const courseIndex = calendar_event_object.event.id.split("-")[1];
       const events = User.getCourseMeetingsByGuid(guid);
       const numMeetingsForCourse = events.length;
-    
+      
+      // All relevant colors
+      const unsaturatedLightColor = events[courseIndex].color
+      const unsaturatedDarkColor = events[courseIndex].textColor
       const saturatedLightColor = getDesaturatedColor(events[courseIndex].color, -70);
       const saturatedDarkColor = darkenColor(saturatedLightColor);
     
@@ -36,9 +39,9 @@ $(document).ready(function () {
         for (let i = 0; i < numMeetingsForCourse; i++) {
           if (events[courseIndex].section === events[i].section) {
             events[i].enrolled = false;
-            calendar_event_object.view.calendar.getEventById(events[i].id).setProp('backgroundColor', events[i].color);
-            calendar_event_object.view.calendar.getEventById(events[i].id).setProp('borderColor', events[i].color);
-            calendar_event_object.view.calendar.getEventById(events[i].id).setProp('textColor', '#fff');
+            calendar_event_object.view.calendar.getEventById(events[i].id).setProp('backgroundColor', unsaturatedLightColor);
+            calendar_event_object.view.calendar.getEventById(events[i].id).setProp('borderColor', unsaturatedLightColor);
+            calendar_event_object.view.calendar.getEventById(events[i].id).setProp('textColor', unsaturatedDarkColor);
           }
         } 
       } else {
