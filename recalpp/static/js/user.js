@@ -86,7 +86,7 @@ var User = {
       SENs: 0,
     };
 
-    const courseList = Object.values(User.getEnrolledCourses());
+    let courseList = Object.values(User.getEnrolledCourses());
     courseList = courseList.concat(Object.values(User.getCourseHistory));
     User.parseForMetrics(courseList, metrics);
 
