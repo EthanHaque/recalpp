@@ -21,20 +21,7 @@ $(document).ready(function () {
       },
     },
 
-    events: [
-      // {
-      //   groupId: 999,
-      //   title: "Repeating Event",
-      //   start: "2000-01-01-01T16:00:00",
-      //   allDay: true,
-      //   daysOfWeek: [1, 2, 3, 4, 5],
-      // },
-      // {
-      //   title: "Meeting",
-      //   start: "2000-01-01T10:30:00",
-      //   end: "2000-01-01T12:30:00",
-      // },
-    ],
+    events: [],
   });
 
   calendar.render();
