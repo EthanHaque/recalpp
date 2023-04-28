@@ -31,10 +31,43 @@ function displayMetrics() {
   const metrics = User.getMetrics();
   const generalMetricsContainer = $("#general-metrics-content");
   const distributionsMetricsContainer = $("#distribution-metrics-content");
+  const relevantCoursesMetricsContainer = $("#relevant-courses-metrics-content");
+
   let generalMetricsHtml = buildGeneralMetricsHtml(metrics);
   let distributionsMetricsHtml = buildDistributionsMetricsHtml(metrics);
+  let relevantCoursesMetricsHtml = buildRelevantCoursesMetricsHtml(metrics);
+
   generalMetricsContainer.html(generalMetricsHtml);
   distributionsMetricsContainer.html(distributionsMetricsHtml);
+  relevantCoursesMetricsContainer.html(relevantCoursesMetricsHtml);
+}
+
+/**
+ * Builds relevant courses metric HTML based on the given data
+ */
+function buildRelevantCoursesMetricsHtml() {
+  // const prereqCourses = getPrereqCourses();
+  const prereqsMet = getPrereqsMet({});
+  let relevantCoursesHtml = ``;
+
+  Object.values(prereqsMet).forEach(function (course) {
+    relevantCoursesHtml += `
+    <li class="group border-solid border-b flex items-center justify-between">
+    <div class="block w-11/12 h-max">
+      <div class="ml-px w-full border-transparent text-slate-700 dark:text-slate-400">
+        <div class="flex flex-row justify-between">
+          <div class="flex-initial">
+            ${course.crosslistings_string}
+          </div>
+          <div class="text-right">
+            ${course.distribution_areas}
+          </div>
+         </div>
+       </div>
+     </div>`;
+  });
+
+  return relevantCoursesHtml;
 }
 
 /**
