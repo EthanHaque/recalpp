@@ -5,6 +5,7 @@
  */
 function init() {
   $("#major-search").on("input", handleMajorSearch); // TODO: change this to a dropdown or something simliar
+  displayMetrics();
 }
 
 $(document).ready(init);
@@ -23,6 +24,78 @@ function handleMajorSearch(event) {
   }
 }
 
+/**
+ * Displays metric data in right sidebar
+ */
+function displayMetrics() {
+  const metrics = User.getMetrics();
+  const generalMetricsContainer = $("#general-metrics-content");
+  const distributionsMetricsContainer = $("#distribution-metrics-content");
+  const relevantCoursesMetricsContainer = $("#relevant-courses-metrics-content");
+
+  let generalMetricsHtml = buildGeneralMetricsHtml(metrics);
+  let distributionsMetricsHtml = buildDistributionsMetricsHtml(metrics);
+  let relevantCoursesMetricsHtml = buildRelevantCoursesMetricsHtml(metrics);
+
+  generalMetricsContainer.html(generalMetricsHtml);
+  distributionsMetricsContainer.html(distributionsMetricsHtml);
+  relevantCoursesMetricsContainer.html(relevantCoursesMetricsHtml);
+}
+
+/**
+ * Builds relevant courses metric HTML based on the given data
+ */
+function buildRelevantCoursesMetricsHtml() {
+  // const prereqCourses = getPrereqCourses();
+  const prereqsMet = getPrereqsMet({});
+  let relevantCoursesHtml = ``;
+
+  Object.values(prereqsMet).forEach(function (course) {
+    relevantCoursesHtml += `
+    <li class="group border-solid border-b flex items-center justify-between">
+    <div class="block w-11/12 h-max">
+      <div class="ml-px w-full border-transparent text-slate-700 dark:text-slate-400">
+        <div class="flex flex-row justify-between">
+          <div class="flex-initial">
+            ${course.crosslistings_string}
+          </div>
+          <div class="text-right">
+            ${course.distribution_areas}
+          </div>
+         </div>
+       </div>
+     </div>`;
+  });
+
+  return relevantCoursesHtml;
+}
+
+/**
+ * Builds general metrics HTML based on the given data
+ * @param {Object} metrics - metric data
+ * @return {string} - generated HTML
+ */
+function buildGeneralMetricsHtml(metrics) {
+  return `<p>Total Course Count: ${metrics.courseCount}</p>`;
+}
+
+/**
+ * Builds distributions metric HTML based on the given data
+ * @param {Object} metrics - metric data
+ * @return {string} - generated HTML
+ */
+function buildDistributionsMetricsHtml(metrics) {
+  return `
+  <p>LAs Satisfied: ${metrics.LAs} <br>
+  SAs Satisfied: ${metrics.SAs} <br>
+  HAs Satisfied: ${metrics.HAs} <br>
+  ECs Satisfied: ${metrics.ECs} <br>
+  EMs Satisfied: ${metrics.EMs} <br>
+  CDs Satisfied: ${metrics.CDs} <br>
+  QCRs Satisfied: ${metrics.QCRs} <br>
+  SELs Satisfied: ${metrics.SELs} <br>
+  SENs Satisfied: ${metrics.SENs}</p>`;
+}
 /**
  * Retrieves degree progress data from the API based on the major code
  * @param {string} major_code - major code
@@ -47,24 +120,17 @@ function displayDegreeProgress(data) {
  * @param {Object} data - degree progress data
  * @return {string} - generated HTML
  */
-function buildDegreeProgressHtml(data, metrics) {
+function buildDegreeProgressHtml(data) {
   let html = ``;
 
   if (data && data.req_list) {
     const reqListHtml = data.req_list.map(buildReqHtml).join("");
-    html +=  `
+    html += `
        <h2 class="text-xl font-semibold mb-4">${data.type}: ${data.name} (${data.code})</h2>
        <h3 class="text-lg font-semibold mb-2">Requirements:</h3>
        ${reqListHtml}
      `;
   }
-
-  html += `<p>Number of Courses Taken: ${metrics.courseCount}</p>
-       <p>Number of LAs: ${metrics.LAs}</p><br>
-       <p>Number of SAs: ${metrics.SAs}</p><br>
-       <p>Number of HAs: ${metrics.HAs}</p><br>
-       <p>Number of ECs: ${metrics.ECs}</p><br>
-       <p>Number of EMs: ${metrics.EMs}</p>`
 
   return html;
 }
