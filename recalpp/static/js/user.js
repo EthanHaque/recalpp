@@ -76,6 +76,8 @@ var User = {
       EMs: 0,
       CDs: 0,
       QCRs: 0,
+      SELs: 0,
+      SENs: 0,
     };
 
     const courseList = Object.values(User.getEnrolledCourses());
@@ -99,12 +101,16 @@ var User = {
    * @param {Object} metrics - metrics object
    */
   parseCourseForMetrics: function (course, metrics) {
-    const distribution = course.distribution_areas.slice(0, 2).toUpperCase();
-    if (distributions.has(distribution)) {
-      if (metrics.hasOwnProperty(distribution + "s")) {
-        metrics[distribution + "s"] += 1;
-      } else {
-        metrics[distribution + "s"] = 1;
+    // Extracting distribution areas
+    const courseDistributions = course.distribution_areas.toUpperCase().split(" OR ");
+    
+    for (const distribution of courseDistributions) {
+      if (distributions.has(distribution)) {
+        if (metrics.hasOwnProperty(distribution + "s")) {
+          metrics[distribution + "s"] += 1;
+        } else {
+          metrics[distribution + "s"] = 1;
+        }
       }
     }
   },

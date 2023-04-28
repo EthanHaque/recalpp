@@ -22,7 +22,6 @@ function handleMajorSearch(event) {
   } else {
     displayDegreeProgress({});
   }
-
 }
 
 /**
@@ -38,8 +37,8 @@ function displayMetrics() {
 /**
  * Builds metric HTML based on the given data
  * @param {Object} metrics - metric data
-  * @return {string} - generated HTML
-  */
+ * @return {string} - generated HTML
+ */
 function buildMetricsHtml(metrics) {
   return `
        <h3>Total Course Count: ${metrics.courseCount}</h3><br>
@@ -48,7 +47,10 @@ function buildMetricsHtml(metrics) {
        <p>Number of HAs: ${metrics.HAs}</p><br>
        <p>Number of ECs: ${metrics.ECs}</p><br>
        <p>Number of EMs: ${metrics.EMs}</p><br>
-       <p>Number of CDs: ${metrics.CDs}</p><br>`
+       <p>Number of CDs: ${metrics.CDs}</p><br>
+       <p>Number of QCRs: ${metrics.QCRs}</p><br>
+       <p>Number of SELs: ${metrics.SELs}</p><br>
+       <p>Number of SENs: ${metrics.SENs}</p><br>`;
 }
 
 /**
@@ -80,7 +82,7 @@ function buildDegreeProgressHtml(data) {
 
   if (data && data.req_list) {
     const reqListHtml = data.req_list.map(buildReqHtml).join("");
-    html +=  `
+    html += `
        <h2 class="text-xl font-semibold mb-4">${data.type}: ${data.name} (${data.code})</h2>
        <h3 class="text-lg font-semibold mb-2">Requirements:</h3>
        ${reqListHtml}
