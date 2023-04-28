@@ -84,7 +84,6 @@ async function addCourseToCalendar(course) {
     return baseDate.toISOString().slice(0, 10);
   }
 
-
   // Dictionary object to store the color for each course
   const courseColors = {};
 
@@ -123,9 +122,9 @@ async function addCourseToCalendar(course) {
  */
 function removeCourseFromCalendar(guid) {
   const events = User.getCourseMeetingsByGuid(guid);
-  User.removeCourseMeetings(guid);
+  User.removeCourseMeeting(guid);
   events.forEach((event) => {
-    const calendarEvent = calendar.getEventById(event.id)
+    const calendarEvent = calendar.getEventById(event.id);
     calendarEvent.remove();
   });
 }
