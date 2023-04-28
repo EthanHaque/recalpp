@@ -20,6 +20,14 @@ var User = {
   getCourseHistory: function () {
     return User.courseHistory;
   },
+
+  getCourseCount: function () {
+    return (
+      Object.keys(User.enrolledCourses).length +
+      Object.keys(User.courseHistory).length
+    );
+  },
+
   /**
    * Adds a course to the enrolled courses dictionary
    * @param {Object} course - course object
@@ -60,6 +68,7 @@ var User = {
    */
   generateMetrics: function () {
     const metrics = {
+      courseCount: User.getCourseCount(),
       LAs: 0,
       SAs: 0,
       HAs: 0,
