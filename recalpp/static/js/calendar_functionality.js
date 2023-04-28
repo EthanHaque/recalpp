@@ -74,16 +74,17 @@ async function addCourseToCalendar(course) {
   }
 
 
-  const color = getDesaturatedColor(getRandomLightColor(), 80);
+  const color = getDesaturatedColor(getRandomLightColor(), 70);
   const darkColor = darkenColor(color);
 
-  meetings.forEach((meet) => {
+  meetings.forEach((meet, index) => {
     const date = getIsoDateForDay(meet.day);
     const start = `${date}T${meet.startTime}`;
     const end = `${date}T${meet.endTime}`;
   
     const event = {
-      id: `${course.guid}-${meet.class_section}`,
+      id: `${course.guid}-${index}`,
+      section: meet.class_section,
       title: `${meet.class_subject_code}${meet.class_catalog_number} ${meet.class_section}`,
       start: start,
       end: end,

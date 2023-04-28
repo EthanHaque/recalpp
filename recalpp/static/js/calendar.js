@@ -21,11 +21,15 @@ $(document).ready(function () {
       },
     },
     events: [],
-    eventClick: function(info) {
+    eventClick: function(calendar_event_object) {
       // change the border color just for fun
       //info.el.style.color = color;
       //info.el.style.textColor = darkColor;
-      console.log(info);
+      const guid = calendar_event_object.event.id.split("-")[0];
+      const events = User.getCourseMeetingsByGuid(guid);
+      const saturatedColor = getDesaturatedColor(events[0].color, -70);
+      calendar_event_object.el.style.backgroundColor = saturatedColor;
+      console.log(saturatedColor);
     }
   });
   
