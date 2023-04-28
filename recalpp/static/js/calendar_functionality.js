@@ -85,6 +85,7 @@ async function addCourseToCalendar(course) {
     const event = {
       id: `${course.guid}-${index}`,
       section: meet.class_section,
+      enrolled: false,
       title: `${meet.class_subject_code}${meet.class_catalog_number} ${meet.class_section}`,
       start: start,
       end: end,

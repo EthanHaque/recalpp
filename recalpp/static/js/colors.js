@@ -36,10 +36,4 @@ function darkenColor(color) {
     return newColor;
   }
 
-  function saturateEvent(event, lightColor, darkColor) {
-    event.el.style.backgroundColor = lightColor;
-    event.el.style.borderColor = lightColor;
-    event.el.style.textColor = darkColor;
-  }
-
   
