@@ -41,7 +41,6 @@ function removeCourseFromEnrolled(guid) {
   const course = User.removeFromEnrolledCourses(guid);
   updateEnrolledCourses();
   removeCourseFromCalendar(guid);
-  updateEnrolledCoursesText();
   showEnrolledCoursesText();
   // Call handleCourseSearch() to add the course back to the search list
   addCourseToList(course);
@@ -54,6 +53,7 @@ function updateEnrolledCoursesText() {
 }
 
 function showEnrolledCoursesText() {
+  updateEnrolledCoursesText();
   const enrolledCoursesHeader = $("#enrolled-courses-container");
   // Check if the user has any enrolled courses
   if (Object.keys(User.enrolledCourses).length > 0) {
