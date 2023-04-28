@@ -48,21 +48,19 @@ function removeCourseFromEnrolled(guid) {
 }
 
 function updateEnrolledCoursesText() {
-  const enrolledCoursesContainer = document.querySelector('#enrolled-courses-container');
   const enrolledCoursesCount = Object.keys(User.enrolledCourses).length;
   const enrolledCoursesText = enrolledCoursesCount === 1 ? '1 Enrolled Course' : `${enrolledCoursesCount} Enrolled Courses`;
-  const enrolledCoursesHeaderText = enrolledCoursesContainer.querySelector('#enrolled-courses-text');
-  enrolledCoursesHeaderText.textContent = enrolledCoursesText;
+  $('#enrolled-courses-text').text(enrolledCoursesText);
 }
 
 function showEnrolledCoursesText() {
-  const enrolledCoursesHeader = document.getElementById("enrolled-courses-container");
+  const enrolledCoursesHeader = $("#enrolled-courses-container");
   // Check if the user has any enrolled courses
   if (Object.keys(User.enrolledCourses).length > 0) {
-  // If yes, show the "Enrolled Courses" text
-    enrolledCoursesHeader.style.display = "block";
+    // If yes, show the "Enrolled Courses" text
+    enrolledCoursesHeader.removeClass("hidden");
   } else {
-    enrolledCoursesHeader.style.display = "none";
+    enrolledCoursesHeader.addClass("hidden");
   }
 }
 
