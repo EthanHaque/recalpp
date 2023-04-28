@@ -12,6 +12,11 @@ function getRandomLightColor() {
     return color;
   }
 
+/**
+ * Darkens the given color by reducing its lightness value by a specified amount.
+ * @param {string} color - the color to darken, in the format "hsl(H,S,L)" where H,S,L are numerical values representing the hue, saturation, and lightness components of the color
+ * @returns {string} - the new color after darkening, in the same format as the input color string
+ */
 function darkenColor(color) {
     const amount = 50; // Adjust this value to make the color darker or lighter
     const [h, s, l] = color.match(/\d+/g); // Extract the HSL values
