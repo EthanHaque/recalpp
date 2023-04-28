@@ -76,6 +76,8 @@ var User = {
       EMs: 0,
       CDs: 0,
       QCRs: 0,
+      SELs: 0,
+      SENs: 0,
     };
 
     const courseList = Object.values(User.getEnrolledCourses());
