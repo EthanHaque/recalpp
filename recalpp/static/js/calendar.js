@@ -20,9 +20,14 @@ $(document).ready(function () {
         slotMaxTime: "23:00:00",
       },
     },
-
     events: [],
+    eventClick: function(info) {
+      // change the border color just for fun
+      //info.el.style.color = color;
+      //info.el.style.textColor = darkColor;
+      console.log(info);
+    }
   });
-
+  
   calendar.render();
 });
