@@ -4,7 +4,7 @@
  * Displays Enrolled Courses
  */
 function displayEnrolledCourses() {
-  const enrolledCourses = User.getEnrolledCourses(); 
+  const enrolledCourses = User.getEnrolledCourses();
   const enrolledCoursesList = Object.values(enrolledCourses)
     .map(
       (course) => `
@@ -59,8 +59,11 @@ function removeCourseFromEnrolled(guid) {
  */
 function updateEnrolledCoursesText() {
   const enrolledCoursesCount = User.getEnrolledCoursesCount();
-  const enrolledCoursesText = enrolledCoursesCount === 1 ? '1 Enrolled Course' : `${enrolledCoursesCount} Enrolled Courses`;
-  $('#enrolled-courses-text').text(enrolledCoursesText);
+  const enrolledCoursesText =
+    enrolledCoursesCount === 1
+      ? "1 Enrolled Course"
+      : `${enrolledCoursesCount} Enrolled Courses`;
+  $("#enrolled-courses-text").text(enrolledCoursesText);
 }
 
 /**
@@ -77,5 +80,3 @@ function updateEnrolledCoursesHeader() {
     enrolledCoursesHeader.addClass("hidden");
   }
 }
-
-

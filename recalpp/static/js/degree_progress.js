@@ -31,7 +31,9 @@ function displayMetrics() {
   const metrics = User.getMetrics();
   const generalMetricsContainer = $("#general-metrics-content");
   const distributionsMetricsContainer = $("#distribution-metrics-content");
-  const relevantCoursesMetricsContainer = $("#relevant-courses-metrics-content");
+  const relevantCoursesMetricsContainer = $(
+    "#relevant-courses-metrics-content"
+  );
 
   let generalMetricsHtml = buildGeneralMetricsHtml(metrics);
   let distributionsMetricsHtml = buildDistributionsMetricsHtml(metrics);
