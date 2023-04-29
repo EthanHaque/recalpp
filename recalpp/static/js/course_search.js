@@ -198,18 +198,17 @@ function createCourseElement(course) {
 }
 
 /**
- * adds an event handler to the add-to-calendar button
- *
+ * Adds an event handler to the add-to-calendar button
  * @param {string} selector - selector for the add-to-calendar button
  */
 function bindAddToCalendarEvent(selector) {
-  $(selector).on("click", function (event) {
+  $(selector).on("click", function () {
     const course = $(this).data().course;
     if (!User.isEnrolledInCourse(course)) {
       User.addToEnrolledCourses(course);
-      updateEnrolledCourses();
+      displayEnrolledCourses();
       addCourseToCalendar(course);
-      showEnrolledCoursesText();
+      updateEnrolledCoursesHeader();
       removeCourseFromList(course.guid);
       displayMetrics();
     }
@@ -251,9 +250,7 @@ function addCourseToList(course) {
 
     // Compare the catalog number of the current course element and the new course
     if (
-      currentCourseData.catalog_number.localeCompare(
-        course.catalog_number
-      ) > 0
+      currentCourseData.catalog_number.localeCompare(course.catalog_number) > 0
     ) {
       // Insert the new course before the current course element
       currentElement.before(courseHtml);
@@ -270,7 +267,6 @@ function addCourseToList(course) {
   // Bind the click event listener for the add-to-calendar button of the new course
   bindAddToCalendarEvent(".add-to-calendar");
 }
-
 
 /**
  * Removes a course from the course list based on the given course guid

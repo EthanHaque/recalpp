@@ -52,7 +52,6 @@ function processMeeting(meeting, meetings) {
   });
 }
 
-
 /**
  * Adds a course to the calendar
  * @param {Object} course - course object
@@ -80,7 +79,7 @@ async function addCourseToCalendar(course) {
     const date = getIsoDateForDay(meet.day);
     const start = `${date}T${meet.startTime}`;
     const end = `${date}T${meet.endTime}`;
-  
+
     const event = {
       id: `${course.guid}-${index}`,
       section: meet.class_section,
@@ -100,7 +99,6 @@ async function addCourseToCalendar(course) {
     $(`li[data-course='${JSON.stringify({ guid: course.guid })}']`).remove();
   });
 }
-
 
 /**
  * Removes a course from the calendar
