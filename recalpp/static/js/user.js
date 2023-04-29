@@ -68,7 +68,7 @@ var User = {
     return User.generateMetrics();
   },
 
-  /** 
+  /**
    * Generates the metrics object
    * @returns {Object} - metrics object
    */
