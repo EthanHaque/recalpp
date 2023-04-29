@@ -54,13 +54,18 @@ function removeCourseFromEnrolled(guid) {
   addCourseToList(course);
 }
 
-
+/**
+ * Updates the Enrolled Courses Header Text
+ */
 function updateEnrolledCoursesText() {
   const enrolledCoursesCount = User.getEnrolledCoursesCount();
   const enrolledCoursesText = enrolledCoursesCount === 1 ? '1 Enrolled Course' : `${enrolledCoursesCount} Enrolled Courses`;
   $('#enrolled-courses-text').text(enrolledCoursesText);
 }
 
+/**
+ * Updates the Enrolled Courses Header
+ */
 function updateEnrolledCoursesHeader() {
   updateEnrolledCoursesText();
   const enrolledCoursesHeader = $("#enrolled-courses-container");
