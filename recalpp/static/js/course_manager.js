@@ -1,6 +1,9 @@
 "use strict";
 
-function updateEnrolledCourses() {
+/**
+ * U
+ */
+function displayEnrolledCourses() {
   const enrolledCourses = User.getEnrolledCourses(); 
   const enrolledCoursesList = Object.values(enrolledCourses)
     .map(
@@ -39,7 +42,7 @@ function updateEnrolledCourses() {
 
 function removeCourseFromEnrolled(guid) {
   const course = User.removeFromEnrolledCourses(guid);
-  updateEnrolledCourses();
+  displayEnrolledCourses();
   removeCourseFromCalendar(guid);
   showEnrolledCoursesText();
   displayMetrics();
