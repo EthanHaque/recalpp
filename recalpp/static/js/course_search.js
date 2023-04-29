@@ -208,7 +208,7 @@ function bindAddToCalendarEvent(selector) {
       User.addToEnrolledCourses(course);
       displayEnrolledCourses();
       addCourseToCalendar(course);
-      showEnrolledCoursesText();
+      updateEnrolledCoursesHeader();
       removeCourseFromList(course.guid);
       displayMetrics();
     }

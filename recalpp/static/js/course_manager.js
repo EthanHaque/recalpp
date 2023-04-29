@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * U
+ * Displays Enrolled Courses
  */
 function displayEnrolledCourses() {
   const enrolledCourses = User.getEnrolledCourses(); 
@@ -40,27 +40,32 @@ function displayEnrolledCourses() {
   });
 }
 
+/**
+ * Removes from Enrolled Courses
+ * @param {string} guid - Course GUID
+ */
 function removeCourseFromEnrolled(guid) {
   const course = User.removeFromEnrolledCourses(guid);
   displayEnrolledCourses();
   removeCourseFromCalendar(guid);
-  showEnrolledCoursesText();
+  updateEnrolledCoursesHeader();
   displayMetrics();
   // Call handleCourseSearch() to add the course back to the search list
   addCourseToList(course);
 }
 
+
 function updateEnrolledCoursesText() {
-  const enrolledCoursesCount = Object.keys(User.enrolledCourses).length;
+  const enrolledCoursesCount = User.getEnrolledCoursesCount();
   const enrolledCoursesText = enrolledCoursesCount === 1 ? '1 Enrolled Course' : `${enrolledCoursesCount} Enrolled Courses`;
   $('#enrolled-courses-text').text(enrolledCoursesText);
 }
 
-function showEnrolledCoursesText() {
+function updateEnrolledCoursesHeader() {
   updateEnrolledCoursesText();
   const enrolledCoursesHeader = $("#enrolled-courses-container");
   // Check if the user has any enrolled courses
-  if (Object.keys(User.enrolledCourses).length > 0) {
+  if (User.getEnrolledCoursesCount() > 0) {
     // If yes, show the "Enrolled Courses" text
     enrolledCoursesHeader.removeClass("hidden");
   } else {
