@@ -5,11 +5,44 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="{% static 'js/calendar_functionality.js' %}"></script>
 <script src="{% static 'js/course_search.js' %}"></script>
+<script src="{% static 'js/course_manager.js' %}"></script>
 <script src="{% static 'js/degree_progress.js' %}"></script>
+<script src="{% static 'js/departments.js' %}"></script>
 <script src="{% static 'js/calendar.js' %}"></script>
+<script src="{% static 'js/colors.js' %}"></script>
+<script src="{% static 'js/user.js' %}"></script>
 <script src="{% static 'js/index.global.js' %}"></script>
 <script src="{% static 'js/navbar.js' %}"></script>
+<script src="{% static 'js/user_settings_modal.js' %}"></script>
+
 {% endblock javascript %} {% block content %}
+
+<div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="modal-id">
+  <div class="relative w-auto my-6 mx-auto max-w-3xl">
+    <!--content-->
+    <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+      <!--header-->
+      <div class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+        <h3 class="text-3xl font-semibold">
+          {{ user}} Settings
+        </h3>
+      </div>
+      <!--body-->
+      <div class="relative p-6 flex-auto">
+      </div>
+      <!--footer-->
+      <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+        <button class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" id="modal-id">
+          Close
+        </button>
+        <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" id="modal-id">
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id-backdrop"></div>
 
 <!-- top nav bar -->
 <div
@@ -40,7 +73,9 @@
                 </button>
               </div>
               <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden" id="userDropdown">
-                <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                <a class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="toggleModal('modal-id')">
+                  Settings
+                </a>
                 <a href="/accounts/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
               </div>
             </div>
@@ -50,6 +85,7 @@
               rel="noopener noreferrer"
               class="ml-6 block text-slate-400 hover:text-slate-500 dark:hover:text-slate-300"
             >
+            
               <span class="sr-only"> Recal++ on GitHub </span>
               <svg
                 viewBox="0 0 16 16"
@@ -107,14 +143,32 @@
             />
           </div>
         </div>
-        <ul id="courses" class="h-full px-1 pt-3 pb-2 overflow-y-auto"></ul>
+        <div id="enrolled-courses-container" class="flex-initial h-3/12% hidden">
+          <div class="col-md-6">
+            <center><h1 id="enrolled-courses-text"style="font-size: 24px; margin-top: 10px;">Enrolled Courses</h1>
+              <hr style="margin-bottom: 5px; margin-top: 10px;"></hr>
+            </center>
+            <div id="enrolled">
+              <!-- Enrolled courses will be dynamically added here -->
+                <ul id="enrolled-courses" class="h-3/12 px-1 pt-3 pb-2 overflow-y-auto"></ul>
+            </div>
+          </div>
+        </div>
+        <div id="courses list">
+          <center><h1 style="font-size: 24px; margin-top: 10px;">Course List</h1>
+            <hr style="margin-bottom: 5px; margin-top: 10px;">
+          </center>
+          <ul id="courses" class="flex-initial h-full px-1 pt-3 pb-2 overflow-y-auto"></ul>
+        </div>
       </nav>
     </div>
+
+    
 
     <!-- calendar -->
     <div id="calendar" class="w-[calc(50%)] mx-auto mt-0"></div>
 
-    <!-- degree progress sidebar -->
+      <!-- degree progress sidebar -->
     <div
       class="lg:block fixed z-20 inset-0 top-[2.8125rem] right-0 left-auto w-[max(220px,calc(25%))] pb-10 px-8 overflow-y-auto"
     >
@@ -152,8 +206,37 @@
         </div>
         <ul
           id="degree-progress-content"
-          class="h-full px-1 pt-3 pb-2 overflow-y-auto"
+          class="h-full px-1 pt-3 overflow-y-auto"
         ></ul>
+        <div id="metrics">
+          <center>
+            <h1 style="font-size: 24px;">Metrics</h1>
+            <hr style="margin-bottom: 5px; margin-top: 10px;">
+          </center>
+          <ul
+          id="general-metrics-content"
+          class="h-full px-1 pt-3 pb-2 overflow-y-auto"
+          ></ul>
+        <center>
+          <hr style="margin-bottom: 5px; margin-top: 5px;">
+          <h1 style="font-size: 16px;">Distributions</h1>
+          <hr style="margin-bottom: 5px; margin-top: 5px;">
+        </center>
+        <ul
+          id="distribution-metrics-content"
+          class="h-full px-1 pt-3 pb-2 overflow-y-auto"
+          ></ul>
+        <center>
+          <hr style="margin-bottom: 5px; margin-top: 5px;">
+          <h1 style="font-size: 16px;">Relevant Courses Satisfied</h1>
+          <hr style="margin-bottom: 5px; margin-top: 5px;">
+        </center>
+        <ul
+          id="relevant-courses-metrics-content"
+          class="max-h-32 px-1 pt-3 pb-2 overflow-y-auto"
+          ></ul>
+        </div>
+
       </nav>
     </div>
   </div>
