@@ -3,6 +3,8 @@
 {% block title %}{{ title }}{% endblock title %} 
 {% block javascript %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{% static 'js/combobox.js' %}"></script>
 <script src="{% static 'js/calendar_functionality.js' %}"></script>
 <script src="{% static 'js/course_search.js' %}"></script>
 <script src="{% static 'js/course_manager.js' %}"></script>
@@ -15,7 +17,14 @@
 <script src="{% static 'js/navbar.js' %}"></script>
 <script src="{% static 'js/user_settings_modal.js' %}"></script>
 
-{% endblock javascript %} {% block content %}
+{% endblock javascript %}
+
+{% block css %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock css %}
+
+
+{% block content %}
 
 <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="modal-id">
   <div class="relative w-auto my-6 mx-auto max-w-3xl">
@@ -27,6 +36,9 @@
           {{ user}} Settings
         </h3>
       </div>
+
+
+       <select class="js-example-basic-multiple" multiple="multiple"></select>
       <!--body-->
       <div class="relative p-6 flex-auto">
       </div>
