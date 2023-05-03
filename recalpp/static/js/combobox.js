@@ -29,5 +29,10 @@ function init_combobox() {
     .on("change", function (e) {
         const selectedValues = $(this).val();
         const courses = selectedValues.map((course) => JSON.parse(course));
+        const guidToCourseMap = {};
+        courses.forEach((course) => {
+            guidToCourseMap[course.guid] = course;
+        });
+        User.setCourseHistory(guidToCourseMap);
     });
 }
