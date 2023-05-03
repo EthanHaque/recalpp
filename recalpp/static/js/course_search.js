@@ -56,11 +56,18 @@ $(document).ready(init);
  */
 function handleCourseSearch(event) {
   const search = $(event.target).val().trim();
+  const noQueryText = $("#empty-query");
 
   if (search.length) {
     getCourses(search, updateCourses);
   } else {
     updateCourses([]);
+  }
+
+  if (search.length > 0) {
+    noQueryText.addClass("hidden");
+  } else {
+    noQueryText.removeClass("hidden");
   }
 }
 
