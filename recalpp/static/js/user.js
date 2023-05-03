@@ -25,6 +25,14 @@ var User = {
   },
 
   /**
+   * Returns the enrolled courses count of User
+   * @returns {number} - enrolled courses count
+   */
+  getEnrolledCoursesCount: function () {
+    return Object.keys(User.enrolledCourses).length;
+  },
+
+  /**
    * Checks if a course is in the enrolled courses dictionary
    * @param {Object} course - course object
    * @returns {boolean} - true if course is in the enrolled courses dictionary
@@ -68,7 +76,7 @@ var User = {
     return User.generateMetrics();
   },
 
-  /** 
+  /**
    * Generates the metrics object
    * @returns {Object} - metrics object
    */

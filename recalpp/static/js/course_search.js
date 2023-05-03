@@ -56,11 +56,18 @@ $(document).ready(init);
  */
 function handleCourseSearch(event) {
   const search = $(event.target).val().trim();
+  const noQueryText = $("#empty-query");
 
   if (search.length) {
     getCourses(search, updateCourses);
   } else {
     updateCourses([]);
+  }
+
+  if (search.length > 0) {
+    noQueryText.addClass("hidden");
+  } else {
+    noQueryText.removeClass("hidden");
   }
 }
 
@@ -171,8 +178,8 @@ function createCourseElement(course) {
               ${course.crosslistings_string}
             </div>
             <div class="text-right">
-              ${course.distribution_areas}
-           </div>
+            <span class="break-all" style="white-space: nowrap">${course.distribution_areas}</span>
+            </div>
            </div>
          </div>
          <div class="pl-4 ml-px w-full border-transparent text-slate-700 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-300 duration-75">
@@ -198,18 +205,17 @@ function createCourseElement(course) {
 }
 
 /**
- * adds an event handler to the add-to-calendar button
- *
+ * Adds an event handler to the add-to-calendar button
  * @param {string} selector - selector for the add-to-calendar button
  */
 function bindAddToCalendarEvent(selector) {
-  $(selector).on("click", function (event) {
+  $(selector).on("click", function () {
     const course = $(this).data().course;
     if (!User.isEnrolledInCourse(course)) {
       User.addToEnrolledCourses(course);
-      updateEnrolledCourses();
       addCourseToCalendar(course);
-      showEnrolledCoursesText();
+      updateEnrolledCoursesHeader();
+      displayEnrolledCourses();
       removeCourseFromList(course.guid);
       displayMetrics();
     }
@@ -251,9 +257,7 @@ function addCourseToList(course) {
 
     // Compare the catalog number of the current course element and the new course
     if (
-      currentCourseData.catalog_number.localeCompare(
-        course.catalog_number
-      ) > 0
+      currentCourseData.catalog_number.localeCompare(course.catalog_number) > 0
     ) {
       // Insert the new course before the current course element
       currentElement.before(courseHtml);
@@ -270,7 +274,6 @@ function addCourseToList(course) {
   // Bind the click event listener for the add-to-calendar button of the new course
   bindAddToCalendarEvent(".add-to-calendar");
 }
-
 
 /**
  * Removes a course from the course list based on the given course guid

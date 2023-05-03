@@ -1,7 +1,10 @@
 "use strict";
 
-function updateEnrolledCourses() {
-  const enrolledCourses = User.getEnrolledCourses(); 
+/**
+ * Displays Enrolled Courses
+ */
+function displayEnrolledCourses() {
+  const enrolledCourses = User.getEnrolledCourses();
   const enrolledCoursesList = Object.values(enrolledCourses)
     .map(
       (course) => `
@@ -13,8 +16,8 @@ function updateEnrolledCourses() {
                 ${course.crosslistings_string}
               </div>
               <div class="text-right">
-                ${course.distribution_areas}
-             </div>
+                <span class="break-all" style="white-space: nowrap">${course.distribution_areas}</span>
+              </div>
              </div>
            </div>
            <div class="pl-4 ml-px w-full border-transparent text-slate-700 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-300 duration-75">
@@ -37,32 +40,43 @@ function updateEnrolledCourses() {
   });
 }
 
+/**
+ * Removes from Enrolled Courses
+ * @param {string} guid - Course GUID
+ */
 function removeCourseFromEnrolled(guid) {
   const course = User.removeFromEnrolledCourses(guid);
-  updateEnrolledCourses();
+  displayEnrolledCourses();
   removeCourseFromCalendar(guid);
-  showEnrolledCoursesText();
+  updateEnrolledCoursesHeader();
   displayMetrics();
   // Call handleCourseSearch() to add the course back to the search list
   addCourseToList(course);
 }
 
+/**
+ * Updates the Enrolled Courses Header Text
+ */
 function updateEnrolledCoursesText() {
-  const enrolledCoursesCount = Object.keys(User.enrolledCourses).length;
-  const enrolledCoursesText = enrolledCoursesCount === 1 ? '1 Enrolled Course' : `${enrolledCoursesCount} Enrolled Courses`;
-  $('#enrolled-courses-text').text(enrolledCoursesText);
+  const enrolledCoursesCount = User.getEnrolledCoursesCount();
+  const enrolledCoursesText =
+    enrolledCoursesCount === 1
+      ? "1 Enrolled Course"
+      : `${enrolledCoursesCount} Enrolled Courses`;
+  $("#enrolled-courses-text").text(enrolledCoursesText);
 }
 
-function showEnrolledCoursesText() {
+/**
+ * Updates the Enrolled Courses Header
+ */
+function updateEnrolledCoursesHeader() {
   updateEnrolledCoursesText();
   const enrolledCoursesHeader = $("#enrolled-courses-container");
   // Check if the user has any enrolled courses
-  if (Object.keys(User.enrolledCourses).length > 0) {
+  if (User.getEnrolledCoursesCount() > 0) {
     // If yes, show the "Enrolled Courses" text
     enrolledCoursesHeader.removeClass("hidden");
   } else {
     enrolledCoursesHeader.addClass("hidden");
   }
 }
-
-

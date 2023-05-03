@@ -52,7 +52,6 @@ function processMeeting(meeting, meetings) {
   });
 }
 
-
 /**
  * Adds a course to the calendar
  * @param {Object} course - course object
@@ -73,14 +72,14 @@ async function addCourseToCalendar(course) {
     return baseDate.toISOString().slice(0, 10);
   }
 
-  const color = getDesaturatedColor(getRandomLightColor(), 70);
+  const color = getDesaturatedColor(getRandomLightColor(), 80);
   const darkColor = darkenColor(color);
 
   meetings.forEach((meet, index) => {
     const date = getIsoDateForDay(meet.day);
     const start = `${date}T${meet.startTime}`;
     const end = `${date}T${meet.endTime}`;
-  
+
     const event = {
       id: `${course.guid}-${index}`,
       section: meet.class_section,
@@ -101,7 +100,6 @@ async function addCourseToCalendar(course) {
   });
 }
 
-
 /**
  * Removes a course from the calendar
  * @param {Object} guid - course guid
@@ -109,9 +107,14 @@ async function addCourseToCalendar(course) {
  */
 function removeCourseFromCalendar(guid) {
   const events = User.getCourseMeetingsByGuid(guid);
+  console.log(guid);
+  console.log(events);
   User.removeCourseMeeting(guid);
   events.forEach((event) => {
     const calendarEvent = calendar.getEventById(event.id);
-    calendarEvent.remove();
+    if (calendarEvent !== null) {
+      console.log(event.id);
+      calendarEvent.remove();
+    }
   });
 }
