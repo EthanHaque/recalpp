@@ -4,6 +4,7 @@ var User = {
   enrolledCourses: {},
   courseHistory: {},
   courseMeetings: {},
+  notes: "",
 
   /**
    * Returns the course count of User
@@ -174,5 +175,13 @@ var User = {
     const courseMeetings = User.courseMeetings[courseGuid];
     delete User.courseMeetings[courseGuid];
     return courseMeetings;
+  },
+
+  /**
+   * Returns the notes of User
+   * @returns {string} - notes
+   */
+  getUserNotes: function () {
+    return User.notes;
   },
 };
