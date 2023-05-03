@@ -72,11 +72,14 @@ function updateEnrolledCoursesText() {
 function updateEnrolledCoursesHeader() {
   updateEnrolledCoursesText();
   const enrolledCoursesHeader = $("#enrolled-courses-container");
+  const noQueryText = $("#empty-query");
   // Check if the user has any enrolled courses
   if (User.getEnrolledCoursesCount() > 0) {
     // If yes, show the "Enrolled Courses" text
     enrolledCoursesHeader.removeClass("hidden");
+    noQueryText.removeClass("hidden");
   } else {
     enrolledCoursesHeader.addClass("hidden");
+    noQueryText.addClass("hidden");
   }
 }
