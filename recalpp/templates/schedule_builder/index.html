@@ -218,40 +218,10 @@
             <h1 style="font-size: 16px;">Notes</h1>
             <hr style="margin-bottom: 5px; margin-top: 5px;">
           </center>
-          <center>
-            <button id="edit-notes" class="px-2 py-1 bg-gray-400 text-white rounded">Edit</button>
-          </center>
           <div id="notes-display" class="mt-2"></div>
-          <textarea id="notes-textarea" class="hidden mt-2 w-full px-3 py-2 border rounded"></textarea>
-          <button id="save-notes" class="hidden mt-2 px-2 py-1 bg-green-500 text-white rounded">Save Changes</button>
+          <textarea id="notes-textarea" rows="5" class="mt-2 w-full px-3 py-2 border rounded h-100"></textarea>
+          <button id="save-notes" class="mt-2 px-2 py-1 bg-green-500 text-white rounded">Save Notes</button>
         </div>
-        
-        <script>
-          // Get the elements that we need
-          const editButton = document.getElementById('edit-notes');
-          const notesTextarea = document.getElementById('notes-textarea');
-          const saveButton = document.getElementById('save-notes');
-          const notesDisplay = document.getElementById('notes-display');
-        
-          // When the user clicks the edit button, show the textarea and save button
-          editButton.addEventListener('click', function() {
-            editButton.classList.add('hidden');
-            notesTextarea.classList.remove('hidden');
-            saveButton.classList.remove('hidden');
-            notesDisplay.classList.add('hidden');
-          });
-        
-          // When the user clicks the save button, hide the textarea and save button
-          // and update the notes display
-          saveButton.addEventListener('click', function() {
-            const notes = notesTextarea.value;
-            editButton.classList.remove('hidden');
-            notesTextarea.classList.add('hidden');
-            saveButton.classList.add('hidden');
-            notesDisplay.classList.remove('hidden');
-            notesDisplay.textContent = notes;
-          });
-        </script>
       </nav>
     </div>
   </div>
