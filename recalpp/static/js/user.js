@@ -4,6 +4,7 @@ var User = {
   enrolledCourses: {},
   courseHistory: {},
   courseMeetings: {},
+  notes: "",
 
   /**
    * Returns the course count of User
@@ -175,4 +176,20 @@ var User = {
     delete User.courseMeetings[courseGuid];
     return courseMeetings;
   },
+
+  /**
+   * Returns the notes of User
+   * @returns {string} - notes
+   */
+  getNotes: function () {
+    return User.notes;
+  },
+
+  /**
+   * Sets the notes of User
+   * @param {string} noteText - notes string
+   */
+  setNotes: function (notesText) {
+    User.notes = notesText; 
+  }
 };
