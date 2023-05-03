@@ -244,7 +244,9 @@ SPECTACULAR_SETTINGS = {
 # Your stuff...
 # ------------------------------------------------------------------------------
 
-TAILWIND_APP_NAME = 'theme'
+TAILWIND_APP_NAME = "theme"
+
+TAILWIND_CSS_PATH = "css/styles.css"
 
 NPM_BIN_PATH = "/usr/local/bin/npm"
 NODE_BIN_PATH = "/usr/local/bin/node"
