@@ -246,3 +246,7 @@ var User = {
       });
   },
 };
+
+$(document).ready(function () {
+  User.getUserProfile();
+});
