@@ -16,8 +16,8 @@ function displayEnrolledCourses() {
                 ${course.crosslistings_string}
               </div>
               <div class="text-right">
-                ${course.distribution_areas}
-             </div>
+                <span class="break-all" style="white-space: nowrap">${course.distribution_areas}</span>
+              </div>
              </div>
            </div>
            <div class="pl-4 ml-px w-full border-transparent text-slate-700 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-300 duration-75">
