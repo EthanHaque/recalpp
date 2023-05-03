@@ -221,21 +221,16 @@
             <hr style="margin-bottom: 5px; margin-top: 5px;">
           </center>
           <textarea id="notes-textarea" rows="5" class="mt-2 w-full px-3 py-2 border rounded"></textarea>
-          <button id="save-notes" class="mt-2 px-2 py-1 bg-green-500 text-white rounded">Save Notes</button>
         </div>
 
         <script>
           // Get references to the HTML elements
-          const notesTextarea = document.getElementById('notes-textarea');
-          const saveNotesButton = document.getElementById('save-notes');
+          const notesTextarea = document.getElementById("notes-textarea");
 
-          // Add an event listener to the button
-          saveNotesButton.addEventListener('click', () => {
-            // Get the text from the textarea
-            const notesText = notesTextarea.value;
-            
-            // Call the setNotes function to update the User object
-            User.setNotes(notesText);
+          // Updates user notes everytime change is detected
+          notesTextarea.addEventListener("input", () => {
+            const newNotes = notesTextarea.value;
+            User.setNotes(newNotes);
           });
         </script>
       </nav>
