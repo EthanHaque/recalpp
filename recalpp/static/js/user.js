@@ -181,7 +181,15 @@ var User = {
    * Returns the notes of User
    * @returns {string} - notes
    */
-  getUserNotes: function () {
+  getNotes: function () {
     return User.notes;
   },
+
+  /**
+   * Sets the notes of User
+   * @param {string} noteText - notes string
+   */
+  setNotes: function (notesText) {
+    User.notes = notesText; 
+  }
 };

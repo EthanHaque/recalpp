@@ -218,10 +218,24 @@
             <h1 style="font-size: 16px;">Notes</h1>
             <hr style="margin-bottom: 5px; margin-top: 5px;">
           </center>
-          <div id="notes-display" class="mt-2"></div>
-          <textarea id="notes-textarea" rows="5" class="mt-2 w-full px-3 py-2 border rounded h-100"></textarea>
+          <textarea id="notes-textarea" rows="5" class="mt-2 w-full px-3 py-2 border rounded"></textarea>
           <button id="save-notes" class="mt-2 px-2 py-1 bg-green-500 text-white rounded">Save Notes</button>
         </div>
+
+        <script>
+          // Get references to the HTML elements
+          const notesTextarea = document.getElementById('notes-textarea');
+          const saveNotesButton = document.getElementById('save-notes');
+
+          // Add an event listener to the button
+          saveNotesButton.addEventListener('click', () => {
+            // Get the text from the textarea
+            const notesText = notesTextarea.value;
+            
+            // Call the setNotes function to update the User object
+            User.setNotes(notesText);
+          });
+        </script>
       </nav>
     </div>
   </div>
