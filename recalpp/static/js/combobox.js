@@ -34,5 +34,6 @@ function init_combobox() {
             guidToCourseMap[course.guid] = course;
         });
         User.setCourseHistory(guidToCourseMap);
+        displayMetrics();
     });
 }

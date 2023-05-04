@@ -104,7 +104,7 @@ var User = {
     };
 
     let courseList = Object.values(User.getEnrolledCourses());
-    courseList = courseList.concat(Object.values(User.getCourseHistory));
+    courseList = courseList.concat(Object.values(User.getCourseHistory()));
     User.parseForMetrics(courseList, metrics);
 
     return metrics;
