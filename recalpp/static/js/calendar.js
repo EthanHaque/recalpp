@@ -32,43 +32,65 @@ $(document).ready(function () {
  * Toggles the enrollment of a course meeting.
  * @param {Object} calendar_event_object The event object that was clicked.
  */
-function toggleEventEnrollment(calendar_event_object) {
+function toggleEventEnrollment(calendar_event_object, save = true) {
   const guid = calendar_event_object.event.id.split("-")[0];
   const courseIndex = calendar_event_object.event.id.split("-")[1];
   const events = User.getCourseMeetingsByGuid(guid);
-  const numMeetingsForCourse = events.length;
+  const event = events[courseIndex];
+  event.enrolled = !event.enrolled;
+  updateSingleEventEnrollment(event, events);
+  if (save) User.saveUserProfile();
+}
 
-  const enrolled = events[courseIndex].enrolled;
-  events[courseIndex].enrolled = !enrolled;
-
-  const meetingIdentifier = events[courseIndex].section.charAt(0);
-  const baseColor = events[courseIndex].color;
-  const lightColor = getDesaturatedColor(baseColor, !enrolled ? -80 : 80);
+/**
+ * Updates the enrollment of a single event.
+ * @param {Object} event The event object.
+ * @param {Array} events The array of events.
+ */
+function updateSingleEventEnrollment(event, events) {
+  const enrolled = event.enrolled;
+  const meetingIdentifier = event.section.charAt(0);
+  const baseColor = event.color;
+  const lightColor = getDesaturatedColor(baseColor, enrolled ? -80 : 80);
   const darkColor = darkenColor(lightColor);
 
-  for (let i = 0; i < numMeetingsForCourse; i++) {
-    const sameSection = events[courseIndex].section === events[i].section;
-    const sameMeetingType = meetingIdentifier === events[i].section.charAt(0);
+  updateEventColors(calendar, event.id, lightColor, darkColor);
 
+  events.forEach((that) => {
+    const sameSection = that.section === event.section;
+    const sameMeetingType = meetingIdentifier === that.section.charAt(0);
+
+    // treat the event as if it was also toggled
     if (sameSection) {
-      events[i].enrolled = !enrolled;
-      updateEventColors(
-        calendar_event_object.view.calendar,
-        events[i].id,
-        lightColor,
-        darkColor
-      );
+      updateEventColors(calendar, that.id, lightColor, darkColor);
     }
 
-    if (sameMeetingType && !events[i].enrolled && !sameSection) {
-      if (enrolled) {
-        calendar_event_object.view.calendar.addEvent(events[i]);
-      } else {
-        calendar_event_object.view.calendar.getEventById(events[i].id).remove();
-      }
+    // if the event is the same meeting type and is not the same section
+    // then add/remove the event from the calendar depending on enrollment
+     if (sameMeetingType && !sameSection) {
+       const calendarEvent = calendar.getEventById(that.id);
+       if (!that.enrolled && !calendarEvent) {
+         calendar.addEvent(that);
+       } else if (enrolled && calendarEvent) {
+         calendarEvent.remove();
+       }
+     }
+  });
+}
+
+/**
+ * Given a list of events from the user's enrolled courses, update the 
+ * calendar to reflect the enrollment. I.e. if the user is enrolled in a
+ * particular section of a course, then all the other sections disappear.
+ * This should have the same effect as if the user had clicked on the event.
+ * @param {*} events The list of events from the user's enrolled courses.
+ */
+function updateEventsFromUserEnrolledCourses(events) { 
+  events.forEach((event) => { 
+    if (event.enrolled) {
+      updateSingleEventEnrollment(event, events);
     }
-  }
-  User.saveUserProfile();
+  });
 }
 
 /**

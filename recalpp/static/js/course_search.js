@@ -241,9 +241,9 @@ function bindAddToCalendarEvent(selector) {
  * Enrolls a user in a course and adds the course to the calendar
  * @param {Object} course - course object to enroll the user in
  */
-function enrollUserInCourse(course, save = true) {
+async function enrollUserInCourse(course, save = true) {
   User.addToEnrolledCourses(course);
-  addCourseToCalendar(course, save);
+  await addCourseToCalendar(course, save);
   updateUIAfterEnrollment(course);
 }
 
@@ -265,14 +265,16 @@ function updateUIAfterEnrollment(course) {
 function addStoredUserCoursesToCalendar() {
   const enrolledCourses = User.getEnrolledCourses();
   const storedMeetings = User.getCourseMeetings();
-  
+
   // cleaing user enrolled courses and stored meetings
   User.enrolledCourses = {};
   User.courseMeetings = {};
 
-  // iterate through the enrolled courses dictionary
   for (const course in enrolledCourses) {
-    enrollUserInCourse(enrolledCourses[course], false);
+    enrollUserInCourse(enrolledCourses[course], false).then(() => {
+      const events = storedMeetings[course];
+      updateEventsFromUserEnrolledCourses(events);
+    });
   }
 }
 
