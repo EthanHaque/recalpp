@@ -270,10 +270,13 @@ function addStoredUserCoursesToCalendar() {
   User.enrolledCourses = {};
   User.courseMeetings = {};
 
-  for (const course in enrolledCourses) {
-    enrollUserInCourse(enrolledCourses[course], false).then(() => {
-      const events = storedMeetings[course];
-      updateEventsFromUserEnrolledCourses(events);
+  for (const guid in enrolledCourses) {
+    enrollUserInCourse(enrolledCourses[guid], false).then(() => {
+      const events = storedMeetings[guid];
+      updateEventsFromUserEnrolledCourses(
+        events,
+        User.getCourseMeetingsByGuid(guid)
+      );
     });
   }
 }

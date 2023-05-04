@@ -83,12 +83,17 @@ function updateSingleEventEnrollment(event, events) {
  * calendar to reflect the enrollment. I.e. if the user is enrolled in a
  * particular section of a course, then all the other sections disappear.
  * This should have the same effect as if the user had clicked on the event.
- * @param {*} events The list of events from the user's enrolled courses.
+ * @param {*} storedEvents The list of events from the user's enrolled courses.
  */
-function updateEventsFromUserEnrolledCourses(events) { 
-  events.forEach((event) => { 
-    if (event.enrolled) {
-      updateSingleEventEnrollment(event, events);
+function updateEventsFromUserEnrolledCourses(storedEvents, userEvents) { 
+  storedEvents.forEach((storedEvent) => {
+    // Find the corresponding user event
+    const userEvent = userEvents.find((event) => event.id === storedEvent.id);
+
+    // If the user is enrolled in the stored event but not in the user's event,
+    // treat the event as if it was clicked on by the user
+    if (storedEvent.enrolled && (!userEvent || !userEvent.enrolled)) {
+      toggleEventEnrollment({ event: storedEvent }, false);
     }
   });
 }
