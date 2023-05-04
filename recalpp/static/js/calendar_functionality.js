@@ -74,30 +74,45 @@ async function addCourseToCalendar(course) {
 
   const meetingSections = getMeetingSections(meetings);
   const uniqueMeetings = getUniqueMeetings(meetingSections);
-  let isEnrolled = false;
-  let lightColor = getDesaturatedColor(getRandomLightColor(), 80);
-  let darkColor = darkenColor(lightColor);
-
+  const lightSaturatedColor = getRandomLightColor();
+  const darkSaturatedColor = darkenColor(lightSaturatedColor);
+  const lightDesaturatedColor = getDesaturatedColor(lightSaturatedColor, 80);
+  const darkDesaturatedColor = darkenColor(lightDesaturatedColor);
+  
   meetings.forEach((meet, index) => {
     const date = getIsoDateForDay(meet.day);
     const start = `${date}T${meet.startTime}`;
     const end = `${date}T${meet.endTime}`;
-
-    const event = {
-      id: `${course.guid}-${index}`,
-      section: meet.class_section,
-      enrolled: isEnrolled,
-      title: `${meet.class_subject_code}${meet.class_catalog_number} ${meet.class_section}`,
-      start: start,
-      end: end,
-      color: lightColor,
-      textColor: darkColor,
-    };
-
-    // Add the event to the calendar
-    calendar.addEvent(event);
-    User.addCourseMeeting(course.guid, event);
-
+    const isUnique = uniqueMeetings.some(section => section === meet.class_section);
+    if (isUnique) {
+      const event = {
+        id: `${course.guid}-${index}`,
+        section: meet.class_section,
+        enrolled: true,
+        title: `${meet.class_subject_code}${meet.class_catalog_number} ${meet.class_section}`,
+        start: start,
+        end: end,
+        color: lightSaturatedColor,
+        textColor: darkSaturatedColor,
+      };
+      // Add the event to the calendar
+      calendar.addEvent(event);
+      User.addCourseMeeting(course.guid, event);
+    } else {
+      const event = {
+        id: `${course.guid}-${index}`,
+        section: meet.class_section,
+        enrolled: false,
+        title: `${meet.class_subject_code}${meet.class_catalog_number} ${meet.class_section}`,
+        start: start,
+        end: end,
+        color: lightDesaturatedColor,
+        textColor: darkDesaturatedColor,
+      };
+      // Add the event to the calendar
+      calendar.addEvent(event);
+      User.addCourseMeeting(course.guid, event);
+    }
     // Remove the course from the list of available courses
     $(`li[data-course='${JSON.stringify({ guid: course.guid })}']`).remove();
   });
@@ -147,7 +162,7 @@ function getUniqueMeetings(meetingSections) {
       ) {
       meetingIdentifier = true;
     }
-
+    
     if (meetingIdentifier) {
       uniqueMeetings.push(currentSection);
     }
