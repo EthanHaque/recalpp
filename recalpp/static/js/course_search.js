@@ -46,7 +46,6 @@ async function init() {
     window.distributions = distributions;
 
     // TOOD: This should be moved to a separate file.
-    init_combobox();
     userInit();
     displayMetrics();
 
