@@ -45,9 +45,12 @@ async function init() {
     window.subjectCodes = subjectCodes;
     window.distributions = distributions;
 
-    // Initialize the combobox for settings.
     // TOOD: This should be moved to a separate file.
     init_combobox();
+    userInit();
+    displayMetrics();
+
+    // Update the calendar to automatically select the enrolled sections
 
   } catch (error) {
     console.error(`Error initializing data: ${error}`);
@@ -222,21 +225,55 @@ function createCourseElement(course) {
 }
 
 /**
- * Adds an event handler to the add-to-calendar button
+ * Binds a click event to the add-to-calendar button
  * @param {string} selector - selector for the add-to-calendar button
  */
 function bindAddToCalendarEvent(selector) {
   $(selector).on("click", function () {
     const course = $(this).data().course;
     if (!User.isEnrolledInCourse(course)) {
-      User.addToEnrolledCourses(course);
-      addCourseToCalendar(course);
-      updateEnrolledCoursesHeader();
-      displayEnrolledCourses();
-      removeCourseFromList(course.guid);
-      displayMetrics();
+      enrollUserInCourse(course);
     }
   });
+}
+
+/**
+ * Enrolls a user in a course and adds the course to the calendar
+ * @param {Object} course - course object to enroll the user in
+ */
+function enrollUserInCourse(course, save = true) {
+  User.addToEnrolledCourses(course);
+  addCourseToCalendar(course, save);
+  updateUIAfterEnrollment(course);
+}
+
+/**
+ * Updates the UI after enrolling a user in a course
+ * @param {Object} course - course object the user has enrolled in
+ */
+function updateUIAfterEnrollment(course) {
+  updateEnrolledCoursesHeader();
+  displayEnrolledCourses();
+  removeCourseFromList(course.guid);
+  displayMetrics();
+}
+
+
+/**
+ * Adds courses the user has previously enrolled in to the calendar
+ */
+function addStoredUserCoursesToCalendar() {
+  const enrolledCourses = User.getEnrolledCourses();
+  const storedMeetings = User.getCourseMeetings();
+  
+  // cleaing user enrolled courses and stored meetings
+  User.enrolledCourses = {};
+  User.courseMeetings = {};
+
+  // iterate through the enrolled courses dictionary
+  for (const course in enrolledCourses) {
+    enrollUserInCourse(enrolledCourses[course], false);
+  }
 }
 
 /**
