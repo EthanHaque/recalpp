@@ -31,6 +31,12 @@ function saveUserNotes() {
   User.setNotes($notesTextarea.val());
 }
 
+/**
+ * Debounces a function
+ * @param {*} func
+ * @param {*} timeout - milliseconds
+ * @returns  {Function} - debounced function
+ */
 function debounce(func, timeout = 300) {
   let timer;
   return (...args) => {
@@ -40,5 +46,3 @@ function debounce(func, timeout = 300) {
     }, timeout);
   };
 }
-
-
