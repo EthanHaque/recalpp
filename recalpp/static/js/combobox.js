@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * This method is used to initialize the combobox.
  */

@@ -1,3 +1,5 @@
+"use strict";
+
 document.addEventListener("DOMContentLoaded", function () {
   const userButton = document.getElementById("userButton");
   const userDropdown = document.getElementById("userDropdown");
