@@ -4,6 +4,14 @@ from api_v1.serializers import (CourseSerializer, InstructorSerializer, CourseIn
                                  CrossListingSerializer, ClassSerializer, MeetingSerializer)
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from recalpp.schedule_builder.models import UserProfile
+
+import json
+
+
 
 class CourseViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Course.objects.all()
@@ -77,3 +85,46 @@ def get_distributions(request):
         distributions = f.read().splitlines()
     return Response({'distributions': distributions})
 
+
+
+@csrf_exempt
+def save_user_profile(request):
+    if request.method == 'POST':
+        user_data = request.POST.get('user_data')
+        
+        # You may need to parse the user_data from JSON if it is sent as a JSON string
+        user_data = json.loads(user_data)
+
+        # Assuming the user is authenticated, retrieve the user object
+        user = request.user
+
+        # Create a UserProfile instance with the User object data
+        user_profile, _ = UserProfile.objects.get_or_create(user=user)
+        user_profile.enrolled_courses = user_data['enrolledCourses']
+        user_profile.course_history = user_data['courseHistory']
+        user_profile.course_meetings = user_data['courseMeetings']
+        user_profile.notes = user_data['notes']
+        user_profile.save()
+
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'failed'})
+
+
+@login_required
+def get_user_profile(request):
+    if request.method == 'GET':
+        user = request.user
+        try:
+            user_profile = UserProfile.objects.get(user=user)
+            response_data = {
+                'enrolledCourses': user_profile.enrolled_courses,
+                'courseHistory': user_profile.course_history,
+                'courseMeetings': user_profile.course_meetings,
+                'notes': user_profile.notes,
+            }
+            return JsonResponse(response_data)
+        except UserProfile.DoesNotExist:
+            return JsonResponse({'error': 'User profile not found'}, status=404)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)

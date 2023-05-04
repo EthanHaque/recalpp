@@ -1,3 +1,5 @@
+"use strict";
+
 $(document).ready(function () {
   const closeModalButton = $("#modal-id button[type='button']");
   closeModalButton.on("click", function () {

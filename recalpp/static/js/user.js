@@ -6,6 +6,8 @@ var User = {
   courseMeetings: {},
   notes: "",
 
+  
+
   /**
    * Returns the course count of User
    * @returns {number} - course count
@@ -55,18 +57,28 @@ var User = {
    * @param {string} guid - course guid
    * @returns {Object} - course object
    */
-  removeFromEnrolledCourses: function (guid) {
+  removeFromEnrolledCourses: function (guid, save = true) {
     const course = User.enrolledCourses[guid];
     delete User.enrolledCourses[guid];
+    if (save) User.saveUserProfile();
     return course;
   },
 
   /**
    * Returns the course history dictionary
-   * @returns {Object} - course history dictionary
+   * @returns {Object} - course history dictionary where key is course guid and value is course object.
    */
   getCourseHistory: function () {
     return User.courseHistory;
+  },
+
+  /**
+   * Returns the course history count of User.
+   * @param {Object} courseHistory - course history dictionary
+   */
+  setCourseHistory: function (courseHistory, save = true) {
+    User.courseHistory = courseHistory;
+    if (save) User.saveUserProfile();
   },
 
   /**
@@ -74,7 +86,8 @@ var User = {
    * @returns {Object} - metrics object
    */
   getMetrics: function () {
-    return User.generateMetrics();
+    const metrics = User.generateMetrics();
+    return metrics;
   },
 
   /**
@@ -96,7 +109,7 @@ var User = {
     };
 
     let courseList = Object.values(User.getEnrolledCourses());
-    courseList = courseList.concat(Object.values(User.getCourseHistory));
+    courseList = courseList.concat(Object.values(User.getCourseHistory()));
     User.parseForMetrics(courseList, metrics);
 
     return metrics;
@@ -156,13 +169,15 @@ var User = {
    * @param {string} courseGuid - course guid
    * @returns {Object} - course meeting object
    */
-  addCourseMeeting: function (courseGuid, courseMeeting) {
+  addCourseMeeting: function (courseGuid, courseMeeting, save = true) {
     // adds to array if courseGuid already exists
     if (User.courseMeetings.hasOwnProperty(courseGuid)) {
       User.courseMeetings[courseGuid].push(courseMeeting);
     } else {
       User.courseMeetings[courseGuid] = [courseMeeting];
     }
+    if (save) User.saveUserProfile();
+
     return courseMeeting;
   },
 
@@ -171,9 +186,10 @@ var User = {
    * @param {string} courseGuid - course guid
    * @returns {Object} - course meeting object
    */
-  removeCourseMeeting: function (courseGuid) {
+  removeCourseMeeting: function (courseGuid, save = true) {
     const courseMeetings = User.courseMeetings[courseGuid];
     delete User.courseMeetings[courseGuid];
+    if (save) User.saveUserProfile();
     return courseMeetings;
   },
 
@@ -189,7 +205,73 @@ var User = {
    * Sets the notes of User
    * @param {string} noteText - notes string
    */
-  setNotes: function (notesText) {
-    User.notes = notesText; 
-  }
+  setNotes: function (notesText, save = true) {
+    User.notes = notesText;
+    if (save) User.saveUserProfile();
+  },
+
+  /**
+   * Saves the user profile to the database
+   */
+  saveUserProfile: function () {
+    $.post("/api/v1/save_user_profile/", {
+      user_data: JSON.stringify(User),
+      csrfmiddlewaretoken: User.getCookie("csrftoken"),
+    }).done(function (data) {
+      if (data.status === "success") {
+        console.log("User profile saved successfully");
+      } else {
+        console.log("Failed to save user profile");
+      }
+    });
+  },
+
+  /**
+   * Utility function to get CSRF token from cookies
+   * @param {string} name - cookie name
+   * @returns {string} - cookie value
+   */
+  getCookie: function (name) {
+    let value = "; " + document.cookie;
+    let parts = value.split("; " + name + "=");
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  },
+
+  /**
+   * Loads the user profile from the database
+   * @returns {Object} - user profile object
+   */
+  getUserProfile: function () {
+    $.get("/api/v1/get_user_profile/")
+      .done(function (data) {
+        User.enrolledCourses = data.enrolledCourses;
+        User.courseHistory = data.courseHistory;
+        User.courseMeetings = data.courseMeetings;
+        User.notes = data.notes;
+        console.log("User profile loaded successfully");
+        setUserNotes();
+        addStoredUserCoursesToCalendar();
+      })
+      .fail(function (jqXHR, textStatus, errorThrown) {
+        console.log("Failed to load user profile:", textStatus, errorThrown);
+      });
+  },
+
+  /**
+   * Resets the user profile
+   */
+  resetUserProfile: function () {
+    User.enrolledCourses = {};
+    User.courseHistory = {};
+    User.courseMeetings = {};
+    User.notes = "";
+    User.saveUserProfile();
+  },
 };
+
+/**
+ * Displays the metrics on the profile page
+ */
+function userInit() {
+  User.getUserProfile();
+}

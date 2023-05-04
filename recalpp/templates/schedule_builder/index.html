@@ -3,6 +3,10 @@
 {% block title %}{{ title }}{% endblock title %} 
 {% block javascript %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{% static 'js/user.js' %}"></script>
+<script src="{% static 'js/notes.js' %}"></script>
+<script src="{% static 'js/combobox.js' %}"></script>
 <script src="{% static 'js/calendar_functionality.js' %}"></script>
 <script src="{% static 'js/course_search.js' %}"></script>
 <script src="{% static 'js/course_manager.js' %}"></script>
@@ -10,12 +14,18 @@
 <script src="{% static 'js/departments.js' %}"></script>
 <script src="{% static 'js/calendar.js' %}"></script>
 <script src="{% static 'js/colors.js' %}"></script>
-<script src="{% static 'js/user.js' %}"></script>
 <script src="{% static 'js/index.global.js' %}"></script>
 <script src="{% static 'js/navbar.js' %}"></script>
 <script src="{% static 'js/user_settings_modal.js' %}"></script>
 
-{% endblock javascript %} {% block content %}
+{% endblock javascript %}
+
+{% block css %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock css %}
+
+
+{% block content %}
 
 <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="modal-id">
   <div class="relative w-auto my-6 mx-auto max-w-3xl">
@@ -27,16 +37,15 @@
           {{ user}} Settings
         </h3>
       </div>
+
+       <select class="js-example-basic-multiple" multiple="multiple"></select>
       <!--body-->
       <div class="relative p-6 flex-auto">
       </div>
       <!--footer-->
       <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-        <button class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" id="modal-id">
+        <button class="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" id="modal-id">
           Close
-        </button>
-        <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" id="modal-id">
-          Save Changes
         </button>
       </div>
     </div>
@@ -45,10 +54,8 @@
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id-backdrop"></div>
 
 <!-- top nav bar -->
-<div
-  id="top-nav-bar"
-  class="sticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 lg:border-b lg:border-slate-600/50 dark:border-slate-50/[0.06] supports-backdrop-blur:bg-white/60 bg-transparent"
->
+<div id="top-nav-bar" class="sticky top-0 z-40 w-full bg-gray-800 flex-none transition-colors duration-500 lg:z-50 lg:border-b lg:border-slate-600/50 dark:border-slate-50/[0.06] supports-backdrop-blur:bg-white/60">
+
   <div class="max-w-8xl mx-auto">
     <div
       class="py-4 border-b border-slate-900/10 lg:px-8 lg:border-0 dark:border-slate-300/10 mx-4 lg:mx-0"
@@ -65,6 +72,7 @@
           <div class="flex items-center ml-6 pl-6">
             <div class="relative inline-block">
               <div>
+                <!--User button-->
                 <button type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white dark:bg-slate-800 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-100 hover:bg-gray-50 dark:hover:bg-gray-900" id="userButton" aria-expanded="false" aria-haspopup="true">
                   {{ user }}
                   <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -72,6 +80,7 @@
                   </svg>
                 </button>
               </div>
+              <!--Modal Dropdown-->
               <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden" id="userDropdown">
                 <a class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="toggleModal('modal-id')">
                   Settings
@@ -79,6 +88,8 @@
                 <a href="/accounts/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
               </div>
             </div>
+
+            <!--Github Button-->
             <a
               href="https://github.com/EthanHaque/recalpp"
               target="_blank"
@@ -219,23 +230,7 @@
             <hr style="margin-bottom: 5px; margin-top: 5px;">
           </center>
           <textarea id="notes-textarea" rows="5" class="mt-2 w-full px-3 py-2 border rounded"></textarea>
-          <button id="save-notes" class="mt-2 px-2 py-1 bg-green-500 text-white rounded">Save Notes</button>
         </div>
-
-        <script>
-          // Get references to the HTML elements
-          const notesTextarea = document.getElementById('notes-textarea');
-          const saveNotesButton = document.getElementById('save-notes');
-
-          // Add an event listener to the button
-          saveNotesButton.addEventListener('click', () => {
-            // Get the text from the textarea
-            const notesText = notesTextarea.value;
-            
-            // Call the setNotes function to update the User object
-            User.setNotes(notesText);
-          });
-        </script>
       </nav>
     </div>
   </div>
