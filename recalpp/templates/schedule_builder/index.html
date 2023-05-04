@@ -5,6 +5,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="{% static 'js/user.js' %}"></script>
+<script src="{% static 'js/notes.js' %}"></script>
 <script src="{% static 'js/combobox.js' %}"></script>
 <script src="{% static 'js/calendar_functionality.js' %}"></script>
 <script src="{% static 'js/course_search.js' %}"></script>
@@ -232,12 +233,12 @@
         </div>
 
         <script>
-          // Get references to the HTML elements
-          const notesTextarea = document.getElementById("notes-textarea");
-
-          // Updates user notes everytime change is detected
-          notesTextarea.addEventListener("input", () => {
-            const newNotes = notesTextarea.value;
+          // Get a jQuery reference to the HTML element
+          const $notesTextarea = $("#notes-textarea");
+        
+          // Update user notes every time change is detected
+          $notesTextarea.on("input", () => {
+            const newNotes = $notesTextarea.val();
             User.setNotes(newNotes);
           });
         </script>
