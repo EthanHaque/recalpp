@@ -22,76 +22,53 @@ $(document).ready(function () {
     },
     events: [],
     eventClick: function (calendar_event_object) {
-      const guid = calendar_event_object.event.id.split("-")[0];
-      const courseIndex = calendar_event_object.event.id.split("-")[1];
-      const events = User.getCourseMeetingsByGuid(guid);
-      const numMeetingsForCourse = events.length;
-
-    
-      
-
-      if (events[courseIndex].enrolled) {
-        events[courseIndex].enrolled = false;
-        // Determines if the event is a precept: P, class: C, etc.
-        const meetingIdentifier = events[courseIndex].section.charAt(0);
-        // Colors
-        const unsaturatedLightColor = getDesaturatedColor(events[courseIndex].color, 80);
-        const unsaturatedDarkColor = darkenColor(unsaturatedLightColor);
-        // Changes all relevant sections enrolled false and color to default
-        for (let i = 0; i < numMeetingsForCourse; i++) {
-          if (events[courseIndex].section === events[i].section) {
-            events[i].enrolled = false;
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .setProp("backgroundColor", unsaturatedLightColor);
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .setProp("borderColor", unsaturatedLightColor);
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .setProp("textColor", unsaturatedDarkColor);
-          }
-          if (
-            meetingIdentifier === events[i].section.charAt(0) &&
-            !events[i].enrolled &&
-            events[i].section !== events[courseIndex].section
-          ) {
-            calendar_event_object.view.calendar.addEvent(events[i]);
-          }
-        }
-      } else {
-        events[courseIndex].enrolled = true;
-        // Determines if the event is a precept: P, class: C, etc.
-        const meetingIdentifier = events[courseIndex].section.charAt(0);
-        // Colors
-        const saturatedLightColor = getDesaturatedColor(events[courseIndex].color, -80);
-        const saturatedDarkColor = darkenColor(saturatedLightColor);
-        // Change all relevant sections to enrolled true and resaturate the event
-        for (let i = 0; i < numMeetingsForCourse; i++) {
-          if (events[courseIndex].section === events[i].section) {
-            events[i].enrolled = true;
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .setProp("backgroundColor", saturatedLightColor);
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .setProp("borderColor", saturatedLightColor);
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .setProp("textColor", saturatedDarkColor);
-          }
-          if (
-            meetingIdentifier === events[i].section.charAt(0) &&
-            !events[i].enrolled &&
-            events[i].section !== events[courseIndex].section
-          ) {
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .remove();
-          }
-        }
-      }
+      toggleEventEnrollment(calendar_event_object);
     },
   });
   calendar.render();
 });
+
+function toggleEventEnrollment(calendar_event_object) {
+  const guid = calendar_event_object.event.id.split("-")[0];
+  const courseIndex = calendar_event_object.event.id.split("-")[1];
+  const events = User.getCourseMeetingsByGuid(guid);
+  const numMeetingsForCourse = events.length;
+
+  const enrolled = events[courseIndex].enrolled;
+  events[courseIndex].enrolled = !enrolled;
+
+  const meetingIdentifier = events[courseIndex].section.charAt(0);
+  const baseColor = events[courseIndex].color;
+  const lightColor = getDesaturatedColor(baseColor, !enrolled ? -80 : 80);
+  const darkColor = darkenColor(lightColor);
+
+  for (let i = 0; i < numMeetingsForCourse; i++) {
+    const sameSection = events[courseIndex].section === events[i].section;
+    const sameMeetingType = meetingIdentifier === events[i].section.charAt(0);
+
+    if (sameSection) {
+      events[i].enrolled = !enrolled;
+      updateEventColors(
+        calendar_event_object.view.calendar,
+        events[i].id,
+        lightColor,
+        darkColor
+      );
+    }
+
+    if (sameMeetingType && !events[i].enrolled && !sameSection) {
+      if (enrolled) {
+        calendar_event_object.view.calendar.addEvent(events[i]);
+      } else {
+        calendar_event_object.view.calendar.getEventById(events[i].id).remove();
+      }
+    }
+  }
+  User.saveUserProfile();
+}
+
+function updateEventColors(calendar, eventId, backgroundColor, textColor) {
+  calendar.getEventById(eventId).setProp("backgroundColor", backgroundColor);
+  calendar.getEventById(eventId).setProp("borderColor", backgroundColor);
+  calendar.getEventById(eventId).setProp("textColor", textColor);
+}
