@@ -9,10 +9,12 @@ $(document).ready(function () {
 
 function toggleModal(modalID) {
   const modal = $("#" + modalID);
+  const settingsButton = $("#userDropdown");
   const modalBackdrop = $("#" + modalID + "-backdrop");
-
+  settingsButton.addClass("hidden");
   modal.toggleClass("hidden");
   modalBackdrop.toggleClass("hidden");
   modal.toggleClass("flex");
   modalBackdrop.toggleClass("flex");
+
 }
