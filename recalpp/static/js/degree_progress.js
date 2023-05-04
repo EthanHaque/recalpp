@@ -61,19 +61,19 @@ function buildRelevantCoursesMetricsHtml(metrics) {
 
   Object.values(prereqsMet).forEach(function (course) {
     relevantCoursesHtml += `
-    <li class="group border-solid border-b flex items-center justify-between">
-    <div class="block w-11/12 h-max">
-      <div class="ml-px w-full border-transparent text-slate-700 dark:text-slate-400">
-        <div class="flex flex-row justify-between">
-          <div class="flex-initial">
-            ${course.crosslistings_string}
-          </div>
-          <div class="text-right">
-            ${course.distribution_areas}
-          </div>
+    <li class="group flex items-center justify-between">
+      <div class="block w-11/12 h-max">
+        <div class="pl-4 ml-px w-full border-transparent text-slate-700 dark:text-slate-400">
+          <div class="flex flex-row justify-between">
+            <div class="flex-initial w-64">
+              ${course.crosslistings_string}
+            </div>
+            <div class="text-right">
+            <span class="break-all" style="white-space: nowrap">${course.distribution_areas}</span>
+            </div>
+           </div>
          </div>
-       </div>
-     </div>`;
+        </div>`
   });
 
   return relevantCoursesHtml;
