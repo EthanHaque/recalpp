@@ -28,23 +28,26 @@
 {% block content %}
 
 <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="modal-id">
-  <div class="relative w-auto my-6 mx-auto max-w-3xl">
+  <div class="relative my-6 w-1/3 h-auto max-h-3xl">
     <!--content-->
-    <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+    <div class="border-0 rounded-lg shadow-lg relative flex flex-col bg-gray-100 dark:bg-gray-700 outline-none focus:outline-none w-500">
       <!--header-->
-      <div class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-        <h3 class="text-3xl font-semibold">
-          {{ user}} Settings
-        </h3>
+      <div class="flex items-start justify-between p-5 rounded-t w-full">
+        <div class="w-full">
+          <h3 class="text-3xl dark:text-slate-300 font-semibold text-center">
+            {{ user}} Settings
+          </h3>
+        </div>
       </div>
-
-       <select class="js-example-basic-multiple" multiple="multiple"></select>
+      <div class="dark:bg-gray-700 p-4 w-full pb-12">
+       <select class="js-example-basic-multiple h-10" multiple="multiple"></select>
+      </div>
       <!--body-->
-      <div class="relative p-6 flex-auto">
+      <div class="relative p-2 flex-auto">
       </div>
       <!--footer-->
-      <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-        <button class="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" id="modal-id">
+      <div class="flex items-center justify-end p-2 rounded-b mt-20">
+        <button class="bg-blue-500 dark:bg-slate-800 dark:hover:bg-slate-900 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" id="modal-id">
           Close
         </button>
       </div>
@@ -54,7 +57,7 @@
 <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id-backdrop"></div>
 
 <!-- top nav bar -->
-<div id="top-nav-bar" class="sticky top-0 z-40 w-full bg-gray-800 flex-none transition-colors duration-500 lg:z-50 lg:border-b lg:border-slate-600/50 dark:border-slate-50/[0.06] supports-backdrop-blur:bg-white/60">
+<div id="top-nav-bar" class="sticky top-0 z-40 w-full bg-gray-100 dark:bg-gray-800 flex-none transition-colors duration-500 lg:z-50 lg:border-b lg:border-slate-600/50 dark:border-slate-50/[0.06] supports-backdrop-blur:bg-white/60">
 
   <div class="max-w-8xl mx-auto">
     <div
@@ -65,15 +68,15 @@
           class="mr-3 flex-none w-[2.0625rem] overflow-hidden md:w-auto"
           href="/"
         >
-          <span class="sr-only"> Recal++ </span>
+          <span class="sr-only"> ReCal++ </span>
         </a>
-        <div class="relative" data-headlessui-state="">Recal++</div>
+        <div class="relative" data-headlessui-state="">ReCal++</div>
         <div class="relative lg:flex items-center ml-auto">
           <div class="flex items-center ml-6 pl-6">
             <div class="relative inline-block">
               <div>
                 <!--User button-->
-                <button type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white dark:bg-slate-800 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-100 hover:bg-gray-50 dark:hover:bg-gray-900" id="userButton" aria-expanded="false" aria-haspopup="true">
+                <button type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white dark:bg-slate-800 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-100 hover:bg-gray-300 dark:hover:bg-gray-900" id="userButton" aria-expanded="false" aria-haspopup="true">
                   {{ user }}
                   <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
@@ -81,11 +84,11 @@
                 </button>
               </div>
               <!--Modal Dropdown-->
-              <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden" id="userDropdown">
-                <a class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="toggleModal('modal-id')">
+              <div class="absolute right-0 mt-2 w-48 bg-white bg-slate-300 dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden border border-slate-700" id="userDropdown">
+                <a id="settings-button" class="cursor-pointer block px-4 py-2 text-sm dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-gray-900" onclick="toggleModal('modal-id')">
                   Settings
                 </a>
-                <a href="/accounts/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                <a id="logout-button" href="/accounts/logout" class="block px-4 py-2 text-sm dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-gray-900">Logout</a>
               </div>
             </div>
 
@@ -97,7 +100,7 @@
               class="ml-6 block text-slate-400 hover:text-slate-500 dark:hover:text-slate-300"
             >
             
-              <span class="sr-only"> Recal++ on GitHub </span>
+              <span class="sr-only"> ReCal++ on GitHub </span>
               <svg
                 viewBox="0 0 16 16"
                 class="w-5 h-5"
@@ -213,7 +216,7 @@
           id="distribution-metrics-content"
           class="h-full px-1 pt-3 pb-2 overflow-y-auto"
           ></ul>
-        <center>
+        <!-- <center>
           <hr style="margin-bottom: 5px; margin-top: 5px;">
           <h1 style="font-size: 16px;">Relevant Courses Satisfied</h1>
           <hr style="margin-bottom: 5px; margin-top: 5px;">
@@ -221,13 +224,13 @@
         <ul
           id="relevant-courses-metrics-content"
           class="max-h-32 px-1 pt-3 pb-2 overflow-y-auto"
-          ></ul>
+          ></ul> -->
         </div>
         <div id="user-notes">
           <center>
-            <hr style="margin-bottom: 5px; margin-top: 5px;">
-            <h1 style="font-size: 16px;">Notes</h1>
-            <hr style="margin-bottom: 5px; margin-top: 5px;">
+            <hr style="margin-bottom: 10px; margin-top: 5px;">
+            <h1 style="font-size: 24px;">General Notes</h1>
+            <hr style="margin-bottom: 5px; margin-top: 10px;">
           </center>
           <textarea id="notes-textarea" rows="5" class="mt-2 w-full px-3 py-2 border rounded"></textarea>
         </div>

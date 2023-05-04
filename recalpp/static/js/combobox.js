@@ -6,6 +6,7 @@
 function init_combobox() {
   $(".js-example-basic-multiple")
     .select2({
+      width: '100%',
       closeOnSelect: false,
       ajax: {
         url: `/api/v1/courses`,
