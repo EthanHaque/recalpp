@@ -1,18 +1,48 @@
 "use strict";
 
 function init() {
-    updateUserNotes();
+  initializeUserNotesElement();
 }
 
 $(document).ready(init);
 
-function updateUserNotes() {
-    // Get a jQuery reference to the HTML element
-    const $notesTextarea = $("#notes-textarea");
-            
-    // Update user notes every time change is detected
-    $notesTextarea.on("input", () => {
-    const newNotes = $notesTextarea.val();
-    User.setNotes(newNotes);
-    });
+/**
+ * Initializes the user notes element
+ */
+function initializeUserNotesElement() {
+  const $notesTextarea = $("#notes-textarea");
+  const processChange = debounce(() => saveUserNotes());
+  $notesTextarea.on("input", processChange);
+}
+
+/**
+ * Sets the user notes in the notes textarea
+ */
+function setUserNotes() {
+  const $notesTextarea = $("#notes-textarea");
+  $notesTextarea.val(User.getNotes());
+}
+
+/**
+ * Saves the user notes to the database
+ */
+function saveUserNotes() {
+  const $notesTextarea = $("#notes-textarea");
+  User.setNotes($notesTextarea.val());
+}
+
+/**
+ * Debounces a function
+ * @param {*} func
+ * @param {*} timeout - milliseconds
+ * @returns  {Function} - debounced function
+ */
+function debounce(func, timeout = 300) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
+  };
 }

@@ -22,76 +22,91 @@ $(document).ready(function () {
     },
     events: [],
     eventClick: function (calendar_event_object) {
-      const guid = calendar_event_object.event.id.split("-")[0];
-      const courseIndex = calendar_event_object.event.id.split("-")[1];
-      const events = User.getCourseMeetingsByGuid(guid);
-      const numMeetingsForCourse = events.length;
-
-    
-      
-
-      if (events[courseIndex].enrolled) {
-        events[courseIndex].enrolled = false;
-        // Determines if the event is a precept: P, class: C, etc.
-        const meetingIdentifier = events[courseIndex].section.charAt(0);
-        // Colors
-        const unsaturatedLightColor = getDesaturatedColor(events[courseIndex].color, 80);
-        const unsaturatedDarkColor = darkenColor(unsaturatedLightColor);
-        // Changes all relevant sections enrolled false and color to default
-        for (let i = 0; i < numMeetingsForCourse; i++) {
-          if (events[courseIndex].section === events[i].section) {
-            events[i].enrolled = false;
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .setProp("backgroundColor", unsaturatedLightColor);
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .setProp("borderColor", unsaturatedLightColor);
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .setProp("textColor", unsaturatedDarkColor);
-          }
-          if (
-            meetingIdentifier === events[i].section.charAt(0) &&
-            !events[i].enrolled &&
-            events[i].section !== events[courseIndex].section
-          ) {
-            calendar_event_object.view.calendar.addEvent(events[i]);
-          }
-        }
-      } else {
-        events[courseIndex].enrolled = true;
-        // Determines if the event is a precept: P, class: C, etc.
-        const meetingIdentifier = events[courseIndex].section.charAt(0);
-        // Colors
-        const saturatedLightColor = getDesaturatedColor(events[courseIndex].color, -80);
-        const saturatedDarkColor = darkenColor(saturatedLightColor);
-        // Change all relevant sections to enrolled true and resaturate the event
-        for (let i = 0; i < numMeetingsForCourse; i++) {
-          if (events[courseIndex].section === events[i].section) {
-            events[i].enrolled = true;
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .setProp("backgroundColor", saturatedLightColor);
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .setProp("borderColor", saturatedLightColor);
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .setProp("textColor", saturatedDarkColor);
-          }
-          if (
-            meetingIdentifier === events[i].section.charAt(0) &&
-            !events[i].enrolled &&
-            events[i].section !== events[courseIndex].section
-          ) {
-            calendar_event_object.view.calendar
-              .getEventById(events[i].id)
-              .remove();
-          }
-        }
-      }
+      toggleEventEnrollment(calendar_event_object);
     },
   });
   calendar.render();
 });
+
+/**
+ * Toggles the enrollment of a course meeting.
+ * @param {Object} calendar_event_object The event object that was clicked.
+ */
+function toggleEventEnrollment(calendar_event_object, save = true) {
+  const guid = calendar_event_object.event.id.split("-")[0];
+  const courseIndex = calendar_event_object.event.id.split("-")[1];
+  const events = User.getCourseMeetingsByGuid(guid);
+  const event = events[courseIndex];
+  event.enrolled = !event.enrolled;
+  updateSingleEventEnrollment(event, events);
+  if (save) User.saveUserProfile();
+}
+
+/**
+ * Updates the enrollment of a single event.
+ * @param {Object} event The event object.
+ * @param {Array} events The array of events.
+ */
+function updateSingleEventEnrollment(event, events) {
+  const enrolled = event.enrolled;
+  const meetingIdentifier = event.section.charAt(0);
+  const baseColor = event.color;
+  const lightColor = getDesaturatedColor(baseColor, enrolled ? -80 : 80);
+  const darkColor = darkenColor(lightColor);
+
+  updateEventColors(calendar, event.id, lightColor, darkColor);
+
+  events.forEach((that) => {
+    const sameSection = that.section === event.section;
+    const sameMeetingType = meetingIdentifier === that.section.charAt(0);
+
+    // treat the event as if it was also toggled
+    if (sameSection) {
+      updateEventColors(calendar, that.id, lightColor, darkColor);
+    }
+
+    // if the event is the same meeting type and is not the same section
+    // then add/remove the event from the calendar depending on enrollment
+     if (sameMeetingType && !sameSection) {
+       const calendarEvent = calendar.getEventById(that.id);
+       if (!that.enrolled && !calendarEvent) {
+         calendar.addEvent(that);
+       } else if (enrolled && calendarEvent) {
+         calendarEvent.remove();
+       }
+     }
+  });
+}
+
+/**
+ * Given a list of events from the user's enrolled courses, update the 
+ * calendar to reflect the enrollment. I.e. if the user is enrolled in a
+ * particular section of a course, then all the other sections disappear.
+ * This should have the same effect as if the user had clicked on the event.
+ * @param {*} storedEvents The list of events from the user's enrolled courses.
+ */
+function updateEventsFromUserEnrolledCourses(storedEvents, userEvents) { 
+  storedEvents.forEach((storedEvent) => {
+    // Find the corresponding user event
+    const userEvent = userEvents.find((event) => event.id === storedEvent.id);
+
+    // If the user is enrolled in the stored event but not in the user's event,
+    // treat the event as if it was clicked on by the user
+    if (storedEvent.enrolled && (!userEvent || !userEvent.enrolled)) {
+      toggleEventEnrollment({ event: storedEvent }, false);
+    }
+  });
+}
+
+/**
+ * Sets the events colors on the calendar.
+ * @param {Object} calendar The calendar object.
+ * @param {String} eventId The event id.
+ * @param {String} backgroundColor The background color.
+ * @param {String} textColor The text color.
+ */
+function updateEventColors(calendar, eventId, backgroundColor, textColor) {
+  calendar.getEventById(eventId).setProp("backgroundColor", backgroundColor);
+  calendar.getEventById(eventId).setProp("borderColor", backgroundColor);
+  calendar.getEventById(eventId).setProp("textColor", textColor);
+}

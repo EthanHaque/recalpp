@@ -6,6 +6,8 @@ var User = {
   courseMeetings: {},
   notes: "",
 
+  
+
   /**
    * Returns the course count of User
    * @returns {number} - course count
@@ -55,9 +57,10 @@ var User = {
    * @param {string} guid - course guid
    * @returns {Object} - course object
    */
-  removeFromEnrolledCourses: function (guid) {
+  removeFromEnrolledCourses: function (guid, save = true) {
     const course = User.enrolledCourses[guid];
     delete User.enrolledCourses[guid];
+    if (save) User.saveUserProfile();
     return course;
   },
 
@@ -73,8 +76,9 @@ var User = {
    * Returns the course history count of User.
    * @param {Object} courseHistory - course history dictionary
    */
-  setCourseHistory: function (courseHistory) {
+  setCourseHistory: function (courseHistory, save = true) {
     User.courseHistory = courseHistory;
+    if (save) User.saveUserProfile();
   },
 
   /**
@@ -82,7 +86,8 @@ var User = {
    * @returns {Object} - metrics object
    */
   getMetrics: function () {
-    return User.generateMetrics();
+    const metrics = User.generateMetrics();
+    return metrics;
   },
 
   /**
@@ -164,13 +169,15 @@ var User = {
    * @param {string} courseGuid - course guid
    * @returns {Object} - course meeting object
    */
-  addCourseMeeting: function (courseGuid, courseMeeting) {
+  addCourseMeeting: function (courseGuid, courseMeeting, save = true) {
     // adds to array if courseGuid already exists
     if (User.courseMeetings.hasOwnProperty(courseGuid)) {
       User.courseMeetings[courseGuid].push(courseMeeting);
     } else {
       User.courseMeetings[courseGuid] = [courseMeeting];
     }
+    if (save) User.saveUserProfile();
+
     return courseMeeting;
   },
 
@@ -179,9 +186,10 @@ var User = {
    * @param {string} courseGuid - course guid
    * @returns {Object} - course meeting object
    */
-  removeCourseMeeting: function (courseGuid) {
+  removeCourseMeeting: function (courseGuid, save = true) {
     const courseMeetings = User.courseMeetings[courseGuid];
     delete User.courseMeetings[courseGuid];
+    if (save) User.saveUserProfile();
     return courseMeetings;
   },
 
@@ -197,8 +205,9 @@ var User = {
    * Sets the notes of User
    * @param {string} noteText - notes string
    */
-  setNotes: function (notesText) {
+  setNotes: function (notesText, save = true) {
     User.notes = notesText;
+    if (save) User.saveUserProfile();
   },
 
   /**
@@ -240,13 +249,29 @@ var User = {
         User.courseMeetings = data.courseMeetings;
         User.notes = data.notes;
         console.log("User profile loaded successfully");
+        setUserNotes();
+        addStoredUserCoursesToCalendar();
       })
       .fail(function (jqXHR, textStatus, errorThrown) {
         console.log("Failed to load user profile:", textStatus, errorThrown);
       });
   },
+
+  /**
+   * Resets the user profile
+   */
+  resetUserProfile: function () {
+    User.enrolledCourses = {};
+    User.courseHistory = {};
+    User.courseMeetings = {};
+    User.notes = "";
+    User.saveUserProfile();
+  },
 };
 
-$(document).ready(function () {
+/**
+ * Displays the metrics on the profile page
+ */
+function userInit() {
   User.getUserProfile();
-});
+}

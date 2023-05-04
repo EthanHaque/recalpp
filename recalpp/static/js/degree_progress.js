@@ -1,15 +1,6 @@
 "use strict";
 
 /**
- * Initializes right sidebar
- */
-function init() {
-  displayMetrics();
-}
-
-$(document).ready(init);
-
-/**
  * Displays metric data in right sidebar
  */
 function displayMetrics() {

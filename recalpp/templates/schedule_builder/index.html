@@ -65,9 +65,9 @@
           class="mr-3 flex-none w-[2.0625rem] overflow-hidden md:w-auto"
           href="/"
         >
-          <span class="sr-only"> ReCal++ </span>
+          <span class="sr-only"> Recal++ </span>
         </a>
-        <div class="relative" data-headlessui-state="">ReCal++</div>
+        <div class="relative" data-headlessui-state="">Recal++</div>
         <div class="relative lg:flex items-center ml-auto">
           <div class="flex items-center ml-6 pl-6">
             <div class="relative inline-block">
@@ -97,7 +97,7 @@
               class="ml-6 block text-slate-400 hover:text-slate-500 dark:hover:text-slate-300"
             >
             
-              <span class="sr-only"> ReCal++ on GitHub </span>
+              <span class="sr-only"> Recal++ on GitHub </span>
               <svg
                 viewBox="0 0 16 16"
                 class="w-5 h-5"
@@ -123,7 +123,7 @@
       class="lg:block fixed z-20 inset-0 top-[2.8125rem] left-0 right-auto w-[max(220px,calc(25%))] pb-10 px-8 overflow-y-auto"
     >
       <nav id="nav" class="lg:text-sm lg:leading-6 relative">
-        <div class="sticky top-0 -ml-0.5 pointer-events-none dark:bg-slate-800">
+        <div class="sticky top-0 -ml-0.5 pointer-events-none">
           <div class="h-10"></div>
           <div class="relative pointer-events-auto">
             <div
@@ -225,23 +225,12 @@
         </div>
         <div id="user-notes">
           <center>
-            <hr style="margin-bottom: 10px; margin-top: 5px;">
-            <h1 style="font-size: 24px;">General Notes</h1>
-            <hr style="margin-bottom: 5px; margin-top: 10px;">
+            <hr style="margin-bottom: 5px; margin-top: 5px;">
+            <h1 style="font-size: 16px;">Notes</h1>
+            <hr style="margin-bottom: 5px; margin-top: 5px;">
           </center>
           <textarea id="notes-textarea" rows="5" class="mt-2 w-full px-3 py-2 border rounded"></textarea>
         </div>
-
-        <script>
-          // Get a jQuery reference to the HTML element
-          const $notesTextarea = $("#notes-textarea");
-        
-          // Update user notes every time change is detected
-          $notesTextarea.on("input", () => {
-            const newNotes = $notesTextarea.val();
-            User.setNotes(newNotes);
-          });
-        </script>
       </nav>
     </div>
   </div>

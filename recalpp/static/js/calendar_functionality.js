@@ -52,26 +52,38 @@ function processMeeting(meeting, meetings) {
   });
 }
 
+function addUserMeetingsToCalendar(meetings) {
+  meetings.forEach((meeting) => {
+    calendar.addEvent(meeting);
+  });
+}
+
+/** 
+ * Helper function to create ISO date strings for each day of the week
+ * @param {string} day - day of the week
+ * @return {string} - ISO date string for the day
+ */
+function getIsoDateForDay(day) {
+  const baseDate = new Date("2000-01-01T00:00:00");
+  const dayOffset = {
+    Monday: 0,
+    Tuesday: 1,
+    Wednesday: 2,
+    Thursday: 3,
+    Friday: 4,
+  };
+  baseDate.setDate(baseDate.getDate() + dayOffset[day]);
+  return baseDate.toISOString().slice(0, 10);
+}
+
+
 /**
  * Adds a course to the calendar
  * @param {Object} course - course object
  */
-async function addCourseToCalendar(course) {
+async function addCourseToCalendar(course, save = true) {
   const meetings = await getMeetingTimes(course);
-  // Helper function to create ISO date strings for each day of the week
-  function getIsoDateForDay(day) {
-    const baseDate = new Date("2000-01-01T00:00:00");
-    const dayOffset = {
-      Monday: 0,
-      Tuesday: 1,
-      Wednesday: 2,
-      Thursday: 3,
-      Friday: 4,
-    };
-    baseDate.setDate(baseDate.getDate() + dayOffset[day]);
-    return baseDate.toISOString().slice(0, 10);
-  }
-
+  
   const meetingSections = getMeetingSections(meetings);
   const uniqueMeetings = getUniqueMeetings(meetingSections);
   const lightSaturatedColor = getRandomLightColor();
@@ -97,7 +109,7 @@ async function addCourseToCalendar(course) {
       };
       // Add the event to the calendar
       calendar.addEvent(event);
-      User.addCourseMeeting(course.guid, event);
+      User.addCourseMeeting(course.guid, event, save);
     } else {
       const event = {
         id: `${course.guid}-${index}`,
@@ -111,7 +123,7 @@ async function addCourseToCalendar(course) {
       };
       // Add the event to the calendar
       calendar.addEvent(event);
-      User.addCourseMeeting(course.guid, event);
+      User.addCourseMeeting(course.guid, event, save);
     }
     // Remove the course from the list of available courses
     $(`li[data-course='${JSON.stringify({ guid: course.guid })}']`).remove();
