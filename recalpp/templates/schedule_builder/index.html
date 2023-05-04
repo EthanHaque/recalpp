@@ -231,17 +231,6 @@
           </center>
           <textarea id="notes-textarea" rows="5" class="mt-2 w-full px-3 py-2 border rounded"></textarea>
         </div>
-
-        <script>
-          // Get a jQuery reference to the HTML element
-          const $notesTextarea = $("#notes-textarea");
-        
-          // Update user notes every time change is detected
-          $notesTextarea.on("input", () => {
-            const newNotes = $notesTextarea.val();
-            User.setNotes(newNotes);
-          });
-        </script>
       </nav>
     </div>
   </div>
