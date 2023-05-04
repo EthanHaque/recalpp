@@ -72,8 +72,11 @@ async function addCourseToCalendar(course) {
     return baseDate.toISOString().slice(0, 10);
   }
 
-  const color = getDesaturatedColor(getRandomLightColor(), 80);
-  const darkColor = darkenColor(color);
+  const meetingSections = getMeetingSections(meetings);
+  const uniqueMeetings = getUniqueMeetings(meetingSections);
+  let isEnrolled = false;
+  let lightColor = getDesaturatedColor(getRandomLightColor(), 80);
+  let darkColor = darkenColor(lightColor);
 
   meetings.forEach((meet, index) => {
     const date = getIsoDateForDay(meet.day);
@@ -83,11 +86,11 @@ async function addCourseToCalendar(course) {
     const event = {
       id: `${course.guid}-${index}`,
       section: meet.class_section,
-      enrolled: false,
+      enrolled: isEnrolled,
       title: `${meet.class_subject_code}${meet.class_catalog_number} ${meet.class_section}`,
       start: start,
       end: end,
-      color: color,
+      color: lightColor,
       textColor: darkColor,
     };
 
@@ -107,14 +110,52 @@ async function addCourseToCalendar(course) {
  */
 function removeCourseFromCalendar(guid) {
   const events = User.getCourseMeetingsByGuid(guid);
-  console.log(guid);
-  console.log(events);
   User.removeCourseMeeting(guid);
   events.forEach((event) => {
     const calendarEvent = calendar.getEventById(event.id);
     if (calendarEvent !== null) {
-      console.log(event.id);
       calendarEvent.remove();
     }
   });
+}
+
+function getMeetingSections(meetings) {
+  let courseMeetingSections = new Array();
+  meetings.forEach((meet) => {
+    if (!courseMeetingSections.includes(meet.class_section)) {
+      courseMeetingSections.push(meet.class_section);
+    }
+  });
+  return courseMeetingSections;
+}
+
+function getUniqueMeetings(meetingSections) {
+  let meetingIdentifier = false;
+  const uniqueMeetings = [];
+
+  if (meetingSections.length === 1) {
+    uniqueMeetings.push(meetingSections[0]);
+  }
+
+  for (let i = 0; i < meetingSections.length; i++) {
+    const currentSection = meetingSections[i];
+    const nextSection = meetingSections[i + 1];
+    const prevSection = meetingSections[i - 1];
+
+    if (nextSection && currentSection[0] !== nextSection[0] &&
+      (!prevSection || currentSection[0] !== prevSection[0])
+      ) {
+      meetingIdentifier = true;
+    }
+
+    if (meetingIdentifier) {
+      uniqueMeetings.push(currentSection);
+    }
+
+    if (nextSection && currentSection[0] !== nextSection[0]) {
+      meetingIdentifier = false;
+    }
+  }
+
+  return uniqueMeetings;
 }
