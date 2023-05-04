@@ -250,6 +250,7 @@ var User = {
         User.notes = data.notes;
         console.log("User profile loaded successfully");
         setUserNotes();
+        init_combobox();
         addStoredUserCoursesToCalendar();
       })
       .fail(function (jqXHR, textStatus, errorThrown) {
