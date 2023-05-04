@@ -85,7 +85,6 @@ var User = {
    */
   getMetrics: function () {
     const metrics = User.generateMetrics();
-    User.saveUserProfile();
     return metrics;
   },
 
@@ -110,7 +109,6 @@ var User = {
     let courseList = Object.values(User.getEnrolledCourses());
     courseList = courseList.concat(Object.values(User.getCourseHistory()));
     User.parseForMetrics(courseList, metrics);
-    User.saveUserProfile();
 
     return metrics;
   },
@@ -249,6 +247,7 @@ var User = {
         User.courseMeetings = data.courseMeetings;
         User.notes = data.notes;
         console.log("User profile loaded successfully");
+        setUserNotes();
       })
       .fail(function (jqXHR, textStatus, errorThrown) {
         console.log("Failed to load user profile:", textStatus, errorThrown);
