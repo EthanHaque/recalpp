@@ -31,6 +31,7 @@ async function init() {
     });
   });
 
+  
   // Use Promise.all to wait for all requests to complete
   try {
     const [currentTerm, subjectCodes, distributions] = await Promise.all([
@@ -43,6 +44,11 @@ async function init() {
     window.currentTerm = currentTerm;
     window.subjectCodes = subjectCodes;
     window.distributions = distributions;
+
+    // Initialize the combobox for settings.
+    // TOOD: This should be moved to a separate file.
+    init_combobox();
+
   } catch (error) {
     console.error(`Error initializing data: ${error}`);
   }
@@ -140,6 +146,18 @@ function classifyQuery(token, parsedSearch) {
 function getCourses(search, callback) {
   const parsedSearch = parseSearchString(search);
 
+  const query = constructAPIQuery(parsedSearch);
+
+  $.getJSON("/api/v1/courses", { term_code: currentTerm, ...query }, callback);
+}
+
+
+/**
+ * Constructs the API query from the parsed search object
+ * @param {*} parsedSearch - parsed search object
+ * @returns {object} - API query object
+ */
+function constructAPIQuery(parsedSearch) {
   const query = {
     term_code: currentTerm,
   };
@@ -159,8 +177,7 @@ function getCourses(search, callback) {
   if (parsedSearch.distributions.length) {
     query.distribution = parsedSearch.distributions.join(",");
   }
-
-  $.getJSON("/api/v1/courses", { term_code: currentTerm, ...query }, callback);
+  return query;
 }
 
 /**
