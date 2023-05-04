@@ -2,7 +2,6 @@
 
 function init() {
   initializeUserNotesElement();
-  setUserNotes();
 }
 
 $(document).ready(init);
