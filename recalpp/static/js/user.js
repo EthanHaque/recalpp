@@ -58,6 +58,7 @@ var User = {
   removeFromEnrolledCourses: function (guid) {
     const course = User.enrolledCourses[guid];
     delete User.enrolledCourses[guid];
+    User.saveUserProfile();
     return course;
   },
 
@@ -75,6 +76,7 @@ var User = {
    */
   setCourseHistory: function (courseHistory) {
     User.courseHistory = courseHistory;
+    User.saveUserProfile();
   },
 
   /**
@@ -82,7 +84,9 @@ var User = {
    * @returns {Object} - metrics object
    */
   getMetrics: function () {
-    return User.generateMetrics();
+    const metrics = User.generateMetrics();
+    User.saveUserProfile();
+    return metrics;
   },
 
   /**
@@ -106,6 +110,7 @@ var User = {
     let courseList = Object.values(User.getEnrolledCourses());
     courseList = courseList.concat(Object.values(User.getCourseHistory()));
     User.parseForMetrics(courseList, metrics);
+    User.saveUserProfile();
 
     return metrics;
   },
@@ -171,6 +176,8 @@ var User = {
     } else {
       User.courseMeetings[courseGuid] = [courseMeeting];
     }
+    User.saveUserProfile();
+
     return courseMeeting;
   },
 
@@ -182,6 +189,7 @@ var User = {
   removeCourseMeeting: function (courseGuid) {
     const courseMeetings = User.courseMeetings[courseGuid];
     delete User.courseMeetings[courseGuid];
+    User.saveUserProfile();
     return courseMeetings;
   },
 
@@ -199,6 +207,7 @@ var User = {
    */
   setNotes: function (notesText) {
     User.notes = notesText;
+    User.saveUserProfile();
   },
 
   /**
