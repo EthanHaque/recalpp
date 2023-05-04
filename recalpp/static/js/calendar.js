@@ -28,6 +28,10 @@ $(document).ready(function () {
   calendar.render();
 });
 
+/**
+ * Toggles the enrollment of a course meeting.
+ * @param {Object} calendar_event_object The event object that was clicked.
+ */
 function toggleEventEnrollment(calendar_event_object) {
   const guid = calendar_event_object.event.id.split("-")[0];
   const courseIndex = calendar_event_object.event.id.split("-")[1];
@@ -67,6 +71,13 @@ function toggleEventEnrollment(calendar_event_object) {
   User.saveUserProfile();
 }
 
+/**
+ * Sets the events colors on the calendar.
+ * @param {Object} calendar The calendar object.
+ * @param {String} eventId The event id.
+ * @param {String} backgroundColor The background color.
+ * @param {String} textColor The text color.
+ */
 function updateEventColors(calendar, eventId, backgroundColor, textColor) {
   calendar.getEventById(eventId).setProp("backgroundColor", backgroundColor);
   calendar.getEventById(eventId).setProp("borderColor", backgroundColor);
