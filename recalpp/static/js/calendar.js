@@ -27,19 +27,16 @@ $(document).ready(function () {
       const events = User.getCourseMeetingsByGuid(guid);
       const numMeetingsForCourse = events.length;
 
-      // All relevant colors
-      const unsaturatedLightColor = events[courseIndex].color;
-      const unsaturatedDarkColor = events[courseIndex].textColor;
-      const saturatedLightColor = getDesaturatedColor(
-        events[courseIndex].color,
-        -80
-      );
-      const saturatedDarkColor = darkenColor(saturatedLightColor);
+    
+      
 
       if (events[courseIndex].enrolled) {
         events[courseIndex].enrolled = false;
         // Determines if the event is a precept: P, class: C, etc.
         const meetingIdentifier = events[courseIndex].section.charAt(0);
+        // Colors
+        const unsaturatedLightColor = getDesaturatedColor(events[courseIndex].color, 80);
+        const unsaturatedDarkColor = darkenColor(unsaturatedLightColor);
         // Changes all relevant sections enrolled false and color to default
         for (let i = 0; i < numMeetingsForCourse; i++) {
           if (events[courseIndex].section === events[i].section) {
@@ -66,6 +63,9 @@ $(document).ready(function () {
         events[courseIndex].enrolled = true;
         // Determines if the event is a precept: P, class: C, etc.
         const meetingIdentifier = events[courseIndex].section.charAt(0);
+        // Colors
+        const saturatedLightColor = getDesaturatedColor(events[courseIndex].color, -80);
+        const saturatedDarkColor = darkenColor(saturatedLightColor);
         // Change all relevant sections to enrolled true and resaturate the event
         for (let i = 0; i < numMeetingsForCourse; i++) {
           if (events[courseIndex].section === events[i].section) {
