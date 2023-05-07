@@ -50,3 +50,12 @@ class Meeting(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     days = models.CharField(max_length=255)
+
+class Major(models.Model):
+    name = models.CharField(max_length=255)
+    code = models.CharField(max_length=3)
+    degree = models.CharField(max_length=3, choices=[("AB", "AB"), ("BSE", "BSE")])
+
+class RequiredCourse(models.Model):
+    major = models.ForeignKey(Major, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
