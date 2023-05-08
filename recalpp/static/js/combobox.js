@@ -4,8 +4,8 @@
  * This method is used to initialize the combobox.
  */
 function init_combobox() {
-  const combobox = $(".js-example-basic-multiple");
-  combobox
+  const courseHistoryCombobox = $(".js-example-basic-multiple");
+  courseHistoryCombobox
     .select2({
       width: '100%',
       closeOnSelect: false,
@@ -40,8 +40,14 @@ function init_combobox() {
         User.setCourseHistory(guidToCourseMap);
         displayMetrics();
     });
+  const majorSelectCombobox = $(".js-example-basic-single");
+  majorSelectCombobox
+    .select2({
+      width: '100%',
+      closeOnSelect: true,
+    });
   
-    setPreviouslySelectedCourses(combobox);
+  setPreviouslySelectedCourses(combobox);
 }
 
 
