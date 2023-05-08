@@ -1,7 +1,8 @@
 from rest_framework import viewsets, generics
-from recalpp.data_ingestion.models import Course, Instructor, CourseInstructor, CrossListing, Class, Meeting
+from recalpp.data_ingestion.models import Course, Instructor, CourseInstructor, CrossListing, Class, Meeting, Major, RequiredCourse
 from api_v1.serializers import (CourseSerializer, InstructorSerializer, CourseInstructorSerializer,
-                                 CrossListingSerializer, ClassSerializer, MeetingSerializer)
+                                 CrossListingSerializer, ClassSerializer, MeetingSerializer, MajorSerializer,
+                                    RequiredCourseSerializer)
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
@@ -66,7 +67,29 @@ class MeetingsForCourseView(generics.ListAPIView):
         course = Course.objects.get(guid=guid)
         class_ids = course.class_set.all().values_list('id', flat=True)
         return Meeting.objects.filter(class_obj__id__in=class_ids)
+    
 
+class MajorViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Major.objects.all()
+    serializer_class = MajorSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        major = self.request.query_params.get('major', None)
+        if major is not None:
+            queryset = queryset.filter(major=major)
+        return queryset
+    
+class RequiredCourseViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = RequiredCourse.objects.all()
+    serializer_class = RequiredCourseSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        major = self.request.query_params.get('major', None)
+        if major is not None:
+            queryset = queryset.filter(major=major)
+        return queryset
 
 @api_view(['GET'])
 def get_current_term(request):
