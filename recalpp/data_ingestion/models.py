@@ -52,7 +52,7 @@ class Meeting(models.Model):
     days = models.CharField(max_length=255)
 
 class Major(models.Model):
-    degree = models.CharField(max_length=3, choices=[("AB", "AB"), ("BSE", "BSE")])
+    name = models.CharField(max_length=255)
 
 class RequiredCourse(models.Model):
     major = models.ForeignKey(Major, on_delete=models.CASCADE)
