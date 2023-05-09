@@ -11,9 +11,9 @@ import django_cas_ng.views
 urlpatterns = [
     path("", RedirectView.as_view(url="schedule_builder/")),
     path("schedule_builder/", include("recalpp.schedule_builder.urls", namespace="schedule_builder")),
-    path('api/v1/', include('api_v1.urls')),
-    path('accounts/login/', django_cas_ng.views.LoginView.as_view(), name='cas_ng_login'),
-    path('accounts/logout/', django_cas_ng.views.LogoutView.as_view(), name='cas_ng_logout'),
+    path("api/v1/", include("api_v1.urls")),
+    path("accounts/login/", django_cas_ng.views.LoginView.as_view(), name="cas_ng_login"),
+    path("accounts/logout/", django_cas_ng.views.LogoutView.as_view(), name="cas_ng_logout"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # API URLS
