@@ -26,7 +26,8 @@ function storeCourseIntersection(registeredCourses, prereqCourses, prereqsMet) {
   // Adds courses to prereqsMet if they are in registeredCourses and prereqCourses
   Object.keys(registeredCourses).forEach(function (courseId) {
     if (courseId in prereqCourses) {
-      prereqsMet[courseId] = registeredCourses[courseId];
+        prereqsMet[courseId] = registeredCourses[courseId];
     }
   });
+
 }
