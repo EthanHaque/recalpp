@@ -57,8 +57,11 @@ function buildRelevantCoursesMetricsHtml(metrics) {
   const prereqsMet = getPrereqsMet(preqCourses);
   let relevantCoursesHtml = ``;
 
-  Object.values(prereqsMet).forEach(function (course) {
-    relevantCoursesHtml += `
+  console.log(prereqsMet);
+
+  if (User.getMajor() !== "" && Object.keys(prereqsMet).length > 0) {
+    Object.values(prereqsMet).forEach(function (course) {
+      relevantCoursesHtml += `
     <li class="group flex items-center justify-between">
       <div class="block w-11/12 h-max">
         <div class="pl-4 ml-px w-full border-transparent text-slate-700 dark:text-slate-400">
@@ -69,10 +72,34 @@ function buildRelevantCoursesMetricsHtml(metrics) {
             <div class="text-right">
             <span class="break-all" style="white-space: nowrap">${course.distribution_areas}</span>
             </div>
+          </div>
+        </div>
+      </div>
+    </li>`;
+    });
+  } else if (Object.keys(prereqsMet).length === 0 && User.getMajor() !== "") {
+    relevantCoursesHtml = `
+    <li class="group flex items-center justify-between">
+      <div class="block w-11/12 h-max">
+        <div class="pl-4 ml-px w-full border-transparent text-slate-700 dark:text-slate-400">
+          <div class="flex flex-row justify-between">
+            No courses to display for the selected major ${User.getMajor()}.
            </div>
-         </div>
-        </div>`;
-  });
+        </div>
+      </div>
+    </li>`;
+  } else {
+    relevantCoursesHtml = `
+    <li class="group flex items-center justify-between">
+      <div class="block w-11/12 h-max">
+        <div class="pl-4 ml-px w-full border-transparent text-slate-700 dark:text-slate-400">
+          <div class="flex flex-row justify-between">
+            No Major Selected. Go to settings to select a major.
+           </div>
+        </div>
+      </div>
+    </li>`;
+  }
 
   return relevantCoursesHtml;
 }
