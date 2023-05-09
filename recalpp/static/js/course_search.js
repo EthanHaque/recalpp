@@ -172,7 +172,7 @@ function constructAPIQuery(parsedSearch) {
   }
 
   if (parsedSearch.titleTerms.length) {
-    query.title = parsedSearch.titleTerms.join(",");
+    query.title = parsedSearch.titleTerms.join(" ");
   }
 
   if (parsedSearch.distributions.length) {
