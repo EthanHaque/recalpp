@@ -184,14 +184,13 @@ var User = {
    * @param {string} courseGuid - course guid
    * @returns {Object} - course meeting object
    */
-  addCourseMeeting: function (courseGuid, courseMeeting, save = true) {
+  addCourseMeeting: function (courseGuid, courseMeeting) {
     // adds to array if courseGuid already exists
     if (User.courseMeetings.hasOwnProperty(courseGuid)) {
       User.courseMeetings[courseGuid].push(courseMeeting);
     } else {
       User.courseMeetings[courseGuid] = [courseMeeting];
     }
-    if (save) User.saveUserProfile();
 
     return courseMeeting;
   },
@@ -268,6 +267,7 @@ var User = {
         setUserNotes();
         init_combobox();
         addStoredUserCoursesToCalendar();
+        displayMetrics();
       })
       .fail(function (jqXHR, textStatus, errorThrown) {
         console.log("Failed to load user profile:", textStatus, errorThrown);
