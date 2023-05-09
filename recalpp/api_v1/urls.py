@@ -27,6 +27,7 @@ router.register(r"crosslistings", CrossListingViewSet, basename="crosslisting")
 router.register(r"classes", ClassViewSet, basename="class")
 router.register(r"meetings", MeetingViewSet, basename="meeting")
 router.register(r"majors", MajorViewSet, basename="major")
+router.register(r"required_courses", RequiredCourseViewSet, basename="required_course")
 
 urlpatterns = [
     path("course_meetings/<str:guid>/", MeetingsForCourseView.as_view(), name="course_meetings"),
@@ -35,7 +36,7 @@ urlpatterns = [
     path("current_term/", get_current_term, name="current_term"),
     path("subject_codes/", get_subject_codes, name="subject_codes"),
     path("distributions/", get_distributions, name="distributions"),
-    path("required_courses/<str:major>/", RequiredCourseViewSet.as_view({'get': 'list'}), name="required_courses"),
+    path("required_courses/", RequiredCourseViewSet.as_view({'get': 'list'}), name="required_courses"),
     path("majors", MajorViewSet.as_view({'get': 'list'}), name="majors"),
     path("", include(router.urls)),
 ]
