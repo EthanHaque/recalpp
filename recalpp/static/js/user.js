@@ -30,8 +30,8 @@ var User = {
    */
   updateRelevantCourses: function () {
     const major = User.getMajor();
-    const route = `/api/v1/required_courses/${major}`;
-    $.getJSON(route)
+    const route = `/api/v1/required_courses/?major=${major}`;
+    return $.getJSON(route)
       .then(function (data) {
         const courses = {};
         data.forEach(function (course) {
@@ -41,10 +41,6 @@ var User = {
       })
       .fail(function (jqxhr, textStatus, error) {
         console.log("Request Failed: " + textStatus + ", " + error);
-      })
-      .then(function (courses) {
-        User.relevantCourses = courses;
-        User.saveUserProfile();
       });
   },
 
@@ -288,12 +284,15 @@ var User = {
         User.courseMeetings = data.courseMeetings;
         User.notes = data.notes;
         User.major = data.major;
+        User.updateRelevantCourses().then(function (courses) {
+          User.relevantCourses = courses;
+          User.saveUserProfile();
+          setUserNotes();
+          init_combobox();
+          addStoredUserCoursesToCalendar();
+          displayMetrics();
+        });
         console.log("User profile loaded successfully");
-        setUserNotes();
-        init_combobox();
-        User.updateRelevantCourses();
-        addStoredUserCoursesToCalendar();
-        displayMetrics();
       })
       .fail(function (jqXHR, textStatus, errorThrown) {
         console.log("Failed to load user profile:", textStatus, errorThrown);
