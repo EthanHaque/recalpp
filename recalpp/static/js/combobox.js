@@ -76,6 +76,12 @@ function init_combobox() {
     });
 }
 
+
+/**
+ * Sets the previously selected major in a combobox.
+ * @param {$} $comboBox - jQuery object representing the combobox.
+ * @returns {void}
+ */
 function setPreviouslySelectedCourses($comboBox) {
   const courseHistory = User.getCourseHistory();
   const selectedCourses = [];
@@ -98,6 +104,12 @@ function setPreviouslySelectedCourses($comboBox) {
   });
 }
 
+
+/**
+ * Sets the previously selected major in a combobox.
+ * @param {$} $comboBox - jQuery object representing the combobox.
+ * @returns {void}
+ */
 function setPreviouslySelectedMajor($comboBox) {
   const major = User.getMajor();
   const selectedMajor = {
