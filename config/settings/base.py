@@ -137,7 +137,7 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [
     str(APPS_DIR / "static"),
-                    ]
+]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -177,7 +177,6 @@ TEMPLATES = [
         },
     }
 ]
-
 
 
 # FIXTURES
@@ -252,3 +251,5 @@ NPM_BIN_PATH = "/usr/local/bin/npm"
 NODE_BIN_PATH = "/usr/local/bin/node"
 
 CAS_SERVER_URL = "https://fed.princeton.edu/cas/"
+
+LOGOUT_REDIRECT_URL = "accounts/login/"
