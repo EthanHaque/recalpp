@@ -109,9 +109,9 @@ class RequiredCourseViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
-        major = self.request.query_params.get("major", None)
-        if major is not None:
-            queryset = queryset.filter(major=major)
+        major_name = self.request.query_params.get("major", None)
+        if major_name is not None:
+            queryset = queryset.filter(major__name=major_name)
         return queryset
 
 
