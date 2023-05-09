@@ -57,7 +57,6 @@ function buildRelevantCoursesMetricsHtml(metrics) {
   const prereqsMet = getPrereqsMet(preqCourses);
   let relevantCoursesHtml = ``;
 
-  console.log(prereqsMet);
 
   if (User.getMajor() !== "" && Object.keys(prereqsMet).length > 0) {
     Object.values(prereqsMet).forEach(function (course) {
