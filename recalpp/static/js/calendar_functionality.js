@@ -109,7 +109,7 @@ async function addCourseToCalendar(course, save = true) {
       };
       // Add the event to the calendar
       calendar.addEvent(event);
-      User.addCourseMeeting(course.guid, event, save);
+      User.addCourseMeeting(course.guid, event);
     } else {
       const event = {
         id: `${course.guid}-${index}`,
@@ -123,11 +123,12 @@ async function addCourseToCalendar(course, save = true) {
       };
       // Add the event to the calendar
       calendar.addEvent(event);
-      User.addCourseMeeting(course.guid, event, save);
+      User.addCourseMeeting(course.guid, event);
     }
     // Remove the course from the list of available courses
     $(`li[data-course='${JSON.stringify({ guid: course.guid })}']`).remove();
   });
+  User.saveUserProfile()
 }
 
 /**
