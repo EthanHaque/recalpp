@@ -21,7 +21,6 @@ var User = {
    */
   setMajor: function (major) {
     User.major = major;
-    User.updateRelevantCourses();
     User.saveUserProfile();
   },
 
@@ -42,6 +41,10 @@ var User = {
       .fail(function (jqxhr, textStatus, error) {
         console.log("Request Failed: " + textStatus + ", " + error);
       });
+  },
+
+  setRelevantCourses: function (courses) { 
+    User.relevantCourses = courses;
   },
 
   /**
