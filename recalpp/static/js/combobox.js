@@ -93,6 +93,12 @@ function setPreviouslySelectedCourses($comboBox) {
   });
 }
 
+
+/**
+ * Sets the previously selected major in a combobox.
+ * @param {$} $comboBox - jQuery object representing the combobox.
+ * @returns {void}
+ */
 function setPreviouslySelectedMajor($comboBox) {
   const major = User.getMajor();
   const selectedMajor = {

@@ -7,7 +7,6 @@
  */
 async function getMeetingTimes(course) {
   const meetings = [];
-  // TODO this takes a long time to render. Can we speed it up?
   await $.getJSON(`/api/v1/course_meetings/${course.guid}/`).then((data) => {
     data.forEach((meeting) => {
       processMeeting(meeting, meetings);
@@ -147,6 +146,12 @@ function removeCourseFromCalendar(guid) {
   });
 }
 
+
+/**
+ * Retrieves the unique meeting sections from a list of meetings.
+ * @param {Array} meetings - An array of meeting objects.
+ * @returns {Array} - An array containing the unique meeting sections.
+ */
 function getMeetingSections(meetings) {
   let courseMeetingSections = new Array();
   meetings.forEach((meet) => {
@@ -157,6 +162,12 @@ function getMeetingSections(meetings) {
   return courseMeetingSections;
 }
 
+
+/**
+ * Retrieves unique meetings from a list of meeting sections.
+ * @param {Array} meetingSections - An array of meeting sections.
+ * @returns {Array} - An array containing the unique meetings.
+ */
 function getUniqueMeetings(meetingSections) {
   let meetingIdentifier = false;
   const uniqueMeetings = [];

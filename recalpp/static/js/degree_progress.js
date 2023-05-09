@@ -82,6 +82,11 @@ function buildRelevantCoursesMetricsHtml(metrics) {
   });
 }
 
+
+/**
+ * Retrieves prerequisite courses for a specific major.
+ * @returns {Promise<Object>} - A promise that resolves to an object containing prerequisite courses.
+ */
 function getPrereqCourses() {
   const major = User.getMajor();
   const route = `/api/v1/required_courses/${major}`;
