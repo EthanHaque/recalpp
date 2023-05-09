@@ -70,7 +70,6 @@ function init_combobox() {
       User.setMajor(major.name);
       User.updateRelevantCourses().then(function (courses) { 
         User.setRelevantCourses(courses);
-        console.log(User.relevantCourses);
         displayMetrics();
       }
       );
