@@ -47,7 +47,6 @@ async function init() {
 
     // TOOD: This should be moved to a separate file.
     userInit();
-    displayMetrics();
 
     // Update the calendar to automatically select the enrolled sections
 

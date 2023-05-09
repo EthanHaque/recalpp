@@ -4,9 +4,45 @@ var User = {
   enrolledCourses: {},
   courseHistory: {},
   courseMeetings: {},
+  relevantCourses: {},
   notes: "",
+  major: "",
 
-  
+  /**
+   * Gets the user major
+   */
+  getMajor: function () {
+    return User.major;
+  },
+
+  /**
+   * Sets the user major and updates the relevant courses
+   * @param {string} major - user major
+   */
+  setMajor: function (major) {
+    User.major = major;
+    User.updateRelevantCourses();
+    User.saveUserProfile();
+  },
+
+  /**
+   * Updates the relevant courses
+   */
+  updateRelevantCourses: function () {
+    const major = User.getMajor();
+    const route = `/api/v1/required_courses/?major=${major}`;
+    return $.getJSON(route)
+      .then(function (data) {
+        const courses = {};
+        data.forEach(function (course) {
+          courses[course.course.guid] = course.course;
+        });
+        return courses;
+      })
+      .fail(function (jqxhr, textStatus, error) {
+        console.log("Request Failed: " + textStatus + ", " + error);
+      });
+  },
 
   /**
    * Returns the course count of User
@@ -169,14 +205,13 @@ var User = {
    * @param {string} courseGuid - course guid
    * @returns {Object} - course meeting object
    */
-  addCourseMeeting: function (courseGuid, courseMeeting, save = true) {
+  addCourseMeeting: function (courseGuid, courseMeeting) {
     // adds to array if courseGuid already exists
     if (User.courseMeetings.hasOwnProperty(courseGuid)) {
       User.courseMeetings[courseGuid].push(courseMeeting);
     } else {
       User.courseMeetings[courseGuid] = [courseMeeting];
     }
-    if (save) User.saveUserProfile();
 
     return courseMeeting;
   },
@@ -248,10 +283,16 @@ var User = {
         User.courseHistory = data.courseHistory;
         User.courseMeetings = data.courseMeetings;
         User.notes = data.notes;
+        User.major = data.major;
+        User.updateRelevantCourses().then(function (courses) {
+          User.relevantCourses = courses;
+          User.saveUserProfile();
+          setUserNotes();
+          init_combobox();
+          addStoredUserCoursesToCalendar();
+          displayMetrics();
+        });
         console.log("User profile loaded successfully");
-        setUserNotes();
-        init_combobox();
-        addStoredUserCoursesToCalendar();
       })
       .fail(function (jqXHR, textStatus, errorThrown) {
         console.log("Failed to load user profile:", textStatus, errorThrown);
@@ -266,7 +307,16 @@ var User = {
     User.courseHistory = {};
     User.courseMeetings = {};
     User.notes = "";
+    User.major = "";
     User.saveUserProfile();
+  },
+
+  /**
+   * Gets the courses relevant to the user
+   * @returns {Object} - courses relevant to the user
+   */
+  getRelevantCourses: function () {
+    return User.relevantCourses;
   },
 };
 

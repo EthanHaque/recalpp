@@ -29,7 +29,6 @@ function buildGeneralMetricsHtml(metrics) {
   return `<p>Total Course Count: ${metrics.courseCount}</p>`;
 }
 
-
 /**
  * Builds distributions metric HTML based on the given data
  * @param {Object} metrics - metric data
@@ -48,15 +47,14 @@ function buildDistributionsMetricsHtml(metrics) {
   SENs Satisfied: ${metrics.SENs}</p>`;
 }
 
-
 /**
  * Builds relevant courses metric HTML
  * @param {Object} metrics - metric data
  * @return {string} - generated HTML
  */
 function buildRelevantCoursesMetricsHtml(metrics) {
-  // const prereqCourses = getPrereqCourses();
-  const prereqsMet = getPrereqsMet({});
+  const preqCourses = User.getRelevantCourses();
+  const prereqsMet = getPrereqsMet(preqCourses);
   let relevantCoursesHtml = ``;
 
   Object.values(prereqsMet).forEach(function (course) {
@@ -73,20 +71,8 @@ function buildRelevantCoursesMetricsHtml(metrics) {
             </div>
            </div>
          </div>
-        </div>`
+        </div>`;
   });
 
   return relevantCoursesHtml;
 }
-
-// Scaffolding for Major Selection Affecting Metrics
-
-// /**
-//  * Handles Selection of Major
-//  */
-// function handleMajorSelection(selected_major) {
-
-//   const major_code = selected_major;
-//   getDegreeProgress(major_code, displayDegreeProgress);
-
-// }
