@@ -7,3 +7,4 @@ class UserProfile(models.Model):
     course_history = models.JSONField(default=dict)
     course_meetings = models.JSONField(default=dict)
     notes = models.TextField(blank=True, default="")
+    major = models.CharField(max_length=100, blank=True, default="")
