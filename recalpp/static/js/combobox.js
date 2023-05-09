@@ -68,6 +68,12 @@ function init_combobox() {
       const selectedMajor = $(this).val();
       const major = JSON.parse(selectedMajor);
       User.setMajor(major.name);
+      User.updateRelevantCourses().then(function (courses) { 
+        User.setRelevantCourses(courses);
+        console.log(User.relevantCourses);
+        displayMetrics();
+      }
+      );
     });
 }
 
