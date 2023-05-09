@@ -13,11 +13,15 @@ function displayMetrics() {
 
   let generalMetricsHtml = buildGeneralMetricsHtml(metrics);
   let distributionsMetricsHtml = buildDistributionsMetricsHtml(metrics);
-  let relevantCoursesMetricsHtml = buildRelevantCoursesMetricsHtml(metrics);
+  let relevantCoursesMetricsHtmlPromise =
+    buildRelevantCoursesMetricsHtml(metrics);
 
   generalMetricsContainer.html(generalMetricsHtml);
   distributionsMetricsContainer.html(distributionsMetricsHtml);
-  relevantCoursesMetricsContainer.html(relevantCoursesMetricsHtml);
+
+  relevantCoursesMetricsHtmlPromise.then((relevantCoursesMetricsHtml) => {
+    relevantCoursesMetricsContainer.html(relevantCoursesMetricsHtml);
+  });
 }
 
 /**
@@ -28,7 +32,6 @@ function displayMetrics() {
 function buildGeneralMetricsHtml(metrics) {
   return `<p>Total Course Count: ${metrics.courseCount}</p>`;
 }
-
 
 /**
  * Builds distributions metric HTML based on the given data
@@ -48,19 +51,18 @@ function buildDistributionsMetricsHtml(metrics) {
   SENs Satisfied: ${metrics.SENs}</p>`;
 }
 
-
 /**
  * Builds relevant courses metric HTML
  * @param {Object} metrics - metric data
  * @return {string} - generated HTML
  */
 function buildRelevantCoursesMetricsHtml(metrics) {
-  // const prereqCourses = getPrereqCourses();
-  const prereqsMet = getPrereqsMet({});
-  let relevantCoursesHtml = ``;
+  return getPrereqCourses().then((data) => {
+    const prereqsMet = getPrereqsMet(data);
+    let relevantCoursesHtml = ``;
 
-  Object.values(prereqsMet).forEach(function (course) {
-    relevantCoursesHtml += `
+    Object.values(prereqsMet).forEach(function (course) {
+      relevantCoursesHtml += `
     <li class="group flex items-center justify-between">
       <div class="block w-11/12 h-max">
         <div class="pl-4 ml-px w-full border-transparent text-slate-700 dark:text-slate-400">
@@ -73,20 +75,25 @@ function buildRelevantCoursesMetricsHtml(metrics) {
             </div>
            </div>
          </div>
-        </div>`
-  });
+        </div>`;
+    });
 
-  return relevantCoursesHtml;
+    return relevantCoursesHtml;
+  });
 }
 
-// Scaffolding for Major Selection Affecting Metrics
-
-// /**
-//  * Handles Selection of Major
-//  */
-// function handleMajorSelection(selected_major) {
-
-//   const major_code = selected_major;
-//   getDegreeProgress(major_code, displayDegreeProgress);
-
-// }
+function getPrereqCourses() {
+  const major = User.getMajor();
+  const route = `/api/v1/required_courses/${major}`;
+  return $.getJSON(route)
+    .then(function (data) {
+      const courses = {};
+      data.forEach(function (course) {
+        courses[course.course.guid] = course.course;
+      });
+      return courses;
+    })
+    .fail(function (jqxhr, textStatus, error) {
+      console.log("Request Failed: " + textStatus + ", " + error);
+    });
+}
