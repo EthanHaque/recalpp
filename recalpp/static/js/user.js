@@ -5,8 +5,23 @@ var User = {
   courseHistory: {},
   courseMeetings: {},
   notes: "",
+  major: "",
 
-  
+  /**
+   * Gets the user major
+   */
+  getMajor: function () {
+    return User.major;
+  },
+
+  /**
+   * Sets the user major
+   * @param {string} major - user major
+   */
+  setMajor: function (major) {
+    User.major = major;
+    User.saveUserProfile();
+  },
 
   /**
    * Returns the course count of User
@@ -248,6 +263,7 @@ var User = {
         User.courseHistory = data.courseHistory;
         User.courseMeetings = data.courseMeetings;
         User.notes = data.notes;
+        User.major = data.major;
         console.log("User profile loaded successfully");
         setUserNotes();
         init_combobox();
@@ -266,6 +282,7 @@ var User = {
     User.courseHistory = {};
     User.courseMeetings = {};
     User.notes = "";
+    User.major = "";
     User.saveUserProfile();
   },
 };
