@@ -13,15 +13,11 @@ function displayMetrics() {
 
   let generalMetricsHtml = buildGeneralMetricsHtml(metrics);
   let distributionsMetricsHtml = buildDistributionsMetricsHtml(metrics);
-  let relevantCoursesMetricsHtmlPromise =
-    buildRelevantCoursesMetricsHtml(metrics);
+  let relevantCoursesMetricsHtml = buildRelevantCoursesMetricsHtml(metrics);
 
   generalMetricsContainer.html(generalMetricsHtml);
   distributionsMetricsContainer.html(distributionsMetricsHtml);
-
-  relevantCoursesMetricsHtmlPromise.then((relevantCoursesMetricsHtml) => {
-    relevantCoursesMetricsContainer.html(relevantCoursesMetricsHtml);
-  });
+  relevantCoursesMetricsContainer.html(relevantCoursesMetricsHtml);
 }
 
 /**
@@ -57,12 +53,12 @@ function buildDistributionsMetricsHtml(metrics) {
  * @return {string} - generated HTML
  */
 function buildRelevantCoursesMetricsHtml(metrics) {
-  return getPrereqCourses().then((data) => {
-    const prereqsMet = getPrereqsMet(data);
-    let relevantCoursesHtml = ``;
+  const preqCourses = User.getRelevantCourses();
+  const prereqsMet = getPrereqsMet(preqCourses);
+  let relevantCoursesHtml = ``;
 
-    Object.values(prereqsMet).forEach(function (course) {
-      relevantCoursesHtml += `
+  Object.values(prereqsMet).forEach(function (course) {
+    relevantCoursesHtml += `
     <li class="group flex items-center justify-between">
       <div class="block w-11/12 h-max">
         <div class="pl-4 ml-px w-full border-transparent text-slate-700 dark:text-slate-400">
@@ -76,24 +72,7 @@ function buildRelevantCoursesMetricsHtml(metrics) {
            </div>
          </div>
         </div>`;
-    });
-
-    return relevantCoursesHtml;
   });
-}
 
-function getPrereqCourses() {
-  const major = User.getMajor();
-  const route = `/api/v1/required_courses/${major}`;
-  return $.getJSON(route)
-    .then(function (data) {
-      const courses = {};
-      data.forEach(function (course) {
-        courses[course.course.guid] = course.course;
-      });
-      return courses;
-    })
-    .fail(function (jqxhr, textStatus, error) {
-      console.log("Request Failed: " + textStatus + ", " + error);
-    });
+  return relevantCoursesHtml;
 }
