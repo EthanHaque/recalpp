@@ -251,5 +251,3 @@ NPM_BIN_PATH = "/usr/local/bin/npm"
 NODE_BIN_PATH = "/usr/local/bin/node"
 
 CAS_SERVER_URL = "https://fed.princeton.edu/cas/"
-
-LOGOUT_REDIRECT_URL = "accounts/login/"
