@@ -4,6 +4,7 @@ var User = {
   enrolledCourses: {},
   courseHistory: {},
   courseMeetings: {},
+  relevantCourses: {},
   notes: "",
   major: "",
 
@@ -15,12 +16,36 @@ var User = {
   },
 
   /**
-   * Sets the user major
+   * Sets the user major and updates the relevant courses
    * @param {string} major - user major
    */
   setMajor: function (major) {
     User.major = major;
+    User.updateRelevantCourses();
     User.saveUserProfile();
+  },
+
+  /**
+   * Updates the relevant courses
+   */
+  updateRelevantCourses: function () {
+    const major = User.getMajor();
+    const route = `/api/v1/required_courses/${major}`;
+    $.getJSON(route)
+      .then(function (data) {
+        const courses = {};
+        data.forEach(function (course) {
+          courses[course.course.guid] = course.course;
+        });
+        return courses;
+      })
+      .fail(function (jqxhr, textStatus, error) {
+        console.log("Request Failed: " + textStatus + ", " + error);
+      })
+      .then(function (courses) {
+        User.relevantCourses = courses;
+        User.saveUserProfile();
+      });
   },
 
   /**
@@ -266,6 +291,7 @@ var User = {
         console.log("User profile loaded successfully");
         setUserNotes();
         init_combobox();
+        User.updateRelevantCourses();
         addStoredUserCoursesToCalendar();
         displayMetrics();
       })
@@ -284,6 +310,14 @@ var User = {
     User.notes = "";
     User.major = "";
     User.saveUserProfile();
+  },
+
+  /**
+   * Gets the courses relevant to the user
+   * @returns {Object} - courses relevant to the user
+   */
+  getRelevantCourses: function () {
+    return User.relevantCourses;
   },
 };
 
